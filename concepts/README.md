@@ -78,7 +78,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [PodGroup API](workloads/podgroup-api/) · ✅ [Lifecycle](workloads/podgroup-api/lifecycle/)
 - ✅ [CompositePodGroup API](workloads/compositepodgroup-api/) · ✅ [Lifecycle](workloads/compositepodgroup-api/lifecycle/)
 
-## Services, Load Balancing, and Networking — `services-networking/`
+## ✅ [Services, Load Balancing, and Networking](services-networking/) — `services-networking/`
 - ✅ [Service](services-networking/service/)
 - ✅ [Ingress](services-networking/ingress/)
 - ✅ [Ingress Controllers](services-networking/ingress-controllers/)
@@ -88,7 +88,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [DNS for Services and Pods](services-networking/dns-pod-service/)
 - ✅ [IPv4/IPv6 dual-stack](services-networking/dual-stack/)
 - ✅ [Topology Aware Routing](services-networking/topology-aware-routing/)
-- ⬜ [Networking on Windows](services-networking/windows-networking/)
+- ✅ [Networking on Windows](services-networking/windows-networking/)
 - ✅ [Service ClusterIP allocation](services-networking/cluster-ip-allocation/)
 - ✅ [Service Internal Traffic Policy](services-networking/service-traffic-policy/)
 
