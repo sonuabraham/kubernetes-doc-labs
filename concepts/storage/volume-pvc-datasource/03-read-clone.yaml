@@ -1,0 +1,9 @@
+# Read the clone, and show it's independent of the source
+apiVersion: v1
+kind: Pod
+metadata: {name: clone-reader, namespace: myns}
+spec:
+  containers:
+  - {name: r, image: busybox:1.36, command: ["sh", "-c", "cat /data/file; echo changed-in-clone > /data/file; sleep 3600"], volumeMounts: [{name: d, mountPath: /data}]}
+  volumes:
+  - {name: d, persistentVolumeClaim: {claimName: clone-of-pvc-1}}

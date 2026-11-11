@@ -1,0 +1,41 @@
+# The rules from "Provisioning", broken one at a time
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: clone-too-small, namespace: myns}
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: cloning
+  resources: {requests: {storage: 1Gi}}             # source is 5Gi
+  dataSource: {kind: PersistentVolumeClaim, name: pvc-1}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: clone-other-driver, namespace: myns}
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: standard                        # k8s.io/minikube-hostpath, not the source's CSI driver
+  resources: {requests: {storage: 5Gi}}
+  dataSource: {kind: PersistentVolumeClaim, name: pvc-1}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: clone-block, namespace: myns}
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: cloning
+  volumeMode: Block                                 # source is Filesystem
+  resources: {requests: {storage: 5Gi}}
+  dataSource: {kind: PersistentVolumeClaim, name: pvc-1}
+---
+apiVersion: v1
+kind: Namespace
+metadata: {name: otherns}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: clone-cross-ns, namespace: otherns}
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: cloning
+  resources: {requests: {storage: 5Gi}}
+  dataSource: {kind: PersistentVolumeClaim, name: pvc-1}     # there's no namespace field: looks for otherns/pvc-1
