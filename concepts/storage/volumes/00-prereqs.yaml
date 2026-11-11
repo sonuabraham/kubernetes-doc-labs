@@ -1,0 +1,34 @@
+# Objects the docs Pods reference (namespace vol-demo):
+#   ConfigMap log-config (key log_level)        <- 01-configmap-pod.yaml
+#   PVC my-lamp-site-data                        <- 10-lamp-subpath.yaml
+#   ConfigMap cm1, Secrets secret1, secret2      <- 12-volume-user-fields.yaml
+apiVersion: v1
+kind: Namespace
+metadata: {name: vol-demo}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: log-config, namespace: vol-demo}
+data: {log_level: "INFO"}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: my-lamp-site-data, namespace: vol-demo}
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: cm1, namespace: vol-demo}
+data: {foo: "f", bar: "b"}
+---
+apiVersion: v1
+kind: Secret
+metadata: {name: secret1, namespace: vol-demo}
+stringData: {s1: "one"}
+---
+apiVersion: v1
+kind: Secret
+metadata: {name: secret2, namespace: vol-demo}
+stringData: {moo: "m", baa: "b"}
