@@ -1,0 +1,8 @@
+apiVersion: storage.k8s.io/v1
+kind: VolumeAttributesClass
+metadata:
+  name: gold
+driverName: csi.storage.example.com
+parameters:
+  iops: "4000"
+  throughput: "60Mi"

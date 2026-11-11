@@ -1,0 +1,11 @@
+# The docs' test-pv-claim with the "…" filled in: a CSI-provisioned claim that starts in class silver.
+# Switch it to gold with:  kubectl patch pvc test-pv-claim -n vac-demo -p '{"spec":{"volumeAttributesClassName":"gold"}}'
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-pv-claim
+spec:
+  storageClassName: csi-hostpath-sc
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
+  volumeAttributesClassName: silver

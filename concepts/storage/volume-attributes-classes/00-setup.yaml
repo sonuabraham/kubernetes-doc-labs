@@ -1,0 +1,22 @@
+# Namespace + hostpath CSI versions of the docs' silver/gold classes (same parameters, driverName = an installed driver)
+apiVersion: v1
+kind: Namespace
+metadata: {name: vac-demo}
+---
+apiVersion: storage.k8s.io/v1
+kind: VolumeAttributesClass
+metadata:
+  name: hostpath-silver
+driverName: hostpath.csi.k8s.io
+parameters:
+  iops: "3000"
+  throughput: "50Mi"
+---
+apiVersion: storage.k8s.io/v1
+kind: VolumeAttributesClass
+metadata:
+  name: hostpath-gold
+driverName: hostpath.csi.k8s.io
+parameters:
+  iops: "4000"
+  throughput: "60Mi"
