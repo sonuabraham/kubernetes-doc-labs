@@ -89,8 +89,8 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [IPv4/IPv6 dual-stack](services-networking/dual-stack/)
 - ✅ [Topology Aware Routing](services-networking/topology-aware-routing/)
 - ⬜ [Networking on Windows](services-networking/windows-networking/)
-- ⬜ [Service ClusterIP allocation](services-networking/cluster-ip-allocation/)
-- ⬜ [Service Internal Traffic Policy](services-networking/service-traffic-policy/)
+- ✅ [Service ClusterIP allocation](services-networking/cluster-ip-allocation/)
+- ✅ [Service Internal Traffic Policy](services-networking/service-traffic-policy/)
 
 ## Storage — `storage/`
 - ⬜ [Volumes](storage/volumes/) · ⬜ [Persistent Volumes](storage/persistent-volumes/) · ⬜ [Projected Volumes](storage/projected-volumes/) · ⬜ [Ephemeral Volumes](storage/ephemeral-volumes/)
