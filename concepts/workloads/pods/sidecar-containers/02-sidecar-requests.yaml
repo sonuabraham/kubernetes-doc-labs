@@ -1,0 +1,24 @@
+# Lab 6: sidecars RUN alongside the app, so their requests are ADDED:
+#   effective = max( largest regular-init request , sum(sidecars) + sum(app containers) )
+#   sidecar 300m + app 200m = 500m  (the 1-CPU init container runs before them -> max(1, 0.5) = 1)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-requests
+  namespace: sidecar-demo
+spec:
+  initContainers:
+  - name: setup
+    image: busybox:1.36
+    command: ["true"]
+    resources: {requests: {cpu: "1"}}
+  - name: proxy
+    image: busybox:1.36
+    restartPolicy: Always
+    command: ["sleep", "infinity"]
+    resources: {requests: {cpu: 300m}}
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    resources: {requests: {cpu: 200m}}

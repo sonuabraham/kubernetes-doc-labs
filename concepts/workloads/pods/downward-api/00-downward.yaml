@@ -1,0 +1,55 @@
+# Every downward API field from the docs, both ways (namespace downward-demo).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: downward-demo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: info
+  namespace: downward-demo
+  labels: {app: info, tier: backend}
+  annotations: {build: "42", owner: "team-a"}
+spec:
+  containers:
+  - name: main
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    resources:
+      requests: {cpu: 100m, memory: 32Mi}
+      limits:   {cpu: 200m, memory: 64Mi}
+    env:
+    # fieldRef - pod-level fields (env AND volume)
+    - {name: POD_NAME,      valueFrom: {fieldRef: {fieldPath: metadata.name}}}
+    - {name: POD_NAMESPACE, valueFrom: {fieldRef: {fieldPath: metadata.namespace}}}
+    - {name: POD_UID,       valueFrom: {fieldRef: {fieldPath: metadata.uid}}}
+    - {name: LABEL_TIER,    valueFrom: {fieldRef: {fieldPath: "metadata.labels['tier']"}}}
+    - {name: ANNOT_BUILD,   valueFrom: {fieldRef: {fieldPath: "metadata.annotations['build']"}}}
+    # fieldRef - env ONLY
+    - {name: SA_NAME,   valueFrom: {fieldRef: {fieldPath: spec.serviceAccountName}}}
+    - {name: NODE_NAME, valueFrom: {fieldRef: {fieldPath: spec.nodeName}}}
+    - {name: HOST_IP,   valueFrom: {fieldRef: {fieldPath: status.hostIP}}}
+    - {name: HOST_IPS,  valueFrom: {fieldRef: {fieldPath: status.hostIPs}}}
+    - {name: POD_IP,    valueFrom: {fieldRef: {fieldPath: status.podIP}}}
+    - {name: POD_IPS,   valueFrom: {fieldRef: {fieldPath: status.podIPs}}}
+    # resourceFieldRef - container-level
+    - {name: CPU_REQUEST, valueFrom: {resourceFieldRef: {containerName: main, resource: requests.cpu, divisor: 1m}}}
+    - {name: CPU_LIMIT,   valueFrom: {resourceFieldRef: {containerName: main, resource: limits.cpu, divisor: 1m}}}
+    - {name: MEM_LIMIT,   valueFrom: {resourceFieldRef: {containerName: main, resource: limits.memory, divisor: 1Mi}}}
+    - {name: SIDECAR_CPU_LIMIT, valueFrom: {resourceFieldRef: {containerName: nolimits, resource: limits.cpu}}}
+    volumeMounts:
+    - {name: podinfo, mountPath: /etc/podinfo}
+  - name: nolimits
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+  volumes:
+  - name: podinfo
+    downwardAPI:
+      items:
+      # volume ONLY: all labels / all annotations
+      - {path: labels,      fieldRef: {fieldPath: metadata.labels}}
+      - {path: annotations, fieldRef: {fieldPath: metadata.annotations}}
+      - {path: name,        fieldRef: {fieldPath: metadata.name}}
+      - {path: cpu_limit,   resourceFieldRef: {containerName: main, resource: limits.cpu, divisor: 1m}}
+      - {path: nolimits_mem_limit, resourceFieldRef: {containerName: nolimits, resource: limits.memory, divisor: 1Mi}}

@@ -1,0 +1,14 @@
+  status:
+    completedIndexes: 1,3,5,7,9
+    failedIndexes: 0,2,4,6,8
+    succeeded: 5          # 1 succeeded pod for each of 5 succeeded indexes
+    failed: 10            # 2 failed pods (1 retry) for each of 5 failed indexes
+    conditions:
+    - message: Job has failed indexes
+      reason: FailedIndexes
+      status: "True"
+      type: FailureTarget
+    - message: Job has failed indexes
+      reason: FailedIndexes
+      status: "True"
+      type: Failed

@@ -1,0 +1,29 @@
+# Lab 3/4/5: start-up gating, independent restarts, shutdown order.
+#  - sidecar-a has a startupProbe that only succeeds after 8s -> sidecar-b and
+#    the app do NOT start until then (sidecars start in order, like init containers)
+#  - on deletion: app stops FIRST, then sidecar-b, then sidecar-a (reverse order)
+#  Each container prints timestamps on start and on TERM.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ordered
+  namespace: sidecar-demo
+spec:
+  terminationGracePeriodSeconds: 30
+  initContainers:
+  - name: sidecar-a
+    image: busybox:1.36
+    restartPolicy: Always
+    command: ["sh", "-c", "echo $(date +%T) sidecar-a started; trap 'echo $(date +%T) sidecar-a got TERM; sleep 2; exit 0' TERM; sleep 8; touch /tmp/up; echo $(date +%T) sidecar-a ready; while true; do sleep 1; done"]
+    startupProbe:
+      exec: {command: ["test", "-f", "/tmp/up"]}
+      periodSeconds: 1
+      failureThreshold: 30
+  - name: sidecar-b
+    image: busybox:1.36
+    restartPolicy: Always
+    command: ["sh", "-c", "echo $(date +%T) sidecar-b started; trap 'echo $(date +%T) sidecar-b got TERM; sleep 2; exit 0' TERM; while true; do sleep 1; done"]
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "echo $(date +%T) app started; trap 'echo $(date +%T) app got TERM; sleep 3; exit 0' TERM; while true; do sleep 1; done"]

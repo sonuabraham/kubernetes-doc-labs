@@ -1,0 +1,4 @@
+# delays between container restarts will always be 2s
+kind: KubeletConfiguration
+crashLoopBackOff:
+    maxContainerRestartPeriod: "2s"

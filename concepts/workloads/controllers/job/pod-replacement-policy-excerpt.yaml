@@ -1,0 +1,7 @@
+kind: Job
+metadata:
+  name: new
+  ...
+spec:
+  podReplacementPolicy: Failed
+  ...

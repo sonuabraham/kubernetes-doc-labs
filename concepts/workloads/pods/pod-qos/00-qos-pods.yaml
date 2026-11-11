@@ -1,0 +1,80 @@
+# One pod per QoS class (namespace qos-demo).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: qos-demo
+---
+# Guaranteed: EVERY container has cpu+memory requests == limits
+apiVersion: v1
+kind: Pod
+metadata: {name: guaranteed, namespace: qos-demo}
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    resources:
+      requests: {cpu: 200m, memory: 64Mi}
+      limits:   {cpu: 200m, memory: 64Mi}
+---
+# Guaranteed (only limits set): requests default to the limits
+apiVersion: v1
+kind: Pod
+metadata: {name: guaranteed-limits-only, namespace: qos-demo}
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    resources:
+      limits: {cpu: 100m, memory: 32Mi}
+---
+# Burstable: some request/limit, but not "requests == limits for everything"
+apiVersion: v1
+kind: Pod
+metadata: {name: burstable, namespace: qos-demo}
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    resources:
+      requests: {memory: 32Mi}
+      limits:   {memory: 128Mi}
+---
+# Burstable: one container Guaranteed-like, the other has nothing -> the POD is Burstable
+apiVersion: v1
+kind: Pod
+metadata: {name: burstable-mixed, namespace: qos-demo}
+spec:
+  containers:
+  - name: strict
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    resources:
+      requests: {cpu: 100m, memory: 32Mi}
+      limits:   {cpu: 100m, memory: 32Mi}
+  - name: loose
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+---
+# BestEffort: no requests or limits anywhere
+apiVersion: v1
+kind: Pod
+metadata: {name: besteffort, namespace: qos-demo}
+spec:
+  containers:
+  - {name: c, image: busybox:1.36, command: ["sleep", "infinity"]}
+---
+# Guaranteed via POD-LEVEL resources (PodLevelResources, beta, on in v1.37):
+# pod-level cpu+memory requests == limits; containers may have none
+apiVersion: v1
+kind: Pod
+metadata: {name: guaranteed-pod-level, namespace: qos-demo}
+spec:
+  resources:
+    requests: {cpu: 300m, memory: 96Mi}
+    limits:   {cpu: 300m, memory: 96Mi}
+  containers:
+  - {name: a, image: busybox:1.36, command: ["sleep", "infinity"]}
+  - {name: b, image: busybox:1.36, command: ["sleep", "infinity"]}

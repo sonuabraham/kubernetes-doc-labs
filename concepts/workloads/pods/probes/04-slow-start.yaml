@@ -1,0 +1,36 @@
+# Lab 4: startup probe. The app needs ~25s before it listens (sleep 25).
+#  slow-no-startup  : liveness (tcp 8080, 3 x 3s) kills it before it ever starts -> restart loop
+#  slow-with-startup: startupProbe allows up to 30 x 2s = 60s; liveness only begins after it passes
+apiVersion: v1
+kind: Pod
+metadata:
+  name: slow-no-startup
+  namespace: probes-demo
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "sleep 25; nc -lk -p 8080 -e echo ok"]
+    livenessProbe:
+      tcpSocket: {port: 8080}
+      periodSeconds: 3
+      failureThreshold: 3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: slow-with-startup
+  namespace: probes-demo
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "sleep 25; nc -lk -p 8080 -e echo ok"]
+    startupProbe:
+      tcpSocket: {port: 8080}
+      periodSeconds: 2
+      failureThreshold: 30
+    livenessProbe:
+      tcpSocket: {port: 8080}
+      periodSeconds: 3
+      failureThreshold: 3

@@ -1,0 +1,12 @@
+# Lab 5: spec.os.name must match the node OS. The scheduler ignores os.name, so
+# this pod is still placed on the Linux node - and the KUBELET rejects it.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: wants-windows
+  namespace: pods-demo
+spec:
+  os: {name: windows}
+  containers:
+  - name: c
+    image: registry.k8s.io/pause:3.10

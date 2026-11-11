@@ -1,0 +1,6 @@
+# Lab 5: the pod that with-pod-affinity wants to be near (label app=database).
+apiVersion: v1
+kind: Pod
+metadata: {name: database, namespace: adv-b, labels: {app: database}}
+spec:
+  containers: [{name: db, image: registry.k8s.io/pause:3.8}]

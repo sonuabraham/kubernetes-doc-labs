@@ -1,0 +1,40 @@
+# Lab 5/7: podManagementPolicy Parallel + ordinals.start 5 + maxUnavailable
+#  - Parallel: all pods created/deleted at once (no waiting for predecessors)
+#  - ordinals.start: 5 -> pods are named para-5, para-6, para-7
+#  - persistentVolumeClaimRetentionPolicy: delete PVCs on scale-down / StatefulSet deletion
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: para
+  namespace: sts-demo
+spec:
+  serviceName: para
+  replicas: 3
+  podManagementPolicy: Parallel
+  ordinals:
+    start: 5
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Delete
+    whenScaled: Delete
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 2
+  selector:
+    matchLabels: {app: para}
+  template:
+    metadata:
+      labels: {app: para}
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["sh", "-c", "sleep 3; touch /tmp/ok; sleep infinity"]
+        readinessProbe: {exec: {command: ["cat", "/tmp/ok"]}, periodSeconds: 1}
+        volumeMounts: [{name: data, mountPath: /data}]
+  volumeClaimTemplates:
+  - metadata: {name: data}
+    spec:
+      accessModes: [ReadWriteOnce]
+      resources: {requests: {storage: 10Mi}}

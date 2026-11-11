@@ -1,0 +1,36 @@
+# TTL-after-finished lab (namespace ttl-demo)
+#  quick-ttl   : ttlSecondsAfterFinished 20 -> Job + pod deleted 20s after Complete
+#  no-ttl      : no TTL -> stays until you act (Lab 2 adds a TTL afterwards)
+#  held        : TTL 5 + a finalizer -> TTL triggers deletion, the finalizer holds it
+apiVersion: v1
+kind: Namespace
+metadata: {name: ttl-demo}
+---
+apiVersion: batch/v1
+kind: Job
+metadata: {name: quick-ttl, namespace: ttl-demo}
+spec:
+  ttlSecondsAfterFinished: 20
+  template:
+    spec:
+      restartPolicy: Never
+      containers: [{name: c, image: busybox:1.36, command: ["echo", "done"]}]
+---
+apiVersion: batch/v1
+kind: Job
+metadata: {name: no-ttl, namespace: ttl-demo}
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers: [{name: c, image: busybox:1.36, command: ["echo", "done"]}]
+---
+apiVersion: batch/v1
+kind: Job
+metadata: {name: held, namespace: ttl-demo, finalizers: ["example.com/archive-logs-first"]}
+spec:
+  ttlSecondsAfterFinished: 5
+  template:
+    spec:
+      restartPolicy: Never
+      containers: [{name: c, image: busybox:1.36, command: ["echo", "done"]}]

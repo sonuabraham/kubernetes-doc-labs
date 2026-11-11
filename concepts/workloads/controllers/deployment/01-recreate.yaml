@@ -1,0 +1,20 @@
+# Lab 8: strategy Recreate - ALL old pods are killed before any new pod starts
+# (downtime, but never two versions at once).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recreate-demo
+  namespace: deploy-demo
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: {app: recreate-demo}
+  template:
+    metadata:
+      labels: {app: recreate-demo}
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2

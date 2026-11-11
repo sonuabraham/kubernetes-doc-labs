@@ -1,0 +1,8 @@
+nodeAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+    nodeSelectorTerms:
+    - matchFields:
+      - key: metadata.name
+        operator: In
+        values:
+        - target-host-name

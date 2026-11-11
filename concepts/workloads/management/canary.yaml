@@ -1,0 +1,53 @@
+# The docs' canary example made complete (namespace guestbook-demo):
+#   frontend        3 replicas  track: stable  (docs: gb-frontend:v3)
+#   frontend-canary 1 replica   track: canary  (docs: gb-frontend:v4)
+#   Tags v3/v4 no longer exist in the registry, so both use gb-frontend:v5 here.
+#   Service frontend selects app+tier only (no track) -> spans both
+apiVersion: v1
+kind: Namespace
+metadata: {name: guestbook-demo}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: frontend, namespace: guestbook-demo}
+spec:
+  replicas: 3
+  selector:
+    matchLabels: {app: guestbook, tier: frontend, track: stable}
+  template:
+    metadata:
+      labels:
+        app: guestbook
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+      - name: php-redis
+        image: us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: frontend-canary, namespace: guestbook-demo}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: guestbook, tier: frontend, track: canary}
+  template:
+    metadata:
+      labels:
+        app: guestbook
+        tier: frontend
+        track: canary
+    spec:
+      containers:
+      - name: php-redis
+        image: us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5
+---
+apiVersion: v1
+kind: Service
+metadata: {name: frontend, namespace: guestbook-demo}
+spec:
+  selector:
+     app: guestbook
+     tier: frontend
+  ports: [{port: 80}]

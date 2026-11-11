@@ -1,0 +1,17 @@
+# Lab 4/5: timeZone + history limits + suspend.
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: tokyo-report, namespace: cron-demo}
+spec:
+  schedule: "30 9 * * 1-5"          # 09:30 on weekdays ...
+  timeZone: "Asia/Tokyo"            # ... Tokyo time, whatever the controller's clock says
+  startingDeadlineSeconds: 200      # if the controller was down, still start up to 200s late
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  suspend: false
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers: [{name: c, image: busybox:1.36, command: ["date"]}]

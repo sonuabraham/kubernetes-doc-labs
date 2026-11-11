@@ -1,0 +1,36 @@
+# Lab 4: access control. "developer" gets the built-in "edit" ClusterRole in the
+# namespace - which does NOT include pods/ephemeralcontainers. "debugger" gets an
+# extra Role that grants patch/update on that subresource.
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: developer, namespace: ephemeral-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: developer-edit, namespace: ephemeral-demo}
+subjects: [{kind: ServiceAccount, name: developer, namespace: ephemeral-demo}]
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: edit}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: debugger, namespace: ephemeral-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: debugger-edit, namespace: ephemeral-demo}
+subjects: [{kind: ServiceAccount, name: debugger, namespace: ephemeral-demo}]
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: edit}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: ephemeral-debug, namespace: ephemeral-demo}
+rules:
+- apiGroups: [""]
+  resources: ["pods/ephemeralcontainers"]
+  verbs: ["patch", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: debugger-ephemeral, namespace: ephemeral-demo}
+subjects: [{kind: ServiceAccount, name: debugger, namespace: ephemeral-demo}]
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: ephemeral-debug}

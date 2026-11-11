@@ -1,0 +1,9 @@
+# Several docs examples share names (two "nginx", two "mypod"), so this lab
+# uses two namespaces: adv-a and adv-b.
+apiVersion: v1
+kind: Namespace
+metadata: {name: adv-a}
+---
+apiVersion: v1
+kind: Namespace
+metadata: {name: adv-b}

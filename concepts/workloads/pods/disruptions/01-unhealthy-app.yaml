@@ -1,0 +1,35 @@
+# Lab 4: an app whose pods never become Ready (broken readiness) + a PDB.
+# unhealthyPodEvictionPolicy decides whether those NOT-READY pods may be evicted:
+#   IfHealthyBudget (default): only if the app is currently within budget -> blocked
+#   AlwaysAllow (recommended by the docs): unhealthy pods can always be evicted
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broken
+  namespace: disruptions-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: broken}
+  template:
+    metadata:
+      labels: {app: broken}
+    spec:
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["sleep", "infinity"]
+        readinessProbe:
+          exec: {command: ["false"]}
+          periodSeconds: 2
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: broken-pdb
+  namespace: disruptions-demo
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels: {app: broken}
+  # unhealthyPodEvictionPolicy: AlwaysAllow     <- uncomment in Lab 4

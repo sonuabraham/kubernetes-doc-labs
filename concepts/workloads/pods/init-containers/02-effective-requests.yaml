@@ -1,0 +1,23 @@
+# Lab 3: resource sharing. Init containers run one at a time, so the Pod's
+# effective request = max( largest init request , sum of app requests ).
+#   init: 2 CPU      app: 300m + 200m = 500m      -> effective CPU request = 2
+apiVersion: v1
+kind: Pod
+metadata:
+  name: big-init
+  namespace: init-demo
+spec:
+  initContainers:
+  - name: migrate
+    image: busybox:1.36
+    command: ["sh", "-c", "echo heavy one-off work; sleep 2"]
+    resources: {requests: {cpu: "2", memory: 64Mi}}
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    resources: {requests: {cpu: 300m, memory: 32Mi}}
+  - name: helper
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    resources: {requests: {cpu: 200m, memory: 32Mi}}

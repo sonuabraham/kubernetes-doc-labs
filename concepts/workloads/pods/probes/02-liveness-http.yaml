@@ -1,0 +1,17 @@
+# Lab 2: liveness. agnhost "liveness" serves /healthz = 200 for 10s, then 500
+# forever (a "deadlocked" app). The kubelet kills and restarts the container.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-http
+  namespace: probes-demo
+spec:
+  containers:
+  - name: app
+    image: registry.k8s.io/e2e-test-images/agnhost:2.40
+    args: ["liveness"]
+    livenessProbe:
+      httpGet: {path: /healthz, port: 8080}
+      initialDelaySeconds: 3
+      periodSeconds: 3
+      failureThreshold: 2

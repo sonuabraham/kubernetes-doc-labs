@@ -1,0 +1,27 @@
+status:
+  conditions:
+    - type: PodScheduled
+      status: "True"
+      lastProbeTime: null
+      lastTransitionTime: "2026-03-29T08:52:21Z"
+      observedGeneration: 1
+    - type: PodReadyToStartContainers
+      status: "True"
+      lastProbeTime: null
+      lastTransitionTime: "2026-04-11T06:02:16Z"
+      observedGeneration: 1
+    - type: Initialized
+      status: "True"
+      lastProbeTime: null
+      lastTransitionTime: "2026-03-29T08:52:21Z"
+      observedGeneration: 1
+    - type: ContainersReady
+      status: "True"
+      lastProbeTime: null
+      lastTransitionTime: "2026-04-11T06:02:45Z"
+      observedGeneration: 1
+    - type: Ready
+      status: "True"
+      lastProbeTime: null
+      lastTransitionTime: "2026-04-11T06:02:45Z"
+      observedGeneration: 1

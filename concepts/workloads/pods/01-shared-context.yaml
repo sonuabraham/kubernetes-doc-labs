@@ -1,0 +1,23 @@
+# Lab 3: what containers in ONE Pod share.
+#  - network: same IP, ports, localhost   (writer talks to web on localhost:80)
+#  - IPC:     same /dev/shm (POSIX shared memory) - IPC namespace is per Pod
+#  - volumes: an emptyDir mounted by both
+#  - hostname: the Pod name
+#  NOT shared by default: filesystem (image), process namespace
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shared
+  namespace: pods-demo
+spec:
+  containers:
+  - name: web
+    image: nginx:1.27
+    volumeMounts: [{name: html, mountPath: /usr/share/nginx/html}]
+  - name: writer
+    image: busybox:1.36
+    command: ["sh", "-c", "while true; do echo \"<h1>written by writer at $(date +%T)</h1>\" > /html/index.html; echo shm-from-writer > /dev/shm/note; sleep 5; done"]
+    volumeMounts: [{name: html, mountPath: /html}]
+  volumes:
+  - name: html
+    emptyDir: {}

@@ -1,0 +1,46 @@
+# The docs' PDB example app: a Deployment with 3 replicas (pod-a/b/c) whose PDB
+# requires at least 2 available, plus an unrelated pod "pod-x" with no PDB.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: disruptions-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  namespace: disruptions-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels: {app: quorum}
+  template:
+    metadata:
+      labels: {app: quorum}
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["sh", "-c", "sleep 5; touch /tmp/ready; sleep infinity"]   # takes ~5s to become available
+        readinessProbe:
+          exec: {command: ["cat", "/tmp/ready"]}
+          periodSeconds: 1
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: app-pdb
+  namespace: disruptions-demo
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels: {app: quorum}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-x
+  namespace: disruptions-demo
+spec:
+  containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]

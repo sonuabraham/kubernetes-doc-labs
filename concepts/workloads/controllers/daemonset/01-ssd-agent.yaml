@@ -1,0 +1,30 @@
+# Lab 3/4: a DaemonSet limited to nodes labelled disk=ssd (nodeSelector),
+# with an OnDelete update strategy, and a hostPort so clients can reach the
+# daemon on <node-IP>:8081 ("Communicating with Daemon Pods": NodeIP + known port).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ds-demo
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ssd-agent
+  namespace: ds-demo
+spec:
+  selector:
+    matchLabels: {app: ssd-agent}
+  updateStrategy:
+    type: OnDelete
+  template:
+    metadata:
+      labels: {app: ssd-agent}
+    spec:
+      nodeSelector:
+        disk: ssd
+      containers:
+      - name: agent
+        image: registry.k8s.io/e2e-test-images/agnhost:2.53
+        args: ["netexec", "--http-port=8080"]
+        ports:
+        - {containerPort: 8080, hostPort: 8081}

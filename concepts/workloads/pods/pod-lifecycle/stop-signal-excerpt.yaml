@@ -1,0 +1,8 @@
+spec:
+  os:
+    name: linux
+  containers:
+    - name: my-container
+      image: container-image:latest
+      lifecycle:
+        stopSignal: SIGUSR1

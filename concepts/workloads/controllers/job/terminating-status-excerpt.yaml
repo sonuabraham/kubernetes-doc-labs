@@ -1,0 +1,5 @@
+apiVersion: batch/v1
+kind: Job
+# .metadata and .spec omitted
+status:
+  terminating: 3 # three Pods are terminating and have not yet reached the Failed phase

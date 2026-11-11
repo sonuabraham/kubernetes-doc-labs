@@ -1,0 +1,11 @@
+livenessProbe:
+  httpGet:
+    httpHeaders:
+      - name: Accept
+        value: ""
+
+startupProbe:
+  httpGet:
+    httpHeaders:
+      - name: User-Agent
+        value: ""

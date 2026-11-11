@@ -1,0 +1,9 @@
+# Lab 4: user namespaces cannot be combined with host namespaces -> rejected.
+apiVersion: v1
+kind: Pod
+metadata: {name: userns-hostnet, namespace: userns-demo}
+spec:
+  hostUsers: false
+  hostNetwork: true
+  containers:
+  - {name: shell, image: busybox:1.36, command: ["sleep", "infinity"]}

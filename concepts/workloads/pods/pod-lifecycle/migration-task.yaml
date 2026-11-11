@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: migration-task
+spec:
+  restartPolicy: Never  # Never restart, regardless of exit code
+  containers:
+  - name: migrate
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo "Running migration..."; exit 1']
+    # Even with exit code 1 (failure), the container will not restart
+    # The Pod will remain in Failed state

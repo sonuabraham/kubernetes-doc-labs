@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: distributed-training
+  namespace: training
+spec:
+  parallelism: 8
+  completions: 8
+  completionMode: Indexed
+  scheduling:
+    schedulingPolicy:
+      gang: {}                # minCount omitted -> defaults to parallelism (8)
+    schedulingConstraints:
+      key:
+      - level: topology.kubernetes.io/zone
+    disruptionMode:
+      all: {}                 # the entire group is disrupted together
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: trainer
+        image: training-image:latest
+        resources:
+          limits:
+            nvidia.com/gpu: 1

@@ -1,0 +1,18 @@
+# Lab 6: the docs' suspended Job (the "..." filled in): created suspended, nothing runs
+# until spec.suspend is set to false.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: myjob
+  namespace: job-demo
+spec:
+  suspend: true
+  parallelism: 1
+  completions: 5
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["sh", "-c", "echo work item; sleep 2"]

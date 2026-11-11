@@ -1,0 +1,24 @@
+# Lab 5: probe-level terminationGracePeriodSeconds (the docs' excerpt, made runnable).
+# Pod-level grace is 3600s, but when the LIVENESS probe kills the container, the
+# probe's own 5s is used. The app ignores TERM, so you can see the 5s cut-off.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: probe-grace
+  namespace: probes-demo
+spec:
+  terminationGracePeriodSeconds: 3600  # pod-level
+  containers:
+  - name: test
+    image: busybox:1.36
+    command: ["sh", "-c", "trap '' TERM; sleep 8; while true; do sleep 1; done"]
+    ports:
+    - name: liveness-port
+      containerPort: 8080
+    livenessProbe:
+      tcpSocket:
+        port: liveness-port
+      failureThreshold: 1
+      periodSeconds: 5
+      # Override pod-level terminationGracePeriodSeconds
+      terminationGracePeriodSeconds: 5

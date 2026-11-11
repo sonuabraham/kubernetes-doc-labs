@@ -1,0 +1,16 @@
+# A "distroless" pod: the image has NO shell and no tools, so kubectl exec is useless.
+# registry.k8s.io/pause is about as minimal as it gets.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ephemeral-demo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: distroless
+  namespace: ephemeral-demo
+spec:
+  containers:
+  - name: app
+    image: registry.k8s.io/pause:3.10

@@ -1,0 +1,38 @@
+# Lab 2/3: the docs' "foo" / "bar" / "my-namespace" example, runnable.
+#  - Pod foo: hostname foo, subdomain bar -> FQDN foo.bar.my-namespace.svc.cluster.local
+#  - headless Service "bar" (same name as the subdomain) -> DNS A record for foo.bar...
+#  - Pod foo-fqdn: same, plus setHostnameAsFQDN: true -> `hostname` returns the FQDN
+apiVersion: v1
+kind: Service
+metadata:
+  name: bar
+  namespace: my-namespace
+spec:
+  clusterIP: None
+  selector: {subdomain: bar}
+  ports: [{port: 80}]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foo-pod
+  namespace: my-namespace
+  labels: {subdomain: bar}
+spec:
+  hostname: foo
+  subdomain: bar
+  containers:
+  - {name: c, image: busybox:1.36, command: ["sleep", "3600"]}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foo-fqdn
+  namespace: my-namespace
+  labels: {subdomain: bar}
+spec:
+  hostname: foo-fqdn
+  subdomain: bar
+  setHostnameAsFQDN: true
+  containers:
+  - {name: c, image: busybox:1.36, command: ["sleep", "3600"]}

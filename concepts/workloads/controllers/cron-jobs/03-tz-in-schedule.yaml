@@ -1,0 +1,13 @@
+# Lab 6: "Unsupported TimeZone specification" - CRON_TZ= / TZ= inside the schedule
+# is rejected; use .spec.timeZone instead.
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: bad-tz, namespace: cron-demo}
+spec:
+  schedule: "TZ=Europe/Berlin 0 6 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers: [{name: c, image: busybox:1.36, command: ["date"]}]

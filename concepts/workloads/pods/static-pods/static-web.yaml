@@ -1,0 +1,19 @@
+# A static Pod: the kubelet on ONE node runs it straight from a file in its
+# staticPodPath (/etc/kubernetes/manifests on minikube/kubeadm). No scheduler,
+# no controller. Install with ./install-static-pod.sh
+# Note "namespace": static pods can name a namespace; the mirror pod goes there.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: static-web
+  namespace: default
+  labels:
+    role: myrole
+spec:
+  containers:
+  - name: web
+    image: nginx:1.27
+    ports:
+    - name: web
+      containerPort: 80
+      protocol: TCP

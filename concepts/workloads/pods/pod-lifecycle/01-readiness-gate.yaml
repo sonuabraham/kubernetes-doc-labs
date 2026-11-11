@@ -1,0 +1,15 @@
+# Lab 5: a runnable version of the docs' readinessGates excerpt. The Pod is
+# only Ready when ALL containers are ready AND the extra condition
+# "www.example.com/feature-1" is True. Something external (here: you, via
+# kubectl patch --subresource=status) must set that condition.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gated
+  namespace: lifecycle-demo
+spec:
+  readinessGates:
+  - conditionType: "www.example.com/feature-1"
+  containers:
+  - name: web
+    image: nginx:1.27

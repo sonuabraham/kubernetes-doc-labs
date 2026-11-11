@@ -1,0 +1,80 @@
+# One of each built-in workload resource, side by side (namespace workloads-demo).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: workloads-demo
+---
+# a bare Pod: nothing recreates it if it dies or is deleted
+apiVersion: v1
+kind: Pod
+metadata: {name: bare, namespace: workloads-demo, labels: {kind: bare}}
+spec:
+  containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]
+---
+# Deployment (-> ReplicaSet): stateless, interchangeable pods
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: web, namespace: workloads-demo}
+spec:
+  replicas: 2
+  selector: {matchLabels: {kind: deployment}}
+  template:
+    metadata: {labels: {kind: deployment}}
+    spec:
+      containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]
+---
+# StatefulSet: stable identity (db-0, db-1) + one PersistentVolume per pod
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: {name: db, namespace: workloads-demo}
+spec:
+  serviceName: db
+  replicas: 2
+  selector: {matchLabels: {kind: statefulset}}
+  template:
+    metadata: {labels: {kind: statefulset}}
+    spec:
+      containers:
+      - name: c
+        image: "registry.k8s.io/pause:3.10"
+        volumeMounts: [{name: data, mountPath: /data}]
+  volumeClaimTemplates:
+  - metadata: {name: data}
+    spec: {accessModes: [ReadWriteOnce], resources: {requests: {storage: 10Mi}}}
+---
+# DaemonSet: one pod per (matching) node
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: {name: agent, namespace: workloads-demo}
+spec:
+  selector: {matchLabels: {kind: daemonset}}
+  template:
+    metadata: {labels: {kind: daemonset}}
+    spec:
+      containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]
+---
+# Job: runs to completion once
+apiVersion: batch/v1
+kind: Job
+metadata: {name: once, namespace: workloads-demo}
+spec:
+  template:
+    metadata: {labels: {kind: job}}
+    spec:
+      restartPolicy: Never
+      containers: [{name: c, image: busybox:1.36, command: ["echo", "done"]}]
+---
+# CronJob: the same Job on a schedule (every minute)
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: every-minute, namespace: workloads-demo}
+spec:
+  schedule: "* * * * *"
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        metadata: {labels: {kind: cronjob}}
+        spec:
+          restartPolicy: Never
+          containers: [{name: c, image: busybox:1.36, command: ["date"]}]

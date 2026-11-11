@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: batch-processor
+  namespace: batch
+spec:
+  parallelism: 10
+  completions: 10
+  # .spec.scheduling omitted -> defaults to Basic scheduling.
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: processor
+        image: processor-image:v1

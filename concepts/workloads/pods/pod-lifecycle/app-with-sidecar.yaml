@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-with-sidecar
+spec:
+  restartPolicy: OnFailure  # Applies to main container only
+  initContainers:
+  - name: logging-sidecar    # This is a sidecar container
+    image: fluent/fluent-bit:1.8
+    restartPolicy: Always    # Sidecar always restarts regardless of exit code
+    # Provides logging services throughout Pod lifetime
+  containers:
+  - name: main-app          # This follows Pod-level restartPolicy
+    image: nginx:1.14.2
+    # Will only restart on failure (non-zero exit) due to Pod's OnFailure policy

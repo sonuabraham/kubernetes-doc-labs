@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2024-02-28T22:30:44Z"
+  generateName: frontend-
+  labels:
+    tier: frontend
+  name: frontend-gbgfx
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: frontend
+    uid: e129deca-f864-481b-bb16-b27abfd92292
+...

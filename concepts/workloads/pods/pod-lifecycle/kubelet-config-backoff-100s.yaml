@@ -1,0 +1,5 @@
+# container restart delays will start at 10s, increasing
+# 2x each time they are restarted, to a maximum of 100s
+kind: KubeletConfiguration
+crashLoopBackOff:
+    maxContainerRestartPeriod: "100s"

@@ -1,0 +1,20 @@
+# Lab 9: pods that take 30s to terminate, to see .status.terminatingReplicas
+# (DeploymentReplicaSetTerminatingReplicas, beta, on in v1.37).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slow-stop
+  namespace: deploy-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels: {app: slow-stop}
+  template:
+    metadata:
+      labels: {app: slow-stop}
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["sh", "-c", "trap '' TERM; sleep infinity"]

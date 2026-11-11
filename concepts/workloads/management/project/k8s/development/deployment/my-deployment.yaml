@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: my-deployment, namespace: development}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: my-deployment}}
+  template:
+    metadata: {labels: {app: my-deployment}}
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.27
+        envFrom: [{configMapRef: {name: my-config}}]
+        volumeMounts: [{name: data, mountPath: /data}]
+      volumes: [{name: data, persistentVolumeClaim: {claimName: my-pvc}}]
