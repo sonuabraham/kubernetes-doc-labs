@@ -93,7 +93,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Service Internal Traffic Policy](services-networking/service-traffic-policy/)
 
 ## Storage — `storage/`
-- ✅ [Volumes](storage/volumes/) · ✅ [Persistent Volumes](storage/persistent-volumes/) · ⬜ [Projected Volumes](storage/projected-volumes/) · ⬜ [Ephemeral Volumes](storage/ephemeral-volumes/)
+- ✅ [Volumes](storage/volumes/) · ✅ [Persistent Volumes](storage/persistent-volumes/) · ✅ [Projected Volumes](storage/projected-volumes/) · ⬜ [Ephemeral Volumes](storage/ephemeral-volumes/)
 - ⬜ [Storage Classes](storage/storage-classes/) · ⬜ [Volume Attributes Classes](storage/volume-attributes-classes/) · ⬜ [Dynamic Provisioning](storage/dynamic-provisioning/)
 - ⬜ [Volume Snapshots](storage/volume-snapshots/) · ⬜ [Volume Snapshot Classes](storage/volume-snapshot-classes/) · ⬜ [CSI Volume Cloning](storage/volume-pvc-datasource/)
 - ⬜ [Volume Populators and Data Sources](storage/volume-populators-and-data-sources/) · ⬜ [Storage Capacity](storage/storage-capacity/) · ⬜ [Node-specific Volume Limits](storage/storage-limits/)
