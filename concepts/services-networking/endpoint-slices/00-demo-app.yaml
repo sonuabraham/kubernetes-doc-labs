@@ -1,0 +1,41 @@
+# EndpointSlices lab (namespace eps-demo):
+#  - Deployment web (3) + Service web  -> the control plane creates/updates slices
+#    preStop sleeps 20s so you can watch the "terminating" + "serving" conditions
+#  - Service "example" WITHOUT a selector -> you provide the slice yourself
+#    (endpointslice-example-abc.yaml, the docs example)
+apiVersion: v1
+kind: Namespace
+metadata: {name: eps-demo}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: web, namespace: eps-demo}
+spec:
+  replicas: 3
+  selector: {matchLabels: {app: web}}
+  template:
+    metadata: {labels: {app: web}}
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: web
+        image: nginx:1.27
+        ports: [{name: http, containerPort: 80}]
+        lifecycle:
+          preStop: {sleep: {seconds: 20}}
+        readinessProbe:
+          httpGet: {path: /, port: 80}
+          periodSeconds: 2
+---
+apiVersion: v1
+kind: Service
+metadata: {name: web, namespace: eps-demo}
+spec:
+  selector: {app: web}
+  ports: [{name: http, port: 80, targetPort: http}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: example, namespace: eps-demo}
+spec:
+  ports: [{name: http, port: 80, protocol: TCP}]

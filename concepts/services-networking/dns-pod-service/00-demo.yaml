@@ -1,0 +1,47 @@
+# DNS lab helpers (namespace dns-demo):
+#  - dnsutils pod (dig, nslookup, host) to query CoreDNS
+#  - web Deployment + normal (ClusterIP) Service with a NAMED port -> A + SRV records
+#  - pods with dnsPolicy Default / None to compare resolv.conf
+apiVersion: v1
+kind: Namespace
+metadata: {name: dns-demo}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: dnsutils, namespace: dns-demo}
+spec:
+  containers:
+  - name: dnsutils
+    image: registry.k8s.io/e2e-test-images/jessie-dnsutils:1.7
+    command: ["sleep", "infinity"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: web, namespace: dns-demo}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: web}}
+  template:
+    metadata: {labels: {app: web}}
+    spec:
+      containers: [{name: web, image: nginx:1.27, ports: [{name: http, containerPort: 80}]}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: web, namespace: dns-demo}
+spec:
+  selector: {app: web}
+  ports: [{name: http, port: 80, targetPort: http}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: policy-default, namespace: dns-demo}
+spec:
+  dnsPolicy: Default
+  containers: [{name: c, image: busybox:1.36, command: ["sleep", "infinity"]}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: policy-clusterfirst, namespace: dns-demo}
+spec:
+  containers: [{name: c, image: busybox:1.36, command: ["sleep", "infinity"]}]
