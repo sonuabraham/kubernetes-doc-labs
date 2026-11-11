@@ -1,0 +1,12 @@
+# Namespace + the StorageClass the docs' generic ephemeral volume asks for ("scratch-storage-class"),
+# backed by minikube's csi-hostpath-driver addon (minikube addons enable csi-hostpath-driver).
+apiVersion: v1
+kind: Namespace
+metadata: {name: eph-demo}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: scratch-storage-class
+provisioner: hostpath.csi.k8s.io
+volumeBindingMode: WaitForFirstConsumer
