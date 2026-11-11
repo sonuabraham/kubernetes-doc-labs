@@ -1,0 +1,17 @@
+# The docs' populated-pvc + an explicit CSI class (the default class "standard" is a legacy provisioner that
+# ignores dataSourceRef and provisions an EMPTY volume - see ../persistent-volumes Lab 9)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: populated-pvc-csi
+spec:
+  storageClassName: csi-hostpath-sc
+  dataSourceRef:
+    name: example-name
+    kind: ExampleDataSource
+    apiGroup: example.storage.k8s.io
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

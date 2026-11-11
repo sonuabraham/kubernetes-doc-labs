@@ -1,0 +1,39 @@
+# The custom data-source kind the docs' populated-pvc refers to (ExampleDataSource, example.storage.k8s.io),
+# an instance "example-name", and a namespace. toy-populator.sh is the controller that understands it.
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: exampledatasources.example.storage.k8s.io
+  annotations:
+    # *.k8s.io groups are reserved for Kubernetes projects; a CRD there must say so (or say it's unapproved)
+    api-approved.kubernetes.io: "unapproved, toy example for a lab"
+spec:
+  group: example.storage.k8s.io
+  scope: Namespaced
+  names: {kind: ExampleDataSource, plural: exampledatasources, singular: exampledatasource}
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              files:                       # file name -> content to pre-load into the volume
+                type: object
+                additionalProperties: {type: string}
+---
+apiVersion: v1
+kind: Namespace
+metadata: {name: pop-demo}
+---
+apiVersion: example.storage.k8s.io/v1alpha1
+kind: ExampleDataSource
+metadata: {name: example-name, namespace: pop-demo}
+spec:
+  files:
+    README.txt: "pre-populated by toy-populator from ExampleDataSource pop-demo/example-name"
+    seed.csv: "id,name\n1,alice\n2,bob\n"
