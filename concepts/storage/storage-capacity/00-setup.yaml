@@ -1,0 +1,13 @@
+# Storage capacity tracking needs: a CSI driver with CSIDriver.spec.storageCapacity: true (hostpath.csi.k8s.io has it),
+# a csi-provisioner started with --enable-capacity (the minikube addon's is), and a WaitForFirstConsumer class -
+# capacity is only published for WFFC classes.
+apiVersion: v1
+kind: Namespace
+metadata: {name: cap-demo}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: csi-hostpath-wffc
+provisioner: hostpath.csi.k8s.io
+volumeBindingMode: WaitForFirstConsumer
