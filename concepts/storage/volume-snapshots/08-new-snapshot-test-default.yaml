@@ -1,0 +1,10 @@
+# The VolumeSnapshot that the docs' pre-provisioned content (04-…) binds to: default/new-snapshot-test,
+# taking its content from new-snapshot-content-test instead of from a PVC.
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: new-snapshot-test
+  namespace: default
+spec:
+  source:
+    volumeSnapshotContentName: new-snapshot-content-test

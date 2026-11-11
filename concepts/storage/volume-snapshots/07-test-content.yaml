@@ -1,0 +1,18 @@
+# The VolumeSnapshotContent that the docs' pre-provisioned "test-snapshot" (02-…) points at.
+# SNAPSHOT_HANDLE is replaced by the README command with the handle of a real snapshot on the hostpath driver.
+# Label managed-by: minikube's csi-snapshotter runs with --node-deployment and only watches contents with that label.
+# deletionPolicy Retain: this object only IMPORTS an existing snapshot; deleting it must not destroy the data.
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotContent
+metadata:
+  name: test-content
+  labels:
+    snapshot.storage.kubernetes.io/managed-by: minikube
+spec:
+  deletionPolicy: Retain
+  driver: hostpath.csi.k8s.io
+  source:
+    snapshotHandle: SNAPSHOT_HANDLE
+  volumeSnapshotRef:
+    name: test-snapshot
+    namespace: snap-demo

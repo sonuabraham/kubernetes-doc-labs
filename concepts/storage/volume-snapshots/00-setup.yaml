@@ -1,0 +1,25 @@
+# Namespace + the PVC the docs' dynamic VolumeSnapshot snapshots ("pvc-test"), with data written by a Job.
+# Needs: minikube addons enable volumesnapshots csi-hostpath-driver
+apiVersion: v1
+kind: Namespace
+metadata: {name: snap-demo}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: pvc-test, namespace: snap-demo}
+spec:
+  storageClassName: csi-hostpath-sc
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: batch/v1
+kind: Job
+metadata: {name: write-v1, namespace: snap-demo}
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - {name: w, image: busybox:1.36, command: ["sh", "-c", "echo version-1 > /data/state"], volumeMounts: [{name: d, mountPath: /data}]}
+      volumes:
+      - {name: d, persistentVolumeClaim: {claimName: pvc-test}}
