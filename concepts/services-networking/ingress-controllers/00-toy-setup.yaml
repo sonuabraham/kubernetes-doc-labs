@@ -1,0 +1,73 @@
+# The "data plane" of a toy ingress controller + its IngressClass + two backends.
+# toy-controller.sh (the control plane, run locally) watches Ingresses whose
+# ingressClassName is "toy", renders nginx.conf into ConfigMap toy-proxy-conf,
+# and restarts this nginx Deployment when the config changes.
+apiVersion: v1
+kind: Namespace
+metadata: {name: ingressctl-demo}
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata: {name: toy}
+spec:
+  controller: example.com/toy-ingress-controller
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: toy-proxy-conf, namespace: ingressctl-demo}
+data:
+  default.conf: |
+    server { listen 80 default_server; return 404 "toy: no route\n"; }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: toy-proxy, namespace: ingressctl-demo}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: toy-proxy}}
+  template:
+    metadata: {labels: {app: toy-proxy}}
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.27
+        volumeMounts: [{name: conf, mountPath: /etc/nginx/conf.d}]
+      volumes: [{name: conf, configMap: {name: toy-proxy-conf}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: toy-proxy, namespace: ingressctl-demo}
+spec:
+  selector: {app: toy-proxy}
+  ports: [{port: 80}]
+---
+# two backends
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: blue, namespace: ingressctl-demo}
+spec:
+  selector: {matchLabels: {app: blue}}
+  template:
+    metadata: {labels: {app: blue}}
+    spec:
+      containers: [{name: c, image: hashicorp/http-echo:1.0, args: ["-text=hello from blue"]}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: blue, namespace: ingressctl-demo}
+spec: {selector: {app: blue}, ports: [{port: 80, targetPort: 5678}]}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: green, namespace: ingressctl-demo}
+spec:
+  selector: {matchLabels: {app: green}}
+  template:
+    metadata: {labels: {app: green}}
+    spec:
+      containers: [{name: c, image: hashicorp/http-echo:1.0, args: ["-text=hello from green"]}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: green, namespace: ingressctl-demo}
+spec: {selector: {app: green}, ports: [{port: 80, targetPort: 5678}]}
