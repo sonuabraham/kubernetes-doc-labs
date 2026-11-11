@@ -1,0 +1,43 @@
+# Demo for the Nodes lab (cluster "arch-lab", 2 nodes). Namespace nodes-demo.
+#   Deployment web (4)      -> spread over both nodes; watch what happens when
+#                              a node is cordoned or dies
+#   DaemonSet node-agent    -> one pod per node; tolerates unschedulable nodes
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nodes-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: nodes-demo
+spec:
+  replicas: 4
+  selector:
+    matchLabels: {app: web}
+  template:
+    metadata:
+      labels: {app: web}
+    spec:
+      containers:
+      - name: web
+        image: registry.k8s.io/pause:3.10
+        resources:
+          requests: {cpu: 100m, memory: 64Mi}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-agent
+  namespace: nodes-demo
+spec:
+  selector:
+    matchLabels: {app: node-agent}
+  template:
+    metadata:
+      labels: {app: node-agent}
+    spec:
+      containers:
+      - name: agent
+        image: registry.k8s.io/pause:3.10

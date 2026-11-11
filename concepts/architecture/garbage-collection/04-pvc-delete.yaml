@@ -1,0 +1,10 @@
+# Lab 4: "Dynamically provisioned PersistentVolumes with a StorageClass reclaim
+# policy of Delete" - delete the claim, and the PV goes too.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: scratch
+  namespace: gc-demo
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 10Mi}}

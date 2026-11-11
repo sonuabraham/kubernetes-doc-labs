@@ -1,0 +1,21 @@
+# Lab 3: Several controllers create Pods; each only touches ITS pods.
+# Deployment "web" (selector app=web) + a bare Pod "stray" that happens to carry
+# app=web as well. The ReplicaSet controller ADOPTS the orphan (it matches the
+# selector and has no controller ownerReference) and then deletes one pod to
+# get back to 2 replicas.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: controller-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: web}
+  template:
+    metadata:
+      labels: {app: web}
+    spec:
+      containers:
+      - name: c
+        image: registry.k8s.io/pause:3.10

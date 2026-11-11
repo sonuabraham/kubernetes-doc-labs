@@ -1,0 +1,13 @@
+# Lab 5: container garbage collection - a crashing container leaves dead
+# containers behind; the kubelet keeps only a few per pod (MaxPerPodContainer).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: crasher
+  namespace: gc-demo
+spec:
+  nodeName: arch-lab
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "exit 1"]

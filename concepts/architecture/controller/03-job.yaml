@@ -1,0 +1,17 @@
+# Lab 2: The Job controller - control via the API server. It never runs a
+# container itself: it asks the API server for Pods, the scheduler places them,
+# the kubelet runs them, and the Job controller marks the Job finished.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: task
+  namespace: controller-demo
+spec:
+  completions: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["sh", "-c", "echo working; sleep 3"]

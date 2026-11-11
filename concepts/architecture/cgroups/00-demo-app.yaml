@@ -1,0 +1,39 @@
+# Demo for the cgroup v2 lab (namespace cgroups-demo). Pods are pinned to the
+# control-plane node "arch-lab" so the node-side paths in the README match.
+#   limited   : requests 100m/32Mi, limits 250m/64Mi  (Burstable QoS)
+#               -> see cpu.max, cpu.weight, memory.max inside the container
+#   cpu-burner: limit 100m but tries to use a whole CPU -> throttled, PSI rises
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cgroups-demo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: limited
+  namespace: cgroups-demo
+spec:
+  nodeName: arch-lab
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    resources:
+      requests: {cpu: 100m, memory: 32Mi}
+      limits:   {cpu: 250m, memory: 64Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cpu-burner
+  namespace: cgroups-demo
+spec:
+  nodeName: arch-lab
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "while true; do :; done"]
+    resources:
+      requests: {cpu: 100m}
+      limits:   {cpu: 100m}

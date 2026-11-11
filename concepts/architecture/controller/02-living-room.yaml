@@ -1,0 +1,8 @@
+# Lab 1: desired state - "make the living room 22 degrees".
+apiVersion: home.example.com/v1
+kind: Thermostat
+metadata:
+  name: living-room
+  namespace: controller-demo
+spec:
+  desiredTemperature: 22

@@ -1,0 +1,13 @@
+# Lab 3: node labels + nodeSelector - "constrain a Pod to only be eligible to
+# run on a subset of the available nodes".
+apiVersion: v1
+kind: Pod
+metadata:
+  name: needs-ssd
+  namespace: nodes-demo
+spec:
+  nodeSelector:
+    disktype: ssd
+  containers:
+  - name: c
+    image: registry.k8s.io/pause:3.10

@@ -1,0 +1,22 @@
+# Lab 1: owner chain Deployment -> ReplicaSet -> Pods, to delete in the three
+# cascading modes. terminationGracePeriodSeconds 20 + a shell that ignores TERM
+# makes pod deletion take a while, so you can SEE foreground vs background.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: gc-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels: {app: web}
+  template:
+    metadata:
+      labels: {app: web}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: arch-lab}
+      terminationGracePeriodSeconds: 20
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["sh", "-c", "trap '' TERM; sleep infinity"]

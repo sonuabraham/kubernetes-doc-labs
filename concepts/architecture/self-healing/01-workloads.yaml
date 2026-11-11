@@ -1,0 +1,62 @@
+# Lab 2/3/4: Replica replacement + storage + Service endpoints.
+#   Deployment web (3)  -> replacement pods get NEW names
+#   StatefulSet db (1)  -> replacement pod gets the SAME name and the SAME PVC
+#   DaemonSet agent     -> replacement pod on the SAME node
+#   Service web         -> only Ready pods are endpoints (readiness = /tmp/ready exists)
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: web, namespace: healing-demo}
+spec:
+  replicas: 3
+  selector: {matchLabels: {app: web}}
+  template:
+    metadata: {labels: {app: web}}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: arch-lab}
+      containers:
+      - name: web
+        image: busybox:1.36
+        command: ["sh", "-c", "touch /tmp/ready; sleep infinity"]
+        readinessProbe:
+          exec: {command: ["cat", "/tmp/ready"]}
+          periodSeconds: 2
+          failureThreshold: 1
+---
+apiVersion: v1
+kind: Service
+metadata: {name: web, namespace: healing-demo}
+spec:
+  selector: {app: web}
+  ports: [{port: 80}]
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: {name: db, namespace: healing-demo}
+spec:
+  serviceName: db
+  replicas: 1
+  selector: {matchLabels: {app: db}}
+  template:
+    metadata: {labels: {app: db}}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: arch-lab}
+      containers:
+      - name: db
+        image: busybox:1.36
+        command: ["sh", "-c", "echo \"started $(date +%T) as $(hostname)\" >> /data/log; sleep infinity"]
+        volumeMounts: [{name: data, mountPath: /data}]
+  volumeClaimTemplates:
+  - metadata: {name: data}
+    spec:
+      accessModes: [ReadWriteOnce]
+      resources: {requests: {storage: 50Mi}}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: {name: agent, namespace: healing-demo}
+spec:
+  selector: {matchLabels: {app: agent}}
+  template:
+    metadata: {labels: {app: agent}}
+    spec:
+      containers: [{name: agent, image: "registry.k8s.io/pause:3.10"}]

@@ -1,0 +1,17 @@
+# Lab 4: memory limit 64Mi; the container's main process (tail reading
+# /dev/zero, which has no newlines, so tail buffers it ALL in memory) grows
+# past the limit -> the kernel's cgroup OOM killer kills it -> OOMKilled, exit 137.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oom
+  namespace: cgroups-demo
+spec:
+  nodeName: arch-lab
+  restartPolicy: Never
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["tail", "/dev/zero"]
+    resources:
+      limits: {memory: 64Mi}

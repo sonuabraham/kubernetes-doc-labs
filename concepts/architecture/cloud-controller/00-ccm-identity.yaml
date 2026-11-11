@@ -1,0 +1,21 @@
+# Lab 1: An identity for our (fake) cloud-controller-manager, bound to the docs'
+# ClusterRole (clusterrole.yaml, verbatim). fake-ccm.sh impersonates this
+# ServiceAccount, so it can do EXACTLY what the docs' RBAC allows - nothing more.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cloud-controller-manager
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cloud-controller-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cloud-controller-manager
+subjects:
+- kind: ServiceAccount
+  name: cloud-controller-manager
+  namespace: kube-system

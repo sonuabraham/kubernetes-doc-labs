@@ -1,0 +1,22 @@
+# Lab 6: Pods get default tolerations for node.kubernetes.io/not-ready and
+# /unreachable with tolerationSeconds: 300 (the "5 minutes" in the docs).
+# This Deployment overrides them to 30s so you see the eviction quickly.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quick-evict
+  namespace: nodes-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: quick-evict}
+  template:
+    metadata:
+      labels: {app: quick-evict}
+    spec:
+      tolerations:
+      - {key: node.kubernetes.io/unreachable, operator: Exists, effect: NoExecute, tolerationSeconds: 30}
+      - {key: node.kubernetes.io/not-ready,   operator: Exists, effect: NoExecute, tolerationSeconds: 30}
+      containers:
+      - name: c
+        image: registry.k8s.io/pause:3.10

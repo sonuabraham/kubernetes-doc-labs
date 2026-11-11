@@ -1,0 +1,16 @@
+# Lab 2: "Completed Jobs" - the TTL-after-finished controller deletes the Job
+# (and, by cascade, its Pods) 15 seconds after it finishes.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: short-lived
+  namespace: gc-demo
+spec:
+  ttlSecondsAfterFinished: 15
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["echo", "done"]

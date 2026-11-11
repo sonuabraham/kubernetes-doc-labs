@@ -1,0 +1,13 @@
+# Lab 3: a bare Pod whose labels match the Deployment's selector (app=web)
+# AND the ReplicaSet's pod-template-hash (filled in by the README command).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stray
+  namespace: controller-demo
+  labels:
+    app: web
+spec:
+  containers:
+  - name: c
+    image: registry.k8s.io/pause:3.10

@@ -1,0 +1,13 @@
+# Lab 3: "Terminated pods" / orphaned pods - a Pod bound to a node that does not
+# exist. The pod garbage collector (PodGC, in kube-controller-manager) deletes
+# pods bound to non-existent nodes (after a short quarantine).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ghost
+  namespace: gc-demo
+spec:
+  nodeName: node-that-was-deleted
+  containers:
+  - name: c
+    image: registry.k8s.io/pause:3.10

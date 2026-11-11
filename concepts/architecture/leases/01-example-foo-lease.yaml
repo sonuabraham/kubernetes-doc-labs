@@ -1,0 +1,12 @@
+# Lab 4: A Lease for your own workload. Named after the component it belongs
+# to ("Example Foo" -> example-foo), as the docs recommend.
+# holderIdentity empty = nobody leads yet. elect.sh candidates fight for it.
+apiVersion: coordination.k8s.io/v1
+kind: Lease
+metadata:
+  name: example-foo
+  namespace: leases-demo
+  labels:
+    app.kubernetes.io/name: example-foo
+spec:
+  leaseDurationSeconds: 10
