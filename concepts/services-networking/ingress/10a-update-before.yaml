@@ -1,0 +1,19 @@
+# Lab 10: Updating an Ingress - starting point (one host).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test
+  namespace: ingress-demo
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: service1
+            port:
+              number: 80
+        path: /foo
+        pathType: Prefix

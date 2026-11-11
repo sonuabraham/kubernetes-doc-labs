@@ -1,0 +1,20 @@
+# Lab 13 (read-only): trafficDistribution - a routing PREFERENCE.
+#   PreferSameZone : endpoints in the client's zone, else cluster-wide
+#   PreferSameNode : same node, then same zone, then cluster-wide
+#   PreferClose    : deprecated alias of PreferSameZone
+#   (unset)        : spread evenly over all endpoints
+# A traffic policy of Local beats this field. The annotation
+# service.kubernetes.io/topology-mode: Auto also beats it.
+# Watch out: a zone/node with few pods can get overloaded.
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-prefer-node
+  namespace: svc-demo
+spec:
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - port: 80
+      targetPort: 9376
+  trafficDistribution: PreferSameNode

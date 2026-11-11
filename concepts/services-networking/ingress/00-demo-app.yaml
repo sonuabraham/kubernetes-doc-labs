@@ -1,0 +1,177 @@
+# Demo app used by every lab.
+#
+#   namespace ingress-demo
+#     service1, service2, service3, test  -> each is an http-echo pod that
+#     replies with its own name for ANY path, so you can see where the
+#     Ingress routed the request.
+#
+# The Services expose the port numbers the docs examples use, so the docs
+# YAML works unchanged:
+#   service1: 80 and 4200   service2: 80 and 8080   service3: 80   test: 80
+# Ingress backends must be in the SAME namespace as the Ingress.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ingress-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service1
+  namespace: ingress-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service1
+  template:
+    metadata:
+      labels:
+        app: service1
+    spec:
+      containers:
+      - name: echo
+        image: hashicorp/http-echo:1.0
+        args: ["-text=hello from service1"]
+        ports:
+        - containerPort: 5678
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service1
+  namespace: ingress-demo
+spec:
+  selector:
+    app: service1
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5678
+    - name: alt
+      port: 4200
+      targetPort: 5678
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service2
+  namespace: ingress-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service2
+  template:
+    metadata:
+      labels:
+        app: service2
+    spec:
+      containers:
+      - name: echo
+        image: hashicorp/http-echo:1.0
+        args: ["-text=hello from service2"]
+        ports:
+        - containerPort: 5678
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service2
+  namespace: ingress-demo
+spec:
+  selector:
+    app: service2
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5678
+    - name: alt
+      port: 8080
+      targetPort: 5678
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service3
+  namespace: ingress-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service3
+  template:
+    metadata:
+      labels:
+        app: service3
+    spec:
+      containers:
+      - name: echo
+        image: hashicorp/http-echo:1.0
+        args: ["-text=hello from service3"]
+        ports:
+        - containerPort: 5678
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service3
+  namespace: ingress-demo
+spec:
+  selector:
+    app: service3
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5678
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  namespace: ingress-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+      - name: echo
+        image: hashicorp/http-echo:1.0
+        args: ["-text=hello from test"]
+        ports:
+        - containerPort: 5678
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test
+  namespace: ingress-demo
+spec:
+  selector:
+    app: test
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5678

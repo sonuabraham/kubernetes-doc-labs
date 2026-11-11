@@ -1,0 +1,16 @@
+# Lab 10a: GRPCRoute - VERBATIM from the docs (apply with -n example-namespace).
+# All gRPC traffic for host svc.example.com -> Service example-svc port 50051.
+# Gateways supporting GRPCRoute must speak HTTP/2 without an HTTP/1 upgrade.
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: example-grpcroute
+spec:
+  parentRefs:
+  - name: example-gateway
+  hostnames:
+  - "svc.example.com"
+  rules:
+  - backendRefs:
+    - name: example-svc
+      port: 50051

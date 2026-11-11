@@ -1,0 +1,27 @@
+# Lab 8: TLS termination at the Ingress (port 443).
+# The Secret "testsecret-tls" (type kubernetes.io/tls, keys tls.crt + tls.key)
+# is created in the lab with openssl + kubectl create secret tls.
+# tls.hosts must match rules[].host - TLS does not work on a host-less rule.
+# Traffic from the controller to service1 is plain HTTP.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tls-example-ingress
+  namespace: ingress-demo
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+      - https-example.foo.com
+    secretName: testsecret-tls   # same namespace as the Ingress
+  rules:
+  - host: https-example.foo.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service1
+            port:
+              number: 80

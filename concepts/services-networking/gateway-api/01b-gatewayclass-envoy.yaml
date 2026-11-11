@@ -1,0 +1,11 @@
+# Lab 1b: The same GatewayClass with the ONE value that differs per
+# implementation: Envoy Gateway's controllerName.
+# (Other implementations: cilium -> io.cilium/gateway-controller,
+#  NGINX Gateway Fabric -> gateway.nginx.org/nginx-gateway-controller, ...)
+# controllerName is immutable, so delete 01a before applying this.
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: example-class
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller

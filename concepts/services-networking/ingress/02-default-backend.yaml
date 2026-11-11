@@ -1,0 +1,16 @@
+# Lab 2: An Ingress with NO rules, only a defaultBackend ("single Service"
+# Ingress). If .spec.rules is empty, .spec.defaultBackend is required.
+# Requests that match no rule in any Ingress land here instead of the
+# controller's built-in 404 page.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-ingress
+  namespace: ingress-demo
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: service3
+      port:
+        number: 80

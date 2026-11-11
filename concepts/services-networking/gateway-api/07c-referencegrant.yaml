@@ -1,0 +1,18 @@
+# Lab 7c: ReferenceGrant - the owner of the TARGET namespace (example-namespace)
+# allows HTTPRoutes from team-a to reference Services in example-namespace.
+# Lives in the namespace being referenced. Without it, cross-namespace
+# backendRefs are refused (ResolvedRefs=False, RefNotPermitted).
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-team-a-routes
+  namespace: example-namespace
+spec:
+  from:
+  - group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    namespace: team-a
+  to:
+  - group: ""                      # core API group
+    kind: Service
+    name: service1                 # optional - omit to allow every Service

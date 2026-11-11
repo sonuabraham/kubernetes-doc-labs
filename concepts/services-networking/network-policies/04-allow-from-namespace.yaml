@@ -1,0 +1,20 @@
+# Lab 4: Allow ingress to frontend from ANY pod in namespace "other".
+# Namespaces can't be referenced by name directly; use a label.
+# The control plane adds the immutable label kubernetes.io/metadata.name=<name>
+# to every namespace, so you can always select a namespace by its name this way.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-other-ns
+  namespace: np-demo
+spec:
+  podSelector:
+    matchLabels:
+      app: frontend
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: other

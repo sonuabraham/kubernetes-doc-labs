@@ -1,0 +1,18 @@
+# Lab 6: NodePort - reachable on <any-node-ip>:30007 from outside the cluster.
+# A NodePort Service is also a ClusterIP Service (it builds on top of it).
+# Default range: 30000-32767 (--service-node-port-range).
+#   30000-30085  "static" band  -> pick fixed ports from here
+#   30086-32767  "dynamic" band -> preferred for automatic allocation
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nodeport
+  namespace: svc-demo
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - port: 80
+      targetPort: 9376
+      nodePort: 30007       # optional; omit it and one is allocated for you

@@ -1,0 +1,63 @@
+# Lab 5: Filters - change the request/response on the way through
+# (step 5 of the request flow in the docs). All of these are Core or Extended
+# features of HTTPRoute; no annotations needed.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: filters
+  namespace: example-namespace
+spec:
+  parentRefs:
+  - name: example-gateway
+  hostnames:
+  - "filters.example.com"
+  rules:
+  # Add / set / remove request headers, add a response header
+  - matches:
+    - path: {type: PathPrefix, value: /headers}
+    filters:
+    - type: RequestHeaderModifier
+      requestHeaderModifier:
+        add:
+        - {name: x-lab, value: gateway-api}
+        set:
+        - {name: user-agent, value: rewritten-by-gateway}
+        remove: ["x-secret"]
+    - type: ResponseHeaderModifier
+      responseHeaderModifier:
+        add:
+        - {name: x-served-by, value: example-gateway}
+    backendRefs:
+    - {name: service1, port: 80}
+  # Rewrite the path prefix: /api/v1/xyz -> /xyz  (Ingress needed rewrite-target annotation)
+  - matches:
+    - path: {type: PathPrefix, value: /api/v1}
+    filters:
+    - type: URLRewrite
+      urlRewrite:
+        path:
+          type: ReplacePrefixMatch
+          replacePrefixMatch: /
+    backendRefs:
+    - {name: service2, port: 80}
+  # Redirect /old -> 301 to https://www.example.com/new  (no backendRefs)
+  - matches:
+    - path: {type: PathPrefix, value: /old}
+    filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        hostname: www.example.com
+        path:
+          type: ReplaceFullPath
+          replaceFullPath: /new
+        statusCode: 301
+  # Mirror a copy of every request to service2 (responses from the mirror are ignored)
+  - matches:
+    - path: {type: PathPrefix, value: /mirror}
+    filters:
+    - type: RequestMirror
+      requestMirror:
+        backendRef: {name: service2, port: 80}
+    backendRefs:
+    - {name: service1, port: 80}

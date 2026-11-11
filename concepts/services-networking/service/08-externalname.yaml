@@ -1,0 +1,12 @@
+# Lab 8: ExternalName - a DNS alias. No selector, no cluster IP, no proxying.
+# Looking up my-database.svc-demo.svc.cluster.local returns a CNAME to
+# externalName. Only cluster DNS can resolve it.
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-database
+  namespace: svc-demo
+spec:
+  type: ExternalName
+  externalName: example.com     # must be a DNS name; an IP here is treated
+                                # as a (bogus) DNS name, not an address

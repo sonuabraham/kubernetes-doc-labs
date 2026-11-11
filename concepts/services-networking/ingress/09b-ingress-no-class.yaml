@@ -1,0 +1,16 @@
+# Lab 9b: An Ingress WITHOUT ingressClassName.
+# The DefaultIngressClass admission controller fills in the default class.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: no-class
+  namespace: ingress-demo
+spec:
+  rules:
+  - host: noclass.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: test, port: { number: 80 } }

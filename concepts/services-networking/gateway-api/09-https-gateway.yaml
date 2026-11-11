@@ -1,0 +1,62 @@
+# Lab 9: HTTPS listener - TLS terminated at the Gateway (see the Gateway API
+# TLS guide linked from the docs). The Secret is created in the lab with openssl.
+#  - tls.mode Terminate (default): decrypt at the gateway, plain HTTP to the pod.
+#  - certificateRefs: a kubernetes.io/tls Secret, same namespace as the Gateway
+#    (another namespace needs a ReferenceGrant).
+# Plus an HTTP listener whose only route redirects to HTTPS.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: example-gateway
+  namespace: example-namespace
+spec:
+  gatewayClassName: example-class
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      namespaces: {from: Same}
+  - name: https
+    protocol: HTTPS
+    port: 443
+    hostname: "secure.example.com"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: secure-example-tls
+    allowedRoutes:
+      namespaces: {from: Same}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: secure-route
+  namespace: example-namespace
+spec:
+  parentRefs:
+  - name: example-gateway
+    sectionName: https
+  hostnames: ["secure.example.com"]
+  rules:
+  - backendRefs:
+    - {name: service1, port: 80}
+---
+# http://secure.example.com/*  ->  301 https://secure.example.com/*
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: secure-redirect
+  namespace: example-namespace
+spec:
+  parentRefs:
+  - name: example-gateway
+    sectionName: http
+  hostnames: ["secure.example.com"]
+  rules:
+  - filters:
+    - type: RequestRedirect
+      requestRedirect:
+        scheme: https
+        statusCode: 301

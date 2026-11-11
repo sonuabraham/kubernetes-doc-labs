@@ -1,0 +1,17 @@
+# Lab 10: Session affinity - all connections from one client IP go to the
+# same pod (until the timeout expires).
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-sticky
+  namespace: svc-demo
+spec:
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - port: 80
+      targetPort: 9376
+  sessionAffinity: ClientIP        # default: None
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 600          # default: 10800 (3 hours)

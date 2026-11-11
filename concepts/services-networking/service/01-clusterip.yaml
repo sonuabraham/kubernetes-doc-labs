@@ -1,0 +1,16 @@
+# Lab 1: The basic Service from the docs (type defaults to ClusterIP).
+# Every pod with label app.kubernetes.io/name=MyApp becomes a backend.
+# Clients connect to <cluster-ip>:80, traffic goes to <pod-ip>:9376.
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service          # must be a valid RFC 1123 label name
+  namespace: svc-demo
+spec:
+  # type: ClusterIP         # the default, so you can leave it out
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - protocol: TCP         # default is TCP
+      port: 80              # port the Service listens on
+      targetPort: 9376      # port on the pod (defaults to `port` if omitted)

@@ -1,0 +1,24 @@
+# Lab 11a: An Ingress (reference only - NOT applied; no Ingress controller is
+# needed for this lab). 11b is the same routing as Gateway API resources.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: legacy
+  namespace: example-namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /       # controller-specific!
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts: [legacy.example.com]
+    secretName: legacy-tls
+  rules:
+  - host: legacy.example.com
+    http:
+      paths:
+      - path: /app
+        pathType: Prefix
+        backend:
+          service:
+            name: service1
+            port: {number: 80}

@@ -1,0 +1,245 @@
+# Demo app used by every lab. Names, namespace and ports are the ones the
+# docs examples use, so the docs YAML applies unchanged.
+#
+#   namespace example-namespace          (docs: Gateway lives here)
+#     example-svc   :8080  HTTP echo      (docs HTTPRoute backend)
+#                   :50051 gRPC grpcbin   (docs GRPCRoute backend)
+#     foo-svc       :50051 gRPC grpcbin   (docs GRPCRoute method-match backend)
+#     service1, service1-canary, service2 :80 HTTP echo  (extra labs)
+#     grpc-client   pod with grpcurl + the com.example Login .proto (Lab 10)
+#
+# HTTP pods run "echo-basic" (the echo server of the Gateway API conformance
+# tests): it replies with JSON - pod name, host, path, headers.
+# The gRPC pods run grpcbin (service grpcbin.GRPCBin, with reflection).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: example-namespace
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-svc
+  namespace: example-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: example-svc}
+  template:
+    metadata:
+      labels: {app: example-svc}
+    spec:
+      containers:
+      - name: echo                   # HTTP: echoes the request back as JSON
+        image: gcr.io/k8s-staging-gateway-api/echo-basic:v20231214-v1.0.0-140-gf544a46e
+        ports:
+        - containerPort: 3000
+        env:
+        - {name: POD_NAME, valueFrom: {fieldRef: {fieldPath: metadata.name}}}
+        - {name: NAMESPACE, valueFrom: {fieldRef: {fieldPath: metadata.namespace}}}
+        readinessProbe:
+          httpGet: {path: /, port: 3000}
+      - name: grpcbin                # gRPC: demo server with reflection, plaintext on 9000
+        image: moul/grpcbin:latest
+        ports:
+        - containerPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-svc
+  namespace: example-namespace
+spec:
+  selector: {app: example-svc}
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 3000
+  - name: grpc
+    port: 50051
+    targetPort: 9000
+    appProtocol: kubernetes.io/h2c   # gateway speaks HTTP/2 cleartext to this port
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo-svc
+  namespace: example-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: foo-svc}
+  template:
+    metadata:
+      labels: {app: foo-svc}
+    spec:
+      containers:
+      - name: echo                   # HTTP: echoes the request back as JSON
+        image: gcr.io/k8s-staging-gateway-api/echo-basic:v20231214-v1.0.0-140-gf544a46e
+        ports:
+        - containerPort: 3000
+        env:
+        - {name: POD_NAME, valueFrom: {fieldRef: {fieldPath: metadata.name}}}
+        - {name: NAMESPACE, valueFrom: {fieldRef: {fieldPath: metadata.namespace}}}
+        readinessProbe:
+          httpGet: {path: /, port: 3000}
+      - name: grpcbin                # gRPC: demo server with reflection, plaintext on 9000
+        image: moul/grpcbin:latest
+        ports:
+        - containerPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: foo-svc
+  namespace: example-namespace
+spec:
+  selector: {app: foo-svc}
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 3000
+  - name: grpc
+    port: 50051
+    targetPort: 9000
+    appProtocol: kubernetes.io/h2c   # gateway speaks HTTP/2 cleartext to this port
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service1
+  namespace: example-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: service1}
+  template:
+    metadata:
+      labels: {app: service1}
+    spec:
+      containers:
+      - name: echo                   # HTTP: echoes the request back as JSON
+        image: gcr.io/k8s-staging-gateway-api/echo-basic:v20231214-v1.0.0-140-gf544a46e
+        ports:
+        - containerPort: 3000
+        env:
+        - {name: POD_NAME, valueFrom: {fieldRef: {fieldPath: metadata.name}}}
+        - {name: NAMESPACE, valueFrom: {fieldRef: {fieldPath: metadata.namespace}}}
+        readinessProbe:
+          httpGet: {path: /, port: 3000}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service1
+  namespace: example-namespace
+spec:
+  selector: {app: service1}
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service1-canary
+  namespace: example-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: service1-canary}
+  template:
+    metadata:
+      labels: {app: service1-canary}
+    spec:
+      containers:
+      - name: echo                   # HTTP: echoes the request back as JSON
+        image: gcr.io/k8s-staging-gateway-api/echo-basic:v20231214-v1.0.0-140-gf544a46e
+        ports:
+        - containerPort: 3000
+        env:
+        - {name: POD_NAME, valueFrom: {fieldRef: {fieldPath: metadata.name}}}
+        - {name: NAMESPACE, valueFrom: {fieldRef: {fieldPath: metadata.namespace}}}
+        readinessProbe:
+          httpGet: {path: /, port: 3000}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service1-canary
+  namespace: example-namespace
+spec:
+  selector: {app: service1-canary}
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service2
+  namespace: example-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: service2}
+  template:
+    metadata:
+      labels: {app: service2}
+    spec:
+      containers:
+      - name: echo                   # HTTP: echoes the request back as JSON
+        image: gcr.io/k8s-staging-gateway-api/echo-basic:v20231214-v1.0.0-140-gf544a46e
+        ports:
+        - containerPort: 3000
+        env:
+        - {name: POD_NAME, valueFrom: {fieldRef: {fieldPath: metadata.name}}}
+        - {name: NAMESPACE, valueFrom: {fieldRef: {fieldPath: metadata.namespace}}}
+        readinessProbe:
+          httpGet: {path: /, port: 3000}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service2
+  namespace: example-namespace
+spec:
+  selector: {app: service2}
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+---
+# The docs' GRPCRoute matches service "com.example", method "Login".
+# This .proto defines exactly that (package com, service example -> /com.example/Login)
+# so grpcurl can call it without server reflection.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: login-proto
+  namespace: example-namespace
+data:
+  login.proto: |
+    syntax = "proto3";
+    package com;
+    message LoginRequest { string user = 1; }
+    message LoginReply   { string token = 1; }
+    service example { rpc Login(LoginRequest) returns (LoginReply); }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grpc-client
+  namespace: example-namespace
+spec:
+  containers:
+  - name: grpcurl
+    image: fullstorydev/grpcurl:v1.9.3-alpine
+    command: ["sleep", "infinity"]
+    volumeMounts:
+    - {name: protos, mountPath: /protos}
+  volumes:
+  - name: protos
+    configMap: {name: login-proto}

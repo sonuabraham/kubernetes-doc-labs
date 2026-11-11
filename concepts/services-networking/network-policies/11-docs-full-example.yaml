@@ -1,0 +1,41 @@
+# Lab 11: The full example from the Kubernetes docs, adapted to np-demo.
+# Protects pods with role=db. Allows INGRESS on TCP 6379 from any of:
+#   - IPs in 172.17.0.0/16 except 172.17.1.0/24
+#   - any pod in a namespace labelled project=myproject
+#   - pods with role=frontend in this namespace
+# Allows EGRESS to 10.0.0.0/24 on TCP 5978.
+# Read it, apply it, then run: kubectl describe netpol test-network-policy -n np-demo
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: test-network-policy
+  namespace: np-demo
+spec:
+  podSelector:
+    matchLabels:
+      role: db
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 172.17.0.0/16
+        except:
+        - 172.17.1.0/24
+    - namespaceSelector:
+        matchLabels:
+          project: myproject
+    - podSelector:
+        matchLabels:
+          role: frontend
+    ports:
+    - protocol: TCP
+      port: 6379
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.0.0.0/24
+    ports:
+    - protocol: TCP
+      port: 5978

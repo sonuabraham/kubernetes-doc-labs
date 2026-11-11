@@ -1,0 +1,21 @@
+# Lab 10b: GRPCRoute with a method match - VERBATIM from the docs
+# (apply with -n example-namespace; replaces 10a because the name is the same).
+# Only /com.example/Login on svc.example.com is forwarded (to foo-svc:50051);
+# every other service/method has no route.
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: example-grpcroute
+spec:
+  parentRefs:
+  - name: example-gateway
+  hostnames:
+  - "svc.example.com"
+  rules:
+  - matches:
+    - method:
+        service: com.example
+        method: Login
+    backendRefs:
+    - name: foo-svc
+      port: 50051

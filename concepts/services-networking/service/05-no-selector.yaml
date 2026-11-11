@@ -1,0 +1,41 @@
+# Lab 5: Service WITHOUT a selector + a hand-made EndpointSlice.
+# Kubernetes creates no EndpointSlices for this Service; you supply them.
+# Use cases: an external database, a backend in another namespace/cluster,
+# or migrating a workload into Kubernetes.
+#
+# NGINX_POD_IP is a placeholder. Apply with:
+#   NGINX_IP=$(kubectl get pod nginx -n svc-demo -o jsonpath='{.status.podIP}')
+#   sed "s/NGINX_POD_IP/$NGINX_IP/" 05-no-selector.yaml | kubectl apply -f -
+apiVersion: v1
+kind: Service
+metadata:
+  name: manual-service
+  namespace: svc-demo
+spec:
+  # no selector!
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: manual-service-1               # convention: Service name as prefix
+  namespace: svc-demo
+  labels:
+    kubernetes.io/service-name: manual-service        # links slice -> Service
+    endpointslice.kubernetes.io/managed-by: lab.example.com  # NOT "controller"
+addressType: IPv4
+ports:
+  - name: http                         # must match the Service port name
+    appProtocol: http
+    protocol: TCP
+    port: 80
+endpoints:
+  - addresses:
+      - "NGINX_POD_IP"
+# Rules for endpoint IPs:
+#  - no loopback (127.0.0.0/8, ::1) or link-local (169.254.0.0/16, fe80::/64)
+#  - no cluster IPs of other Services (kube-proxy can't proxy to a virtual IP)

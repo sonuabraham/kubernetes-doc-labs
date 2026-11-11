@@ -1,0 +1,13 @@
+# Lab 1: Default deny all ingress.
+# podSelector: {} selects EVERY pod in the namespace.
+# policyTypes: [Ingress] with no ingress rules = nothing is allowed in.
+# Egress is not affected.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  namespace: np-demo
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress

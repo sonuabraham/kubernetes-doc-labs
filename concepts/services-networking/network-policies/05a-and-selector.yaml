@@ -1,0 +1,25 @@
+# Lab 5a: AND semantics.
+# namespaceSelector and podSelector in the SAME list element (one "-"):
+#   allow pods with role=client   AND   in a namespace labelled team=partner
+# Result: outsider (role=client, ns other) -> backend  ALLOWED
+#         frontend (role=client, ns np-demo has no team label) -> backend  BLOCKED
+#         (assuming lab 2 policy is deleted, see README)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: and-selector
+  namespace: np-demo
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          team: partner
+      podSelector:            # <-- no dash: same element as namespaceSelector
+        matchLabels:
+          role: client

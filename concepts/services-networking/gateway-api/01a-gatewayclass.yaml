@@ -1,0 +1,10 @@
+# Lab 1a: GatewayClass - VERBATIM from the docs.
+# Names the controller that implements Gateways of this class. Cluster-scoped.
+# "example.com/gateway-controller" is a placeholder: no controller in this
+# cluster claims it, so status Accepted stays Unknown (Waiting for controller).
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: example-class
+spec:
+  controllerName: example.com/gateway-controller

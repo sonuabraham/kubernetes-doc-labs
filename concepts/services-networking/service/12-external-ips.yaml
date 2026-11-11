@@ -1,0 +1,25 @@
+# Lab 12: externalIPs - any Service type can list extra IPs. kube-proxy
+# captures traffic to <externalIP>:<port> and sends it to the Service.
+# Kubernetes does NOT allocate or route these IPs - that's the admin's job.
+# NOTE: recent API servers warn "spec.externalIPs is deprecated and may no
+# longer be implemented in some clusters". It is also a known security risk
+# (CVE-2020-8554), so many clusters block it with an admission policy.
+#
+# EXTERNAL_IP is a placeholder; the lab uses a node's InternalIP:
+#   NODE_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
+#   sed "s/EXTERNAL_IP/$NODE_IP/" 12-external-ips.yaml | kubectl apply -f -
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-external-ip
+  namespace: svc-demo
+spec:
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 9376
+  externalIPs:
+    - EXTERNAL_IP

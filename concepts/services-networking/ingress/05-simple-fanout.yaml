@@ -1,0 +1,29 @@
+# Lab 5: Simple fanout - one host/IP, different Services by URL path.
+#   foo.bar.com/foo -> service1:4200
+#   foo.bar.com/bar -> service2:8080
+# The path is passed through unchanged (no rewrite): service1 receives /foo.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simple-fanout-example
+  namespace: ingress-demo
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - path: /foo
+        pathType: Prefix
+        backend:
+          service:
+            name: service1
+            port:
+              number: 4200
+      - path: /bar
+        pathType: Prefix
+        backend:
+          service:
+            name: service2
+            port:
+              number: 8080

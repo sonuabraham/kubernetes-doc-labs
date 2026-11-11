@@ -1,0 +1,13 @@
+# Lab 4: A second client, created AFTER my-service exists.
+# The kubelet injects {SVCNAME}_SERVICE_HOST / _PORT env vars for every
+# Service that exists when the pod starts. Compare with the old "client" pod.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client-late
+  namespace: svc-demo
+spec:
+  containers:
+  - name: netshoot
+    image: nicolaka/netshoot:v0.13
+    command: ["sleep", "infinity"]

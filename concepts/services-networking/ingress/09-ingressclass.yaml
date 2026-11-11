@@ -1,0 +1,43 @@
+# Lab 9: IngressClass objects (cluster-scoped).
+# None of these has a running controller, so Ingresses that use them are
+# never served - an Ingress without a controller does nothing.
+
+# A second class marked as DEFAULT (minikube's "nginx" may already be default).
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+  name: example-class
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  controller: k8s.io/example-class
+---
+# parameters scope: Cluster (the default) -> a cluster-scoped config object
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: external-lb-1
+spec:
+  controller: example.com/ingress-controller
+  parameters:
+    scope: Cluster
+    apiGroup: k8s.example.net
+    kind: ClusterIngressParameter
+    name: external-config-1
+---
+# parameters scope: Namespace (GA v1.23) -> namespace is required.
+# Lets a cluster operator delegate LB config to a team's namespace.
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: external-lb-2
+spec:
+  controller: example.com/ingress-controller
+  parameters:
+    scope: Namespace
+    apiGroup: k8s.example.com
+    kind: IngressParameter
+    namespace: external-configuration
+    name: external-config

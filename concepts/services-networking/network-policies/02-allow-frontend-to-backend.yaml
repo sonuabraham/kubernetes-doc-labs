@@ -1,0 +1,18 @@
+# Lab 2: Allow ingress to backend only from frontend pods (same namespace).
+# Policies are additive: this adds an "allow" hole on top of default-deny.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-backend
+  namespace: np-demo
+spec:
+  podSelector:              # which pods this policy PROTECTS
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:          # which pods may CONNECT
+        matchLabels:
+          app: frontend

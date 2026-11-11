@@ -1,0 +1,22 @@
+# Lab 3: Multi-port Service.
+# With more than one port, EVERY port needs a name (lowercase alphanumerics
+# and '-', starting and ending with an alphanumeric).
+# The docs use http (9376) + https (9377). Our demo app speaks UDP on 9377,
+# so this also shows a mixed TCP/UDP Service.
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-multi-port
+  namespace: svc-demo
+spec:
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 9376
+    - name: udp-echo
+      protocol: UDP
+      port: 9377
+      targetPort: udp-echo       # named port works here too

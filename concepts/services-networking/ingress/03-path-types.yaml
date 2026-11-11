@@ -1,0 +1,33 @@
+# Lab 3: pathType Exact vs Prefix, and "longest match wins".
+#   Exact   /foo       -> service1   (only /foo, case-sensitive)
+#   Prefix  /foo       -> service2   (/foo, /foo/, /foo/anything - NOT /foobar)
+#   Prefix  /aaa/bbb   -> service3   (element-wise: /aaa/bbb/ccc yes, /aaa/bbbxyz no)
+#   Prefix  /          -> test       (everything else)
+# Precedence: longest matching path first; on a tie, Exact beats Prefix.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: path-types
+  namespace: ingress-demo
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: paths.example.com
+    http:
+      paths:
+      - path: /foo
+        pathType: Exact
+        backend:
+          service: { name: service1, port: { number: 80 } }
+      - path: /foo
+        pathType: Prefix
+        backend:
+          service: { name: service2, port: { number: 80 } }
+      - path: /aaa/bbb
+        pathType: Prefix
+        backend:
+          service: { name: service3, port: { number: 80 } }
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: test, port: { number: 80 } }

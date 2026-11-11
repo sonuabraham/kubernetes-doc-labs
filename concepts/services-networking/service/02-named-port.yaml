@@ -1,0 +1,32 @@
+# Lab 2: targetPort by NAME (the docs nginx example).
+# The Service says "send to the container port called http-web-svc".
+# If the pod later moves nginx to another port number, only the pod spec
+# changes - the Service keeps working.
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: svc-demo
+spec:
+  selector:
+    app.kubernetes.io/name: proxy
+  ports:
+  - name: name-of-service-port
+    protocol: TCP
+    port: 80
+    targetPort: http-web-svc     # <- a name, not a number
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: svc-demo
+  labels:
+    app.kubernetes.io/name: proxy
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27
+    ports:
+      - containerPort: 80
+        name: http-web-svc       # <- the name the Service refers to

@@ -1,0 +1,25 @@
+# Lab 5b: OR semantics.
+# Two SEPARATE list elements (two "-"):
+#   allow pods in ANY namespace labelled team=partner
+#   OR    pods with role=client in THIS namespace (np-demo)
+# Result: outsider -> backend  ALLOWED
+#         frontend -> backend  ALLOWED
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: or-selector
+  namespace: np-demo
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          team: partner
+    - podSelector:            # <-- has a dash: a separate element
+        matchLabels:
+          role: client

@@ -1,0 +1,17 @@
+# Lab 9: Headless Service - clusterIP: None (the explicit string "None").
+# No virtual IP, no kube-proxy load balancing. DNS returns the pod IPs
+# directly (one A record per ready pod), so the client chooses.
+# Typical use: StatefulSets, client-side load balancing, peer discovery.
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-headless
+  namespace: svc-demo
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: MyApp
+  ports:
+    - name: http
+      port: 9376
+      targetPort: 9376

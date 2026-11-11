@@ -1,0 +1,27 @@
+# Lab 11b: The Ingress from 11a converted by hand.
+#   IngressClass        -> GatewayClass (already exists: example-class)
+#   the controller's LB -> Gateway listener (explicit, owned by the operator)
+#   spec.rules          -> HTTPRoute (owned by the app team)
+#   rewrite annotation  -> URLRewrite filter (portable)
+#   spec.tls            -> HTTPS listener + certificateRefs (on the Gateway)
+# The HTTPS listener is left out here so the lab needs no certificate;
+# see Lab 9 for that part.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: legacy
+  namespace: example-namespace
+spec:
+  parentRefs:
+  - name: example-gateway
+    sectionName: http
+  hostnames: ["legacy.example.com"]
+  rules:
+  - matches:
+    - path: {type: PathPrefix, value: /app}
+    filters:
+    - type: URLRewrite
+      urlRewrite:
+        path: {type: ReplacePrefixMatch, replacePrefixMatch: /}
+    backendRefs:
+    - {name: service1, port: 80}

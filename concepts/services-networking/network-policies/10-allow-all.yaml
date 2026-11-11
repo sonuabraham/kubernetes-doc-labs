@@ -1,0 +1,27 @@
+# Lab 10: Allow all ingress / egress.
+# "- {}" is a single empty rule = match everything.
+# Because policies are additive, once this exists NO other policy
+# can block traffic for the selected pods.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-ingress
+  namespace: np-demo
+spec:
+  podSelector: {}
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-egress
+  namespace: np-demo
+spec:
+  podSelector: {}
+  egress:
+  - {}
+  policyTypes:
+  - Egress
