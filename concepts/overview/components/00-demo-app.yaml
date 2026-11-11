@@ -1,0 +1,48 @@
+# Demo app for the Components lab. The docs page has no YAML of its own, so
+# this is a tiny app that touches every component:
+#   Deployment  -> kube-controller-manager creates the ReplicaSet + Pods
+#   Pods        -> kube-scheduler picks a node, kubelet + container runtime run them
+#   Service     -> kube-proxy programs iptables rules, CoreDNS (addon) gives it a name
+#   ConfigMap   -> stored by kube-apiserver in etcd (we read it back from etcd directly)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: components-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: components-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: web}
+  template:
+    metadata:
+      labels: {app: web}
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.27
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: components-demo
+spec:
+  selector: {app: web}
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+  namespace: components-demo
+data:
+  stored-in: etcd

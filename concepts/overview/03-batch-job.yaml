@@ -1,0 +1,18 @@
+# Lab 7: Batch execution - a Job that runs to completion and is retried on failure.
+# Each pod fails ~50% of the time; the Job keeps replacing failed pods until 3 succeed.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: report
+  namespace: overview-demo
+spec:
+  completions: 3
+  parallelism: 1
+  backoffLimit: 10
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["sh", "-c", "n=$(( $(od -An -N1 -tu1 /dev/urandom) % 2 )); echo attempt result=$n; exit $n"]

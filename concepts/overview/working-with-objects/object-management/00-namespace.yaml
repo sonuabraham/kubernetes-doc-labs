@@ -1,0 +1,6 @@
+# Namespace for the Object Management lab. The docs commands have no -n, so
+# every command in the README adds -n objmgmt-demo.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: objmgmt-demo

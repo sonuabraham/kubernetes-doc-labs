@@ -1,0 +1,26 @@
+# Lab 6c: Same selector, but the template says environment: dev, which the
+# NotIn (dev) expression excludes -> rejected:
+#   `selector` does not match template `labels`
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache-dev
+  namespace: labels-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: redis
+    matchExpressions:
+      - { key: tier, operator: In, values: [cache] }
+      - { key: environment, operator: NotIn, values: [dev] }
+  template:
+    metadata:
+      labels:
+        component: redis
+        tier: cache
+        environment: dev
+    spec:
+      containers:
+      - name: redis
+        image: redis:7

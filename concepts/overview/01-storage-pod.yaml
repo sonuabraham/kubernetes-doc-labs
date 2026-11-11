@@ -1,0 +1,17 @@
+# Lab 2: Storage orchestration - a pod that mounts the PVC. Kubernetes asked the
+# storage provisioner for a volume; the data survives the pod.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: writer
+  namespace: overview-demo
+spec:
+  restartPolicy: Never
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "date >> /data/visits && cat /data/visits"]
+    volumeMounts: [{name: data, mountPath: /data}]
+  volumes:
+  - name: data
+    persistentVolumeClaim: {claimName: shop-data}

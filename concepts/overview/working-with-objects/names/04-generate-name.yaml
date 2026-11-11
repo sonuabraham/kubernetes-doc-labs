@@ -1,0 +1,14 @@
+# Lab 4: generateName - the server appends a random suffix.
+# Works with kubectl create (each run makes a NEW pod); kubectl apply refuses it
+# because apply needs a fixed name to find the object again.
+apiVersion: v1
+kind: Pod
+metadata:
+  generateName: worker-
+  namespace: names-demo
+spec:
+  restartPolicy: Never
+  containers:
+  - name: worker
+    image: busybox:1.36
+    command: ["sh", "-c", "echo my name is $HOSTNAME"]

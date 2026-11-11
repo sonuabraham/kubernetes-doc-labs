@@ -1,0 +1,13 @@
+# Lab 4b: A Pod with spec.nodeName already set skips the scheduler entirely:
+# the kubelet on that node sees a Pod bound to it and starts it.
+# (No "Scheduled" event - compare with the Deployment's pods.)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: prebound
+  namespace: components-demo
+spec:
+  nodeName: minikube
+  containers:
+  - name: nginx
+    image: nginx:1.27

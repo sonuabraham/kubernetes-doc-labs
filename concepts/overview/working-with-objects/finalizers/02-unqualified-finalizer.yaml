@@ -1,0 +1,9 @@
+# Lab 2: A custom finalizer WITHOUT a domain prefix -> rejected by the API server
+# (only the built-in names like "kubernetes" / "foregroundDeletion" / "orphan" may be unqualified).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unqualified
+  namespace: finalizers-demo
+  finalizers:
+  - my-cleanup

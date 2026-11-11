@@ -1,0 +1,27 @@
+# Lab 6: A user who may create ConfigMaps but may NOT delete the owner.
+# With the OwnerReferencesPermissionEnforcement admission plugin enabled, that
+# user cannot set blockOwnerDeletion=true on a reference to the owner.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: limited
+  namespace: owners-demo
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: configmap-writer
+  namespace: owners-demo
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list", "create", "update", "patch"]     # no "delete"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: limited-configmap-writer
+  namespace: owners-demo
+subjects:
+- {kind: ServiceAccount, name: limited, namespace: owners-demo}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: configmap-writer}

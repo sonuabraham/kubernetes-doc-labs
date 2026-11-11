@@ -1,0 +1,12 @@
+# Lab 4: Values must be strings. replicas-hint is an unquoted number and
+# enabled is an unquoted boolean -> rejected:
+#   cannot unmarshal bool (or number) into Go struct field ObjectMeta.metadata.annotations of type string
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bad-annotations
+  namespace: annotations-demo
+  annotations:
+    replicas-hint: 3
+    enabled: true
+data: {}

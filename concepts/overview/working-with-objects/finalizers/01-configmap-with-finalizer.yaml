@@ -1,0 +1,13 @@
+# Lab 1: A custom finalizer set in the manifest (metadata.finalizers).
+# No controller handles "example.com/cleanup", so YOU play the controller:
+# the object stays (with deletionTimestamp) until you remove the key.
+# Custom finalizer names must be qualified: <domain>/<name>.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: guarded
+  namespace: finalizers-demo
+  finalizers:
+  - example.com/cleanup
+data:
+  important: "yes"

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Plugin "kubectl ctxinfo" (file kubectl-ctxinfo; a dash in the file name would mean a SUB-command: kubectl-a-b -> "kubectl a b"): current context, cluster, user and namespace.
+kubectl config view --minify -o jsonpath='context={.current-context} cluster={.clusters[0].name} user={.users[0].name} namespace={.contexts[0].context.namespace}{"\n"}'

@@ -1,0 +1,14 @@
+# Lab 4a: A Pod that asks for a scheduler that does not exist.
+# kube-scheduler only handles Pods whose spec.schedulerName is "default-scheduler"
+# (the default), so nobody binds this Pod to a node -> it stays Pending forever,
+# with no events at all.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unscheduled
+  namespace: components-demo
+spec:
+  schedulerName: no-such-scheduler
+  containers:
+  - name: nginx
+    image: nginx:1.27

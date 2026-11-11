@@ -1,0 +1,5 @@
+# Namespace for the Labels lab. Docs manifests have no namespace -> use -n labels-demo.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: labels-demo

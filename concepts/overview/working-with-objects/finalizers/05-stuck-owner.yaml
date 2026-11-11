@@ -1,0 +1,12 @@
+# Lab 6: "finalizers can block the deletion of dependent objects, which can
+# cause the targeted owner object to remain for longer than expected".
+# A ConfigMap (owner) and a Secret (dependent, ownerReference -> owner) that
+# carries a finalizer nobody will remove. Foreground-delete the owner and it
+# is stuck until the dependent is gone.
+# The ownerReference UID is filled in by the README command (UIDs are generated).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: owner
+  namespace: finalizers-demo
+data: {}

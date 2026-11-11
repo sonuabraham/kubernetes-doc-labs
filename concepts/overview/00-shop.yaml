@@ -1,0 +1,80 @@
+# "Why you need Kubernetes" tour - one small app, namespace overview-demo:
+#   ConfigMap + Secret   -> secret and configuration management
+#   PVC                  -> storage orchestration (minikube's default StorageClass)
+#   Deployment shop (3)  -> rollouts/rollbacks, self-healing, bin packing (requests),
+#                           horizontal scaling
+#   Service shop         -> service discovery and load balancing
+# agnhost "netexec" answers /hostname with the pod name, so you can see the
+# load balancing.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: overview-demo
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shop-config
+  namespace: overview-demo
+data:
+  GREETING: "welcome to the shop"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: shop-secret
+  namespace: overview-demo
+type: Opaque
+stringData:
+  DB_PASSWORD: "not-in-the-image"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shop-data
+  namespace: overview-demo
+spec:
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 100Mi}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop
+  namespace: overview-demo
+  annotations:
+    kubernetes.io/change-cause: "v1: agnhost 2.53"
+spec:
+  replicas: 3
+  selector:
+    matchLabels: {app: shop}
+  template:
+    metadata:
+      labels: {app: shop}
+    spec:
+      containers:
+      - name: shop
+        image: registry.k8s.io/e2e-test-images/agnhost:2.53
+        args: ["netexec", "--http-port=8080"]
+        ports: [{containerPort: 8080}]
+        envFrom:
+        - configMapRef: {name: shop-config}
+        - secretRef: {name: shop-secret}
+        resources:
+          requests: {cpu: 50m, memory: 32Mi}
+          limits:   {cpu: 200m, memory: 64Mi}
+        readinessProbe:
+          httpGet: {path: /healthz, port: 8080}
+          periodSeconds: 2
+        livenessProbe:
+          httpGet: {path: /healthz, port: 8080}
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop
+  namespace: overview-demo
+spec:
+  selector: {app: shop}
+  ports: [{port: 80, targetPort: 8080}]

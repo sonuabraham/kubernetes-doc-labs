@@ -1,0 +1,12 @@
+# Lab 6a: Service selector = map, EQUALITY-based only.
+# "selector: {component: redis}" == component=redis == component in (redis)
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: labels-demo
+spec:
+  selector:
+    component: redis
+  ports:
+  - port: 6379

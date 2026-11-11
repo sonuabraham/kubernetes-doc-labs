@@ -1,0 +1,10 @@
+# Lab 4: Ask the control plane to rewrite every crontab in the current storage
+# version (storagemigration.k8s.io/v1, served by this v1.37 cluster).
+apiVersion: storagemigration.k8s.io/v1
+kind: StorageVersionMigration
+metadata:
+  name: crontabs-to-v1
+spec:
+  resource:
+    group: example.com
+    resource: crontabs

@@ -1,0 +1,27 @@
+# Lab 6b: Deployment selector with matchLabels + matchExpressions.
+# The selector block is VERBATIM from the docs. Everything is ANDed:
+#   component=redis  AND  tier in (cache)  AND  environment notin (dev)
+# The pod template's labels must satisfy the selector, or the API rejects it.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache
+  namespace: labels-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      component: redis
+    matchExpressions:
+      - { key: tier, operator: In, values: [cache] }
+      - { key: environment, operator: NotIn, values: [dev] }
+  template:
+    metadata:
+      labels:
+        component: redis
+        tier: cache
+        environment: production
+    spec:
+      containers:
+      - name: redis
+        image: redis:7

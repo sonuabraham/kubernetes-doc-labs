@@ -1,0 +1,8 @@
+# Lab 3: Required fields. This Deployment has apiVersion, kind and metadata
+# but its spec has no selector and no template -> the API server rejects it.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: incomplete
+spec:
+  replicas: 1

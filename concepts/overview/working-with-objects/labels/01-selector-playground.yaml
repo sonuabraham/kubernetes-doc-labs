@@ -1,0 +1,64 @@
+# Lab 2/3: Pods with the docs' example label dimensions
+# (environment, tier, partition, release, track) to try every selector on.
+# They run the tiny "pause" image - only their labels matter.
+#
+#   pod     environment  tier      partition  release
+#   p1      production   frontend  customerA  stable
+#   p2      production   backend   customerB  stable
+#   p3      qa           frontend  customerA  canary
+#   p4      qa           cache     -          canary
+#   p5      dev          backend   customerB  -
+#   p6      production   -         -          -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: p1
+  namespace: labels-demo
+  labels: {environment: production, tier: frontend, partition: customerA, release: stable}
+spec:
+  containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: p2
+  namespace: labels-demo
+  labels: {environment: production, tier: backend, partition: customerB, release: stable}
+spec:
+  containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: p3
+  namespace: labels-demo
+  labels: {environment: qa, tier: frontend, partition: customerA, release: canary}
+spec:
+  containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: p4
+  namespace: labels-demo
+  labels: {environment: qa, tier: cache, release: canary}
+spec:
+  containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: p5
+  namespace: labels-demo
+  labels: {environment: dev, tier: backend, partition: customerB}
+spec:
+  containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: p6
+  namespace: labels-demo
+  labels: {environment: production}
+spec:
+  containers: [{name: c, image: "registry.k8s.io/pause:3.10"}]

@@ -1,0 +1,23 @@
+# Lab 5: The docs' WARNING - OpenAPI validation is incomplete.
+# Every field here has the right TYPE, so schema-only (client-side) checks pass,
+# but the API server rejects it: the selector does not match the template labels,
+# and a container port must be 1-65535.
+# Only "kubectl apply --dry-run=server" (or a real apply) finds this.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: looks-fine
+  namespace: api-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: one}
+  template:
+    metadata:
+      labels: {app: two}
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.27
+        ports:
+        - containerPort: 70000

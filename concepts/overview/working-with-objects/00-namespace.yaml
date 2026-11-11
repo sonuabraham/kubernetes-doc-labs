@@ -1,0 +1,6 @@
+# Namespace for the "Objects In Kubernetes" lab. The docs' deployment.yaml has
+# no namespace, so it is applied with -n objects-demo.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: objects-demo

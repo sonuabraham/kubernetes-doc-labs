@@ -1,0 +1,12 @@
+# Lab 5: Pod names are DNS SUBDOMAIN names -> dots allowed (max 253 chars).
+# Container names are RFC 1123 LABELS -> no dots (that is why
+# "kubectl run web.v1" fails: kubectl uses the pod name as container name too).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web.v1.example
+  namespace: names-demo
+spec:
+  containers:
+  - name: web
+    image: nginx:1.27

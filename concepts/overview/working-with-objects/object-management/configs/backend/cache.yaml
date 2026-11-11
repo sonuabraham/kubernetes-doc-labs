@@ -1,0 +1,9 @@
+# In a SUB-directory: only processed with -R (kubectl apply -R -f configs/)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cache-settings
+  labels:
+    app.kubernetes.io/part-of: configs-demo
+data:
+  ttl: "60"

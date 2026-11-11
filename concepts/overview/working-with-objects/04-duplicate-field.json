@@ -1,0 +1,7 @@
+{
+  "apiVersion": "v1",
+  "kind": "ConfigMap",
+  "metadata": { "name": "dup", "namespace": "objects-demo" },
+  "data": { "color": "red" },
+  "data": { "color": "blue" }
+}

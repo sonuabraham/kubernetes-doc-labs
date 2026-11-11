@@ -1,0 +1,39 @@
+# Lab 4: The docs' example - kubernetes.io/pv-protection.
+# A hostPath PersistentVolume bound to a PVC that a Pod uses. Deleting the PV
+# (or the PVC: kubernetes.io/pvc-protection) leaves it Terminating while in use.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: finalizers-demo-pv
+spec:
+  capacity: {storage: 100Mi}
+  accessModes: [ReadWriteOnce]
+  storageClassName: manual
+  persistentVolumeReclaimPolicy: Retain
+  hostPath: {path: /tmp/finalizers-demo-pv}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data
+  namespace: finalizers-demo
+spec:
+  storageClassName: manual
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 100Mi}}
+  volumeName: finalizers-demo-pv
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: uses-volume
+  namespace: finalizers-demo
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sleep", "infinity"]
+    volumeMounts: [{name: data, mountPath: /data}]
+  volumes:
+  - name: data
+    persistentVolumeClaim: {claimName: data}

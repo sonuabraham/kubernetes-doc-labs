@@ -1,0 +1,6 @@
+# Namespace for the Annotations lab. The docs' annotations-demo.yaml has no
+# namespace -> kubectl apply -f annotations-demo.yaml -n annotations-demo
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: annotations-demo

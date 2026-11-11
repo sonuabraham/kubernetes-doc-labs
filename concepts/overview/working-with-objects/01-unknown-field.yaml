@@ -1,0 +1,23 @@
+# Lab 4a: Server-side field validation - unknown field.
+# "replica" is a typo of "replicas".
+#   --validate=strict (default, = true) -> rejected: strict decoding error: unknown field "spec.replica"
+#   --validate=warn                     -> created, with a Warning
+#   --validate=ignore (= false)         -> created silently; the typo'd field is dropped,
+#                                          so you get the default 1 replica, not 3!
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: typo-deployment
+spec:
+  replica: 3
+  selector:
+    matchLabels:
+      app: typo
+  template:
+    metadata:
+      labels:
+        app: typo
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2

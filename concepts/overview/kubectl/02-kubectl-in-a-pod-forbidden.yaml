@@ -1,0 +1,16 @@
+# Lab 4b: same ServiceAccount, but it tries to list Secrets -> Forbidden (RBAC).
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ci-kubectl-secrets
+  namespace: kubectl-demo
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      serviceAccountName: ci
+      restartPolicy: Never
+      containers:
+      - name: kubectl
+        image: registry.k8s.io/kubectl:v1.37.0
+        args: ["get", "secrets", "-n", "kubectl-demo"]

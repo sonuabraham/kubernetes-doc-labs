@@ -1,0 +1,19 @@
+# Lab 5: The docs' WARNING - a namespace named like a public TLD.
+# Service "example" in namespace "com" gets the DNS name
+#   example.com.svc.cluster.local
+# Pods' resolv.conf search list includes "svc.cluster.local" (and ndots:5), so
+# a lookup of "example.com" WITHOUT a trailing dot from ANY namespace tries
+# example.com.<ns>.svc.cluster.local, then example.com.svc.cluster.local -> hit!
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: com
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: example
+  namespace: com
+spec:
+  ports:
+  - port: 80

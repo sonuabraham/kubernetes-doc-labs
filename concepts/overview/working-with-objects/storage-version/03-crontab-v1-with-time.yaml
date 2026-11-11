@@ -1,0 +1,12 @@
+# Lab 2: A CronTab created through v1, WITH the v1-only field "time".
+# Storage version is v1beta1 and conversion strategy is None, so the object is
+# stored with the v1beta1 schema -> "time" is pruned:
+# "the v1 API object would never be able to store the time field".
+apiVersion: example.com/v1
+kind: CronTab
+metadata:
+  name: new-style
+  namespace: storage-version-demo
+host: web.example.com
+port: "80"
+time: "*/5 * * * *"

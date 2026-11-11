@@ -1,0 +1,19 @@
+# Lab 2/4: The docs' use case - "the same configuration across multiple
+# namespaces such as Development, Staging and Production".
+# Three namespaces, each with a Service called "db" (same name - allowed,
+# names only need to be unique WITHIN a namespace) backed by a pod that
+# answers with its namespace.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: staging
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production

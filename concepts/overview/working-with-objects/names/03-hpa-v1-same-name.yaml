@@ -1,0 +1,13 @@
+# Lab 3: ... and the "same" name through autoscaling/v1.
+# The version is NOT part of an object's identity (group + resource + namespace + name),
+# so this is the same object -> kubectl create fails with AlreadyExists.
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-hpa
+  namespace: names-demo
+spec:
+  scaleTargetRef: {apiVersion: apps/v1, kind: Deployment, name: myapp-1234}
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50

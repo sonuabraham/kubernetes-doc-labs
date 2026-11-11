@@ -1,0 +1,19 @@
+# Lab 5: Labels + owner references + finalizers together (docs section
+# "Owner references, labels, and finalizers"). The Job controller:
+#  - labels its pods (batch.kubernetes.io/job-name=..., controller-uid=...)
+#  - sets ownerReferences -> the Job
+#  - adds the finalizer batch.kubernetes.io/job-tracking to each pod so it can
+#    count the pod's result before the pod disappears.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: counter
+  namespace: finalizers-demo
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: c
+        image: busybox:1.36
+        command: ["sh", "-c", "sleep 30"]

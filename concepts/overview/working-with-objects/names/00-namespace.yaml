@@ -1,0 +1,6 @@
+# Namespace for the Names lab. The docs' nginx-demo.yaml has no namespace,
+# so it is applied with -n names-demo.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: names-demo

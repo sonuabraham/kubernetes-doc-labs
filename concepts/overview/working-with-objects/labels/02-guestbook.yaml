@@ -1,0 +1,74 @@
+# Lab 5: "Using labels effectively". The docs apply the external
+# guestbook-all-in-one.yaml; this file recreates the same Pods with the docs'
+# label sets VERBATIM (frontend / redis master / redis replica) plus the docs'
+# "my-nginx" pods, so `kubectl get pods -Lapp -Ltier -Lrole` looks like the docs.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-fe
+  namespace: labels-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels: {app: guestbook, tier: frontend}
+  template:
+    metadata:
+      labels:
+        app: guestbook
+        app.kubernetes.io/name: guestbook
+        tier: frontend
+    spec:
+      containers: [{name: php-redis, image: "registry.k8s.io/pause:3.10"}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-redis-master
+  namespace: labels-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: guestbook, role: master}
+  template:
+    metadata:
+      labels:
+        app: guestbook
+        app.kubernetes.io/name: guestbook
+        tier: backend
+        role: master
+    spec:
+      containers: [{name: redis, image: "redis:7"}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-redis-replica
+  namespace: labels-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: guestbook, role: replica}
+  template:
+    metadata:
+      labels:
+        app: guestbook
+        app.kubernetes.io/name: guestbook
+        tier: backend
+        role: replica
+    spec:
+      containers: [{name: redis, image: "redis:7"}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nginx
+  namespace: labels-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels: {app: nginx}
+  template:
+    metadata:
+      labels: {app: nginx}
+    spec:
+      containers: [{name: nginx, image: "nginx:1.27"}]

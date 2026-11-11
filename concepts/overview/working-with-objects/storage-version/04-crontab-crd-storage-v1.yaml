@@ -1,0 +1,43 @@
+# Lab 3: The docs CRD with ONE change: the storage version moves from v1beta1 to v1.
+# (Exactly one version may have storage: true.) New writes are now stored as v1;
+# existing objects stay v1beta1 in etcd until they are written again.
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: crontabs.example.com
+spec:
+  group: example.com
+  versions:
+  - name: v1beta1
+    served: true
+    storage: false          # was true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          host:
+            type: string
+          port:
+            type: string
+  - name: v1
+    served: true
+    storage: true           # was false
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          host:
+            type: string
+          port:
+            type: string
+          time:
+            type: string
+  conversion:
+    strategy: None
+  scope: Namespaced
+  names:
+    plural: crontabs
+    singular: crontab
+    kind: CronTab
+    shortNames:
+    - ct

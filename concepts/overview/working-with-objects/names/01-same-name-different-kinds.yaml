@@ -1,0 +1,28 @@
+# Lab 2: The docs' example - one Pod and one Deployment can both be named
+# myapp-1234 (name is unique per resource TYPE, not across types).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-1234
+  namespace: names-demo
+spec:
+  containers:
+  - name: app
+    image: nginx:1.27
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-1234
+  namespace: names-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: myapp}
+  template:
+    metadata:
+      labels: {app: myapp}
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.27

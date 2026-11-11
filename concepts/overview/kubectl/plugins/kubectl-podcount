@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# A kubectl plugin = any executable named kubectl-<name> on your PATH.
+# Usage (after adding ./plugins to PATH): kubectl podcount [-n namespace | -A]
+# Prints how many pods are in each phase.
+kubectl get pods "$@" -o jsonpath='{range .items[*]}{.status.phase}{"\n"}{end}' | sort | uniq -c

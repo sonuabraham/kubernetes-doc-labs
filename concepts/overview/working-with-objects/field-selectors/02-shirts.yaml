@@ -1,0 +1,15 @@
+# Lab 6: three Shirt objects to filter with --field-selector spec.color=..., spec.size=...
+apiVersion: stable.example.com/v1
+kind: Shirt
+metadata: {name: example1, namespace: fieldsel-demo}
+spec: {color: blue, size: S}
+---
+apiVersion: stable.example.com/v1
+kind: Shirt
+metadata: {name: example2, namespace: fieldsel-demo}
+spec: {color: blue, size: M}
+---
+apiVersion: stable.example.com/v1
+kind: Shirt
+metadata: {name: example3, namespace: fieldsel-demo}
+spec: {color: green, size: M}

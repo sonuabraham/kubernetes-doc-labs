@@ -1,0 +1,43 @@
+# Lab 4: kubectl INSIDE the cluster (e.g. a CI/CD job). No kubeconfig file:
+# kubectl uses in-cluster config = the ServiceAccount token mounted at
+# /var/run/secrets/kubernetes.io/serviceaccount + KUBERNETES_SERVICE_HOST/PORT.
+# The ServiceAccount "ci" may only read pods/deployments in kubectl-demo.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ci
+  namespace: kubectl-demo
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: read-workloads
+  namespace: kubectl-demo
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["pods", "deployments"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ci-read-workloads
+  namespace: kubectl-demo
+subjects: [{kind: ServiceAccount, name: ci, namespace: kubectl-demo}]
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: read-workloads}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ci-kubectl
+  namespace: kubectl-demo
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      serviceAccountName: ci
+      restartPolicy: Never
+      containers:
+      - name: kubectl
+        image: registry.k8s.io/kubectl:v1.37.0
+        args: ["get", "deploy,pods", "-n", "kubectl-demo", "-o", "name"]

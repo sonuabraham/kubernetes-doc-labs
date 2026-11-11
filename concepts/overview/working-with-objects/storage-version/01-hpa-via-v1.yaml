@@ -1,0 +1,13 @@
+# Lab 1: Built-in types - write through autoscaling/v1 ...
+# ... but etcd stores the HPA in the resource's storage version (autoscaling/v2).
+# Clients can read/write it through v1 or v2 - the API server converts.
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web
+  namespace: storage-version-demo
+spec:
+  scaleTargetRef: {apiVersion: apps/v1, kind: Deployment, name: web}
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
