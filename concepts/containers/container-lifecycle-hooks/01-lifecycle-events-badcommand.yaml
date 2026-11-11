@@ -1,0 +1,18 @@
+# Lab 2: the docs instruction "change the postStart command to badcommand" -> FailedPostStartHook,
+# the container is killed and restarted (CrashLoop/BackOff).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lifecycle-demo
+spec:
+  containers:
+  - name: lifecycle-demo-container
+    image: nginx
+    lifecycle:
+      postStart:
+        exec:
+          command: ["badcommand"]
+      preStop:
+        exec:
+          command: ["/bin/sh","-c","nginx -s quit; while killall -0 nginx; do sleep 1; done"]
+

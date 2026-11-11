@@ -1,0 +1,30 @@
+# Containers section tour (namespace containers-demo).
+#   Deployment hello runs the locally built image local/hello:v1
+#   (build it first: minikube image build -t local/hello:v1 app/v1).
+#   imagePullPolicy: Never - the image only exists inside minikube, there is no registry.
+#   Second container "sidecar" shows containers in a Pod are co-located: same node,
+#   same network namespace (it reaches the app over localhost), separate filesystems.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: containers-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+  namespace: containers-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: hello}
+  template:
+    metadata:
+      labels: {app: hello}
+    spec:
+      containers:
+      - name: app
+        image: local/hello:v1
+        imagePullPolicy: Never
+      - name: sidecar
+        image: nginx:1.27

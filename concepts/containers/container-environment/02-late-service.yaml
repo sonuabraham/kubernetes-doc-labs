@@ -1,0 +1,10 @@
+# Created AFTER the client pod -> the client has NO LATE_* variables
+# (env vars are fixed at container start); DNS still works.
+apiVersion: v1
+kind: Service
+metadata:
+  name: late
+  namespace: env-demo
+spec:
+  selector: {app: foo}
+  ports: [{port: 80}]

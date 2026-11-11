@@ -1,0 +1,15 @@
+# Lab 7: lifecycle.stopSignal - send SIGUSR1 instead of the image's STOPSIGNAL
+# (nginx images use SIGQUIT). Requires spec.os.name. ContainerStopSignals feature gate (ALPHA, off on minikube v1.37: the field is silently dropped).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stop-signal
+  namespace: hooks-demo
+spec:
+  os: {name: linux}
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "trap 'echo got USR1; exit 0' USR1; trap 'echo got TERM; exit 0' TERM; while true; do sleep 1; done"]
+    lifecycle:
+      stopSignal: SIGUSR1

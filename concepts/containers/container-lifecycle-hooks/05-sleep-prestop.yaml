@@ -1,0 +1,15 @@
+# Lab 6: a sleep handler - the kubelet itself waits 5s before sending the stop
+# signal (no shell or sleep binary needed in the image). Common trick to let
+# Service endpoints / load balancers drain before the app stops.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sleep-prestop
+  namespace: hooks-demo
+spec:
+  containers:
+  - name: web
+    image: nginx:1.27
+    lifecycle:
+      preStop:
+        sleep: {seconds: 5}

@@ -1,0 +1,6 @@
+{
+    "auths": {
+        "my-registry.example/images": { "auth": "…" },
+        "*.my-registry.example/images": { "auth": "…" }
+    }
+}

@@ -1,0 +1,12 @@
+# enableServiceLinks: false -> no <SVC>_SERVICE_* variables for the namespace's
+# Services (the KUBERNETES_* control-plane ones are still injected).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client-nolinks
+  namespace: env-demo
+spec:
+  enableServiceLinks: false
+  containers:
+  - name: shell
+    image: nginx:1.27

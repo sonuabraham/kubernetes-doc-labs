@@ -1,0 +1,17 @@
+# Lab 5: an httpGet postStart hook. The kubelet sends GET /started to the
+# container right after it is created. nginx returns 404 for /started (and may
+# not even be listening yet) -> the hook FAILS -> the container is KILLED
+# (PostStartHookError). This is why the docs say an HTTP postStart hook rarely
+# makes sense.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: http-poststart
+  namespace: hooks-demo
+spec:
+  containers:
+  - name: web
+    image: nginx:1.27
+    lifecycle:
+      postStart:
+        httpGet: {path: /started, port: 80}

@@ -1,0 +1,26 @@
+# The container environment, all in one pod:
+#  - hostname = pod name
+#  - pod name / namespace / node / IP via the downward API
+#  - user-defined env from the Pod spec (GREETING)
+#  - env baked into the image (nginx sets NGINX_VERSION, PATH)
+#  - service env vars for Services that existed when the pod was created
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  namespace: env-demo
+spec:
+  containers:
+  - name: shell
+    image: nginx:1.27
+    env:
+    - name: GREETING
+      value: "hello from the pod spec"
+    - name: MY_POD_NAME
+      valueFrom: {fieldRef: {fieldPath: metadata.name}}
+    - name: MY_POD_NAMESPACE
+      valueFrom: {fieldRef: {fieldPath: metadata.namespace}}
+    - name: MY_NODE_NAME
+      valueFrom: {fieldRef: {fieldPath: spec.nodeName}}
+    - name: MY_POD_IP
+      valueFrom: {fieldRef: {fieldPath: status.podIP}}

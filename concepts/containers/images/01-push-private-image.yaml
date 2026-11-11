@@ -1,0 +1,21 @@
+# Copies busybox:1.36 into the private registry as localhost:5000/private/busybox:1.0
+# using crane (go-containerregistry). hostNetwork so "localhost:5000" is the registry.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: push-private-image
+  namespace: images-demo
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      hostNetwork: true
+      restartPolicy: Never
+      containers:
+      - name: crane
+        image: gcr.io/go-containerregistry/crane:debug
+        command: ["sh", "-c"]
+        args:
+        - crane auth login localhost:5000 -u student -p s3cret --insecure &&
+          crane copy --insecure busybox:1.36 localhost:5000/private/busybox:1.0 &&
+          crane ls --insecure localhost:5000/private/busybox

@@ -1,0 +1,5 @@
+{
+  "metadata": { "name": "made-by-crictl", "namespace": "outside-kubernetes", "uid": "crictl-demo-uid", "attempt": 1 },
+  "log_directory": "/tmp/crictl-demo",
+  "linux": { "cgroup_parent": "system.slice" }
+}

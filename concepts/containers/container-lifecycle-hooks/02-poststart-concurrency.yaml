@@ -1,0 +1,18 @@
+# Lab 3: postStart runs CONCURRENTLY with the main process, and the container is
+# not reported Running until the hook finishes.
+# main process: writes a timestamp every second to /tmp/main.log
+# postStart   : sleeps 10s, then records when it ran
+apiVersion: v1
+kind: Pod
+metadata:
+  name: poststart-slow
+  namespace: hooks-demo
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "while true; do date +main-%T >> /tmp/main.log; sleep 1; done"]
+    lifecycle:
+      postStart:
+        exec:
+          command: ["sh", "-c", "date +hook-start-%T >> /tmp/main.log; sleep 10; date +hook-end-%T >> /tmp/main.log"]

@@ -1,0 +1,11 @@
+# Lab 4: an image that does not exist -> ErrImagePull, then ImagePullBackOff
+# with growing delays (max 300s).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: typo
+  namespace: images-demo
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36-does-not-exist
