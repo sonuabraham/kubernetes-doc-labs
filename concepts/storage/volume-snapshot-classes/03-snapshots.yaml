@@ -1,0 +1,14 @@
+# snap-noclass: no volumeSnapshotClassName -> needs a DEFAULT class for driver hostpath.csi.k8s.io
+# snap-retain:  explicitly the Retain class
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata: {name: snap-noclass, namespace: vsc-demo}
+spec:
+  source: {persistentVolumeClaimName: src}
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata: {name: snap-retain, namespace: vsc-demo}
+spec:
+  volumeSnapshotClassName: csi-hostpath-retain
+  source: {persistentVolumeClaimName: src}

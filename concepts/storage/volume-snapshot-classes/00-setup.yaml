@@ -1,0 +1,19 @@
+# Namespace, a source PVC, and a second class with deletionPolicy Retain for comparison
+apiVersion: v1
+kind: Namespace
+metadata: {name: vsc-demo}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: src, namespace: vsc-demo}
+spec:
+  storageClassName: csi-hostpath-sc
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: csi-hostpath-retain
+driver: hostpath.csi.k8s.io
+deletionPolicy: Retain
