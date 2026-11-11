@@ -1,0 +1,24 @@
+# autoscaling/v2 HPA: keep average CPU at 50% of requests, 1..10 replicas.
+# Uses the docs' metric block (ContainerResource on container "application")
+# and a SHORT scale-down stabilization window (30s instead of the default 300s)
+# so you can watch scale-down in a lab.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: {name: php-apache, namespace: hpa-demo}
+spec:
+  scaleTargetRef: {apiVersion: apps/v1, kind: Deployment, name: php-apache}
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: ContainerResource
+    containerResource:
+      name: cpu
+      container: application
+      target:
+        type: Utilization
+        averageUtilization: 50
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 30
+    scaleUp:
+      tolerance: 0.05

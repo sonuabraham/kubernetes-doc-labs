@@ -1,0 +1,55 @@
+# "Autoscaling based on schedules" WITHOUT installing KEDA: a CronJob that runs
+# kubectl to scale the Deployment. (KEDA's Cron scaler does this properly,
+# with time zones and scale-back built in.)
+#   every even minute -> 4 replicas ("business hours")
+#   every odd minute  -> 1 replica  ("off-peak")
+# Real schedules would be e.g. "0 8 * * 1-5" and "0 18 * * 1-5" with a timeZone.
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: scaler, namespace: autoscaling-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: scale-deployments, namespace: autoscaling-demo}
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments", "deployments/scale"]
+  verbs: ["get", "patch", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: scaler, namespace: autoscaling-demo}
+subjects: [{kind: ServiceAccount, name: scaler, namespace: autoscaling-demo}]
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: scale-deployments}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: scale-up, namespace: autoscaling-demo}
+spec:
+  schedule: "*/2 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: scaler
+          restartPolicy: Never
+          containers:
+          - name: kubectl
+            image: registry.k8s.io/kubectl:v1.37.0
+            args: ["scale", "deployment/web", "--replicas=4", "-n", "autoscaling-demo"]
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: scale-down, namespace: autoscaling-demo}
+spec:
+  schedule: "1-59/2 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: scaler
+          restartPolicy: Never
+          containers:
+          - name: kubectl
+            image: registry.k8s.io/kubectl:v1.37.0
+            args: ["scale", "deployment/web", "--replicas=1", "-n", "autoscaling-demo"]

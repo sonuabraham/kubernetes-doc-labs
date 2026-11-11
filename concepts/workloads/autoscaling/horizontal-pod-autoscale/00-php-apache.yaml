@@ -1,0 +1,28 @@
+# The HPA walkthrough app: php-apache burns CPU on every request.
+# CPU request 200m -> "50% utilization" = 100m per pod on average.
+apiVersion: v1
+kind: Namespace
+metadata: {name: hpa-demo}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: php-apache, namespace: hpa-demo}
+spec:
+  selector: {matchLabels: {run: php-apache}}
+  template:
+    metadata: {labels: {run: php-apache}}
+    spec:
+      containers:
+      - name: application
+        image: registry.k8s.io/hpa-example
+        ports: [{containerPort: 80}]
+        resources:
+          limits: {cpu: 500m}
+          requests: {cpu: 200m}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: php-apache, namespace: hpa-demo}
+spec:
+  selector: {run: php-apache}
+  ports: [{port: 80}]

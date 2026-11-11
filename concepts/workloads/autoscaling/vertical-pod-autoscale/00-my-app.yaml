@@ -1,0 +1,23 @@
+# The target the docs' VPA manifests point to: Deployment "my-app" with a
+# container named "application" (used by vpa-resource-policy.yaml).
+# Requests are deliberately WRONG (too small CPU, too big memory) so the VPA
+# has something to recommend. It burns ~300m CPU.
+apiVersion: v1
+kind: Namespace
+metadata: {name: vpa-demo}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: my-app, namespace: vpa-demo}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: my-app}}
+  template:
+    metadata: {labels: {app: my-app}}
+    spec:
+      containers:
+      - name: application
+        image: busybox:1.36
+        command: ["sh", "-c", "while true; do timeout 0.3 sh -c 'while :; do :; done'; sleep 0.7; done"]
+        resources:
+          requests: {cpu: 50m, memory: 512Mi}
