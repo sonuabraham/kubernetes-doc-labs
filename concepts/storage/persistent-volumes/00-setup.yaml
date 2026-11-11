@@ -1,0 +1,65 @@
+# Lab setup: namespaces, statically provisioned PVs and the extra StorageClasses that the
+# docs manifests reference by name. Needs: minikube addons enable volumesnapshots csi-hostpath-driver
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pv-demo
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: foo                      # the docs' "Reserving a PersistentVolume" example uses namespace foo
+---
+# Static PV, Retain policy (Lab 1-2)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes: ["ReadWriteOnce"]
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /tmp/data
+---
+# Two PVs in class "slow" for the docs' myclaim (8Gi, selector release=stable + environment in [dev]) (Lab 4)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-stable-prod
+  labels: {release: stable, environment: prod}
+spec:
+  storageClassName: slow
+  capacity: {storage: 10Gi}
+  accessModes: ["ReadWriteOnce"]
+  hostPath: {path: /tmp/pv-stable-prod}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-stable-dev
+  labels: {release: stable, environment: dev}
+spec:
+  storageClassName: slow
+  capacity: {storage: 10Gi}
+  accessModes: ["ReadWriteOnce"]
+  hostPath: {path: /tmp/pv-stable-dev}
+---
+# CSI hostpath class WITH expansion (the addon's csi-hostpath-sc has allowVolumeExpansion: false) (Lab 5)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: csi-expandable
+provisioner: hostpath.csi.k8s.io
+allowVolumeExpansion: true
+---
+# The docs' cloning example uses storageClassName "my-csi-plugin" (Lab 8)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: my-csi-plugin
+provisioner: hostpath.csi.k8s.io

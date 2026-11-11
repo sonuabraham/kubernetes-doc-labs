@@ -1,0 +1,48 @@
+# Lab 7-8: the objects the docs' restore-pvc and cloned-pvc point at:
+#   VolumeSnapshot "new-snapshot-test" (taken from snap-src-pvc) and PVC "existing-src-pvc-name".
+# A writer Pod puts a marker file on both sources first.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: snap-src-pvc
+spec:
+  storageClassName: csi-hostpath-sc
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: existing-src-pvc-name
+spec:
+  storageClassName: my-csi-plugin
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: writer
+spec:
+  restartPolicy: Never
+  containers:
+  - name: w
+    image: busybox:1.36
+    command: ["sh", "-c", "echo data-at-snapshot-time > /snap/marker; echo data-in-source-pvc > /src/marker"]
+    volumeMounts:
+    - {name: snap, mountPath: /snap}
+    - {name: src, mountPath: /src}
+  volumes:
+  - name: snap
+    persistentVolumeClaim: {claimName: snap-src-pvc}
+  - name: src
+    persistentVolumeClaim: {claimName: existing-src-pvc-name}
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: new-snapshot-test
+spec:
+  volumeSnapshotClassName: csi-hostpath-snapclass
+  source:
+    persistentVolumeClaimName: snap-src-pvc

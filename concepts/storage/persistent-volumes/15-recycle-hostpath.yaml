@@ -1,0 +1,21 @@
+# Lab 3: Recycle in action. The docs' pv0003 is NFS (no server here), so use a hostPath PV with the same policy
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: recycle-pv
+spec:
+  storageClassName: recycle
+  capacity: {storage: 1Gi}
+  accessModes: ["ReadWriteOnce"]
+  persistentVolumeReclaimPolicy: Recycle
+  hostPath: {path: /tmp/recycle-pv}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: recycle-claim
+  namespace: pv-demo
+spec:
+  storageClassName: recycle
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}

@@ -1,0 +1,14 @@
+# Lab 6: the docs' block-pvc, plus storageClassName csi-hostpath-sc so a Block-capable CSI driver provisions it
+# (the default class "standard" = k8s.io/minikube-hostpath can't do Block). Used by 10-pod-with-block-volume.yaml.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: block-pvc
+spec:
+  storageClassName: csi-hostpath-sc
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Block
+  resources:
+    requests:
+      storage: 1Gi

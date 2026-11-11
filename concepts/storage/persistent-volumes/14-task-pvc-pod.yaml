@@ -1,0 +1,29 @@
+# Lab 1-2: a claim for the static PV task-pv-volume, and a Pod using it
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim
+  namespace: pv-demo
+spec:
+  storageClassName: manual
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 500Mi            # smaller than the PV (1Gi): the claim gets the WHOLE PV
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: task-pv-pod
+  namespace: pv-demo
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "echo hello-from-$(hostname) > /data/msg; sleep 3600"]
+    volumeMounts:
+    - {name: data, mountPath: /data}
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: task-pv-claim

@@ -1,0 +1,19 @@
+# Lab 7-8: reads the restored and the cloned volumes
+apiVersion: v1
+kind: Pod
+metadata:
+  name: reader
+spec:
+  restartPolicy: Never
+  containers:
+  - name: r
+    image: busybox:1.36
+    command: ["sh", "-c", "echo restore: $(cat /restore/marker); echo clone: $(cat /clone/marker)"]
+    volumeMounts:
+    - {name: restore, mountPath: /restore}
+    - {name: clone, mountPath: /clone}
+  volumes:
+  - name: restore
+    persistentVolumeClaim: {claimName: restore-pvc}
+  - name: clone
+    persistentVolumeClaim: {claimName: cloned-pvc}

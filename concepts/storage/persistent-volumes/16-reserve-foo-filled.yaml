@@ -1,0 +1,35 @@
+# Lab 4: the docs' foo-pvc / foo-pv reservation pair with the "..." filled in (hostPath backing)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: foo-pvc
+  namespace: foo
+spec:
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  volumeName: foo-pv
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: foo-pv
+spec:
+  storageClassName: ""
+  claimRef:
+    name: foo-pvc
+    namespace: foo
+  capacity: {storage: 1Gi}
+  accessModes: ["ReadWriteOnce"]
+  hostPath: {path: /tmp/foo-pv}
+---
+# A claim that would happily match foo-pv on size/mode - but foo-pv is reserved for foo/foo-pvc
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: thief
+  namespace: foo
+spec:
+  storageClassName: ""
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
