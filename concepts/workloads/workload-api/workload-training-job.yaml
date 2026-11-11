@@ -1,0 +1,19 @@
+apiVersion: scheduling.k8s.io/v1beta1
+kind: Workload
+metadata:
+  name: training-job-workload
+  namespace: some-ns
+spec:
+  controllerRef:
+    apiGroup: batch
+    kind: Job
+    name: training-job
+  podGroupTemplates:
+  - name: workers
+    schedulingPolicy:
+      gang:
+        # The gang is schedulable only if 4 pods can run at once
+        minCount: 4
+    priorityClassName: high-priority
+    disruptionMode:
+      all: {}

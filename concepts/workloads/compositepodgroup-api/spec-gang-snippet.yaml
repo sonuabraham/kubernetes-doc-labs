@@ -1,0 +1,4 @@
+spec:
+  schedulingPolicy:
+    gang:
+      minGroupCount: 2

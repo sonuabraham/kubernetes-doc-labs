@@ -1,0 +1,12 @@
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: CompositePodGroup
+metadata:
+  name: root-group-0
+  namespace: default
+spec:
+  workloadRef:
+    workloadName: hierarchical-workload
+    templateName: root
+  schedulingPolicy:
+    gang:
+      minGroupCount: 2

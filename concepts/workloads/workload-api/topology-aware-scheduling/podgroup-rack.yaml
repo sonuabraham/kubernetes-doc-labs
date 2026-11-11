@@ -1,0 +1,11 @@
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata:
+  name: example-podgroup
+spec:
+  schedulingPolicy:
+    gang:
+      minCount: 4
+  schedulingConstraints:
+    topology:
+      - key: topology.example.com/rack

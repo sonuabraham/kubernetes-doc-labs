@@ -1,0 +1,4 @@
+spec:
+  disruptionMode:
+    all: {}
+  priorityClassName: high-priority

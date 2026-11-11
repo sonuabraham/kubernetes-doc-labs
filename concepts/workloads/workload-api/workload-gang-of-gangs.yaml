@@ -1,0 +1,23 @@
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: Workload
+metadata:
+  name: gang-of-gangs-workload
+  namespace: default
+spec:
+  compositePodGroupTemplates:
+  - name: root
+    schedulingPolicy:
+      gang:
+        # Requires both child PodGroups to be schedulable together
+        minGroupCount: 2
+    podGroupTemplates:
+    - name: workers-a
+      schedulingPolicy:
+        gang:
+          # Requires 4 Pods in this group to be schedulable
+          minCount: 4
+    - name: workers-b
+      schedulingPolicy:
+        gang:
+          # Requires 4 Pods in this group to be schedulable
+          minCount: 4

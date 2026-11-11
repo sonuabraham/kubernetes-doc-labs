@@ -1,0 +1,4 @@
+spec:
+  workloadRef:
+    workloadName: hierarchical-workload
+    templateName: replica-group

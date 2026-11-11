@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: worker-0
+  namespace: some-ns
+spec:
+  schedulingGroup:
+    podGroupName: training-worker-0
+  containers:
+  - name: ml-worker
+    image: training:v1

@@ -1,0 +1,28 @@
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: Workload
+metadata:
+  name: example-workload
+spec:
+  compositePodGroupTemplates:
+  - name: root
+    schedulingPolicy:
+      gang:
+        minGroupCount: 2
+    schedulingConstraints:
+      topology:
+      - key: topology.example.com/zone
+    podGroupTemplates:
+    - name: workers
+      schedulingPolicy:
+        gang:
+          minCount: 8
+      schedulingConstraints:
+        topology:
+        - key: topology.example.com/rack
+    - name: driver
+      schedulingPolicy:
+        gang:
+          minCount: 1
+      schedulingConstraints:
+        topology:
+        - key: topology.example.com/rack

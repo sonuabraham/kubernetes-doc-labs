@@ -40,7 +40,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Container Lifecycle Hooks](containers/container-lifecycle-hooks/)
 - ✅ [Container Runtime Interface (CRI)](containers/cri/)
 
-## [Workloads](workloads/) — `workloads/`
+## ✅ [Workloads](workloads/) — `workloads/`
 - Pods — `workloads/pods/`
   - ✅ [Pods](workloads/pods/)
   - ✅ [Pod Lifecycle](workloads/pods/pod-lifecycle/)
@@ -52,7 +52,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Disruptions](workloads/pods/disruptions/)
   - ✅ [Pod Hostname](workloads/pods/pod-hostname/)
   - ✅ [Pod QoS Classes](workloads/pods/pod-qos/)
-  - ⬜ [Scheduling Group](workloads/pods/scheduling-group/)
+  - ✅ [Scheduling Group](workloads/pods/scheduling-group/)
   - ✅ [Static Pods](workloads/pods/static-pods/)
   - ✅ [User Namespaces](workloads/pods/user-namespaces/)
   - ✅ [Downward API](workloads/pods/downward-api/)
@@ -70,13 +70,13 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Autoscaling Workloads](workloads/autoscaling/)
   - ✅ [Horizontal Pod Autoscaling](workloads/autoscaling/horizontal-pod-autoscale/)
   - ✅ [Vertical Pod Autoscaling](workloads/autoscaling/vertical-pod-autoscale/)
-- ⬜ [Workload API](workloads/workload-api/)
-  - ⬜ [Pod Group Disruption and Priority](workloads/workload-api/disruption-and-priority/)
-  - ⬜ [PodGroup Scheduling Policies](workloads/workload-api/policies/)
-  - ⬜ [Topology-Aware Workload Scheduling](workloads/workload-api/topology-aware-scheduling/)
-  - ⬜ [workloadbuilder Library](workloads/workload-api/workloadbuilder/)
-- ⬜ [PodGroup API](workloads/podgroup-api/) · ⬜ [Lifecycle](workloads/podgroup-api/lifecycle/)
-- ⬜ [CompositePodGroup API](workloads/compositepodgroup-api/) · ⬜ [Lifecycle](workloads/compositepodgroup-api/lifecycle/)
+- ✅ [Workload API](workloads/workload-api/)
+  - ✅ [Pod Group Disruption and Priority](workloads/workload-api/disruption-and-priority/)
+  - ✅ [PodGroup Scheduling Policies](workloads/workload-api/policies/)
+  - ✅ [Topology-Aware Workload Scheduling](workloads/workload-api/topology-aware-scheduling/)
+  - ✅ [workloadbuilder Library](workloads/workload-api/workloadbuilder/)
+- ✅ [PodGroup API](workloads/podgroup-api/) · ✅ [Lifecycle](workloads/podgroup-api/lifecycle/)
+- ✅ [CompositePodGroup API](workloads/compositepodgroup-api/) · ✅ [Lifecycle](workloads/compositepodgroup-api/lifecycle/)
 
 ## Services, Load Balancing, and Networking — `services-networking/`
 - ✅ [Service](services-networking/service/)

@@ -1,0 +1,5 @@
+spec:
+  podGroupTemplateRef:
+    workload:
+      workloadName: training-policy
+      podGroupTemplateName: worker

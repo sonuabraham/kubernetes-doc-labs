@@ -1,0 +1,31 @@
+# The docs' gang Job, adjusted to the v1.37 API. The docs write
+#   schedulingConstraints: {key: [{level: topology.kubernetes.io/zone}]}
+# which v1.37 rejects ("unknown field spec.scheduling.schedulingConstraints.key").
+# `kubectl explain job.spec.scheduling.schedulingConstraints` shows the served shape:
+#   schedulingConstraints: {topology: [{key: topology.kubernetes.io/zone}]}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: distributed-training
+  namespace: training
+spec:
+  parallelism: 8
+  completions: 8
+  completionMode: Indexed
+  scheduling:
+    schedulingPolicy:
+      gang: {}                # minCount omitted -> defaults to parallelism (8)
+    schedulingConstraints:
+      topology:
+      - key: topology.kubernetes.io/zone
+    disruptionMode:
+      all: {}                 # the entire group is disrupted together
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: trainer
+        image: training-image:latest
+        resources:
+          limits:
+            nvidia.com/gpu: 1

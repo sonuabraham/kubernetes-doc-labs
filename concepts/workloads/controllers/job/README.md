@@ -35,7 +35,7 @@ The docs manifests are **verbatim**:
 | [job-success-policy.yaml](job-success-policy.yaml) | only index 2 succeeds, which is enough |
 | [job-pi-with-timeout.yaml](job-pi-with-timeout.yaml), [job-pi-with-ttl.yaml](job-pi-with-ttl.yaml) | `activeDeadlineSeconds: 100`, `ttlSecondsAfterFinished: 100` |
 | [job-batch-processor.yaml](job-batch-processor.yaml) | Basic scheduling example (namespace `batch`, placeholder image `processor-image:v1`) |
-| [job-gang-distributed-training.yaml](job-gang-distributed-training.yaml) | Gang-scheduling example (needs alpha gates, see `../../workload-api`) |
+| [job-gang-distributed-training.yaml](job-gang-distributed-training.yaml) | Gang-scheduling example (needs alpha gates). **Rejected on v1.37** (`unknown field spec.scheduling.schedulingConstraints.key`); [job-gang-distributed-training-v1.37.yaml](job-gang-distributed-training-v1.37.yaml) uses the served `topology: [{key: …}]` shape. See `../../workload-api` |
 | `*-excerpt.yaml` | status/spec fragments from the page, for reference |
 
 Extra: [01-indexed-parallel.yaml](01-indexed-parallel.yaml), [02-suspend.yaml](02-suspend.yaml) (the docs' suspended `myjob`, filled in), [03-pod-replacement-policy.yaml](03-pod-replacement-policy.yaml).

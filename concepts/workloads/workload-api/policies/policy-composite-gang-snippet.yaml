@@ -1,0 +1,5 @@
+schedulingPolicy:
+  gang:
+    # The minimum number of child groups that must be schedulable
+    # simultaneously for this composite group to be admitted.
+    minGroupCount: 2

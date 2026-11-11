@@ -1,0 +1,15 @@
+# The docs' PodGroup "job-1" (priorityClassName high-priority) is rejected as
+# written: schedulingPolicy is REQUIRED (basic or gang). Same object, plus a
+# gang policy and the "All" disruption mode.
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata:
+  namespace: ns-1
+  name: job-1
+spec:
+  priorityClassName: high-priority
+  schedulingPolicy:
+    gang:
+      minCount: 2
+  disruptionMode:
+    all: {}

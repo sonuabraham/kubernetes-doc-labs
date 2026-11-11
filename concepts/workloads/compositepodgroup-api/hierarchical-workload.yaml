@@ -1,0 +1,73 @@
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: Workload
+metadata:
+  name: hierarchical-workload
+  namespace: default
+spec:
+  compositePodGroupTemplates:
+  - name: root
+    schedulingPolicy:
+      gang:
+        minGroupCount: 2
+    podGroupTemplates:
+    - name: workers-a
+      schedulingPolicy:
+        gang:
+          minCount: 4
+    - name: workers-b
+      schedulingPolicy:
+        gang:
+          minCount: 4
+---
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: CompositePodGroup
+metadata:
+  name: root-group-0
+  namespace: default
+spec:
+  workloadRef:
+    workloadName: hierarchical-workload
+    templateName: root
+  schedulingPolicy:
+    gang:
+      minGroupCount: 2
+---
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: PodGroup
+metadata:
+  name: workers-a-0
+  namespace: default
+spec:
+  parentCompositePodGroupName: root-group-0
+  workloadRef:
+    workloadName: hierarchical-workload
+    templateName: workers-a
+  schedulingPolicy:
+    gang:
+      minCount: 4
+---
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: PodGroup
+metadata:
+  name: workers-b-0
+  namespace: default
+spec:
+  parentCompositePodGroupName: root-group-0
+  workloadRef:
+    workloadName: hierarchical-workload
+    templateName: workers-b
+  schedulingPolicy:
+    gang:
+      minCount: 4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: worker-a-0
+  namespace: default
+spec:
+  schedulingGroup:
+    podGroupName: workers-a-0
+  containers:
+  - name: worker
+    image: registry.k8s.io/pause:3.9

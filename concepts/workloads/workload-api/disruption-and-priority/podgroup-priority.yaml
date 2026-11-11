@@ -1,0 +1,7 @@
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata:
+  namespace: ns-1
+  name: job-1
+spec:
+  priorityClassName: high-priority

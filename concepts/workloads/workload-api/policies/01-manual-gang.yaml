@@ -1,0 +1,20 @@
+# A hand-made PodGroup (no controller) with gang minCount 4, and a helper to
+# add member Pods one at a time (pods reference it via spec.schedulingGroup).
+apiVersion: v1
+kind: Namespace
+metadata: {name: policy-demo}
+---
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: four-or-nothing, namespace: policy-demo}
+spec:
+  schedulingPolicy:
+    gang:
+      minCount: 4
+---
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: one-by-one, namespace: policy-demo}
+spec:
+  schedulingPolicy:
+    basic: {}

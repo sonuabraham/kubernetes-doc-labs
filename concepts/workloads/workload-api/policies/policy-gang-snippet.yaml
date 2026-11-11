@@ -1,0 +1,5 @@
+schedulingPolicy:
+  gang:
+    # The number of Pods that must be schedulable simultaneously
+    # for the group to be admitted.
+    minCount: 4
