@@ -1,0 +1,10 @@
+# Lab 2: a claim with NO storageClassName (gets the default) and one with "" (explicitly no class)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: pvc-unset}
+spec: {accessModes: ["ReadWriteOnce"], resources: {requests: {storage: 1Gi}}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: pvc-empty}
+spec: {storageClassName: "", accessModes: ["ReadWriteOnce"], resources: {requests: {storage: 1Gi}}}

@@ -1,0 +1,33 @@
+# Lab 5: the docs' local-storage class (no-provisioner + WaitForFirstConsumer) needs PVs made by hand.
+# /mnt/disks/vol1 is created on the minikube node by the README command.
+apiVersion: v1
+kind: PersistentVolume
+metadata: {name: local-pv-1}
+spec:
+  capacity: {storage: 2Gi}
+  accessModes: ["ReadWriteOnce"]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local: {path: /mnt/disks/vol1}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - {key: kubernetes.io/hostname, operator: In, values: [minikube]}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: local-claim, namespace: sc-demo}
+spec:
+  storageClassName: local-storage
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: local-pod, namespace: sc-demo}
+spec:
+  containers:
+  - {name: c, image: busybox:1.36, command: ["sh", "-c", "df -h /v | tail -1; sleep 3600"], volumeMounts: [{name: v, mountPath: /v}]}
+  volumes:
+  - {name: v, persistentVolumeClaim: {claimName: local-claim}}

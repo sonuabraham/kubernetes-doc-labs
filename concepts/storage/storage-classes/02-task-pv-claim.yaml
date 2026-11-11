@@ -1,0 +1,8 @@
+# Lab 3: the claim the docs' pod-volume-binding.yaml mounts, in a WaitForFirstConsumer class
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: task-pv-claim}
+spec:
+  storageClassName: csi-wffc-retain
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}

@@ -1,0 +1,23 @@
+# Namespace + classes on minikube's csi-hostpath-driver addon used to demo the generic StorageClass fields
+apiVersion: v1
+kind: Namespace
+metadata: {name: sc-demo}
+---
+# A second default class (to show what happens with two defaults)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: csi-default
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: hostpath.csi.k8s.io
+---
+# WaitForFirstConsumer + Retain + mountOptions (Labs 3, 5)
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: csi-wffc-retain
+provisioner: hostpath.csi.k8s.io
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+mountOptions: ["noatime"]
