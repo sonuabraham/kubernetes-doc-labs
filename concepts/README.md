@@ -127,7 +127,7 @@ Status: ✅ lab written · ⬜ not yet
 
 ## Cluster Administration — `cluster-administration/`
 - ✅ [Node Shutdowns](cluster-administration/node-shutdown/) · ✅ [Swap](cluster-administration/swap-memory-management/) · ✅ [Node Autoscaling](cluster-administration/node-autoscaling/) · ✅ [Certificates](cluster-administration/certificates/)
-- ✅ [Cluster Networking](cluster-administration/networking/) · ✅ [Observability](cluster-administration/observability/) · ⬜ [Admission Webhook Good Practices](cluster-administration/admission-webhooks-good-practices/) · ⬜ [DRA for Admins](cluster-administration/dra/)
+- ✅ [Cluster Networking](cluster-administration/networking/) · ✅ [Observability](cluster-administration/observability/) · ✅ [Admission Webhook Good Practices](cluster-administration/admission-webhooks-good-practices/) · ⬜ [DRA for Admins](cluster-administration/dra/)
 - ⬜ [Logging Architecture](cluster-administration/logging/) · ⬜ [Compatibility Version](cluster-administration/compatibility-version/) · ⬜ [System Metrics](cluster-administration/system-metrics/) · ⬜ [kube-state-metrics](cluster-administration/kube-state-metrics/)
 - ⬜ [System Logs](cluster-administration/system-logs/) · ⬜ [System Traces](cluster-administration/system-traces/) · ⬜ [Proxies](cluster-administration/proxies/) · ⬜ [API Priority and Fairness](cluster-administration/flow-control/)
 - ⬜ [Installing Addons](cluster-administration/addons/) · ⬜ [Coordinated Leader Election](cluster-administration/coordinated-leader-election/)
