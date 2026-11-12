@@ -1,0 +1,1 @@
+count(kube_pod_status_ready{condition="false"}) by (namespace, pod)
