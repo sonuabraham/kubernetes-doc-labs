@@ -1,0 +1,9 @@
+shutdownGracePeriodByPodPriority:
+  - priority: 100000
+    shutdownGracePeriodSeconds: 10
+  - priority: 10000
+    shutdownGracePeriodSeconds: 180
+  - priority: 1000
+    shutdownGracePeriodSeconds: 120
+  - priority: 0
+    shutdownGracePeriodSeconds: 60
