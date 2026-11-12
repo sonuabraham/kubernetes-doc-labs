@@ -13,5 +13,5 @@ Instead the labs use **fake nodes**, [fake-nodes.sh](fake-nodes.sh):
 - The scheduler can't tell the difference, so filters, scores, spreading, taints and preemption all work on them.
 - Pods bound to a fake node never start (no kubelet). Judge results by `spec.nodeName` and events, not `Running`.
 - DaemonSets (kube-proxy, kindnet, CSI plugin) also create Pending Pods on them. That's harmless and goes away with `down`.
-- Pods on fake nodes must be **force-deleted** (`./force-delete-on-fake.sh [ns]`), otherwise namespace deletion hangs; every lab cleanup does this.
+- Pods on fake nodes must be **force-deleted**, otherwise namespace deletion hangs: every lab cleanup uses `./delete-ns.sh <ns>`.
 - If the heartbeat stops, the node lifecycle controller marks them NotReady and taints them, which itself is useful for `../node-pressure-eviction`/taint labs.

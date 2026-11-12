@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-"$(dirname "$0")"/../force-delete-on-fake.sh sched-demo
-kubectl delete namespace sched-demo --ignore-not-found
+"$(dirname "$0")"/../delete-ns.sh sched-demo
 kubectl delete clusterrolebinding verbose-scheduler-as-kube-scheduler verbose-scheduler-as-volume-scheduler --ignore-not-found
 kubectl delete rolebinding verbose-scheduler-auth-reader -n kube-system --ignore-not-found
 kubectl label node fake-2 lab/disk- >/dev/null 2>&1

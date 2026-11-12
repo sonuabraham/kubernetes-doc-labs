@@ -1,0 +1,24 @@
+# The docs' two-constraints Pod with the per-node constraint relaxed to ScheduleAnyway (the page's suggested fix)
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mypod
+  labels:
+    foo: bar
+spec:
+  topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        foo: bar
+  - maxSkew: 1
+    topologyKey: node
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        foo: bar
+  containers:
+  - name: pause
+    image: registry.k8s.io/pause:3.1

@@ -1,0 +1,7 @@
+defaultConstraints:
+  - maxSkew: 3
+    topologyKey: "kubernetes.io/hostname"
+    whenUnsatisfiable: ScheduleAnyway
+  - maxSkew: 5
+    topologyKey: "topology.kubernetes.io/zone"
+    whenUnsatisfiable: ScheduleAnyway

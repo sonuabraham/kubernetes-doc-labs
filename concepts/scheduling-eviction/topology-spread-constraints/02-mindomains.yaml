@@ -1,0 +1,19 @@
+# minDomains: with DoNotSchedule, if fewer than 3 zones have eligible nodes, the global minimum is treated as 0.
+# 4 replicas, zone spread maxSkew 1, minDomains 3 - the cluster offers zoneA and zoneB only.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: needs-three-zones}
+spec:
+  replicas: 4
+  selector: {matchLabels: {app: three-zones}}
+  template:
+    metadata: {labels: {app: three-zones}}
+    spec:
+      nodeSelector: {type: fake}
+      topologySpreadConstraints:
+      - maxSkew: 1
+        minDomains: 3
+        topologyKey: zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector: {matchLabels: {app: three-zones}}
+      containers: [{name: pause, image: registry.k8s.io/pause:3.1}]

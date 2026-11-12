@@ -1,0 +1,13 @@
+# No topologySpreadConstraints at all: the scheduler's built-in DEFAULT constraints
+# (hostname maxSkew 3, zone maxSkew 5, both ScheduleAnyway) still spread replicas of the same Deployment.
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: plain}
+spec:
+  replicas: 6
+  selector: {matchLabels: {app: plain}}
+  template:
+    metadata: {labels: {app: plain}}
+    spec:
+      nodeSelector: {type: fake}
+      containers: [{name: pause, image: registry.k8s.io/pause:3.1}]
