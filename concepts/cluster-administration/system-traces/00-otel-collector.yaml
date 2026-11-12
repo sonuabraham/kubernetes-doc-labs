@@ -1,0 +1,32 @@
+# OpenTelemetry Collector on the node's host network (the components' default endpoint is localhost:4317),
+# printing every span it receives (debug exporter). Config = the docs' one with its "exporters:" nesting fixed.
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: otel-collector, namespace: kube-system}
+data:
+  config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 127.0.0.1:4317
+    exporters:
+      debug:
+        verbosity: detailed
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [debug]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: otel-collector, namespace: kube-system}
+spec:
+  hostNetwork: true
+  containers:
+  - name: otel
+    image: otel/opentelemetry-collector:0.110.0
+    args: ["--config=/etc/otel/config.yaml"]
+    volumeMounts: [{name: c, mountPath: /etc/otel}]
+  volumes: [{name: c, configMap: {name: otel-collector}}]
