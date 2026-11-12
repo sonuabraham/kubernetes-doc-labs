@@ -108,7 +108,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Service Accounts](security/service-accounts/) · ✅ [Pod Security Policies](security/pod-security-policy/) · ✅ [Linux Nodes](security/linux-security/) · ✅ [Windows Nodes](security/windows-security/)
 - ✅ [Controlling Access to the API](security/controlling-access/) · ✅ [RBAC Good Practices](security/rbac-good-practices/) · ✅ [Secrets Good Practices](security/secrets-good-practices/)
 - ✅ [Multi-tenancy](security/multi-tenancy/) · ✅ [Hardening: Authentication](security/hardening-guide/authentication-mechanisms/) · ✅ [Hardening: DRA](security/hardening-guide/dynamic-resource-allocation/) · ✅ [Hardening: Scheduler](security/hardening-guide/scheduler/)
-- ✅ [API Server Bypass Risks](security/api-server-bypass-risks/) · ✅ [Linux Kernel Security Constraints](security/linux-kernel-security-constraints/) · ✅ [Security Checklist](security/security-checklist/) · ⬜ [Application Security Checklist](security/application-security-checklist/)
+- ✅ [API Server Bypass Risks](security/api-server-bypass-risks/) · ✅ [Linux Kernel Security Constraints](security/linux-kernel-security-constraints/) · ✅ [Security Checklist](security/security-checklist/) · ✅ [Application Security Checklist](security/application-security-checklist/)
 
 ## Policies — `policy/`
 - ⬜ [Limit Ranges](policy/limit-range/) · ⬜ [Resource Quotas](policy/resource-quotas/) · ⬜ [PID Limiting](policy/pid-limiting/) · ⬜ [Node Resource Managers](policy/node-resource-managers/)

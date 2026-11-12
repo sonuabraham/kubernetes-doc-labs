@@ -1,0 +1,71 @@
+# A web app that ticks every "base hardening" box of the application security checklist.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: appsec-demo
+  labels:                                         # [x] namespace enforces an appropriate Pod Security Standard
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.37
+---
+apiVersion: v1
+kind: ServiceAccount                              # [x] not the default ServiceAccount
+metadata: {name: web, namespace: appsec-demo}
+automountServiceAccountToken: false               # [x] no API token - the app never calls the API
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: web, namespace: appsec-demo}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: web}}
+  template:
+    metadata: {labels: {app: web}}
+    spec:
+      serviceAccountName: web
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true                        # [x] pod-level runAsNonRoot
+        runAsUser: 101                            # [x] less-privileged user (nginx-unprivileged's uid)
+        runAsGroup: 101
+        fsGroup: 101                              # [x] supplementary group for volumes
+        seccompProfile: {type: RuntimeDefault}    # [x] (advanced) seccomp
+      containers:
+      - name: web
+        image: nginxinc/nginx-unprivileged:1.27-alpine   # listens on 8080, built to run as non-root
+        ports: [{containerPort: 8080}]
+        securityContext:
+          allowPrivilegeEscalation: false         # [x]
+          readOnlyRootFilesystem: true            # [x] ... so writable paths come from emptyDirs below
+          privileged: false                       # [x]
+          capabilities: {drop: ["ALL"]}           # [x] (port 8080 needs no NET_BIND_SERVICE)
+        resources:                                # [x] QoS Guaranteed: requests == limits
+          requests: {cpu: 100m, memory: 64Mi}
+          limits: {cpu: 100m, memory: 64Mi}
+        volumeMounts:
+        - {name: tmp, mountPath: /tmp}
+        - {name: cache, mountPath: /var/cache/nginx}
+        readinessProbe: {httpGet: {path: /, port: 8080}}
+      volumes:
+      - {name: tmp, emptyDir: {sizeLimit: 16Mi}}
+      - {name: cache, emptyDir: {sizeLimit: 16Mi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: web, namespace: appsec-demo}
+spec: {selector: {app: web}, ports: [{port: 80, targetPort: 8080}]}
+---
+# [x] NetworkPolicies: default deny + only what the app needs
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: default-deny, namespace: appsec-demo}
+spec: {podSelector: {}, policyTypes: [Ingress, Egress]}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: web-ingress-from-frontend, namespace: appsec-demo}
+spec:
+  podSelector: {matchLabels: {app: web}}
+  policyTypes: [Ingress]
+  ingress:
+  - from: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: appsec-client}}}]
+    ports: [{port: 8080}]

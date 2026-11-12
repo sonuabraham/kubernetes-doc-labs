@@ -1,0 +1,13 @@
+# The same app written the "it works on my laptop" way, for comparison (lint target only)
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: naive-web}
+spec:
+  selector: {matchLabels: {app: naive-web}}
+  template:
+    metadata: {labels: {app: naive-web}}
+    spec:
+      containers:
+      - name: web
+        image: nginx:latest
+        ports: [{containerPort: 80}]
