@@ -1,0 +1,12 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaim
+...
+status:
+  allocation:
+    devices:
+      results:
+      - device: virtual-device-1
+        driver: control-plane.example.com
+        pool: central-pool
+        skipNodeOperations:
+        - "*"

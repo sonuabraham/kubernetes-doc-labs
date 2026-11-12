@@ -1,0 +1,41 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: resourceslice-with-countersets
+spec:
+  nodeName: worker-1
+  pool:
+    name: pool
+    generation: 1
+    resourceSliceCount: 2
+  driver: dra.example.com
+  sharedCounters:
+  - name: gpu-1-counters
+    counters:
+      memory:
+        value: 8Gi
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: resourceslice-with-devices
+spec:
+  nodeName: worker-1
+  pool:
+    name: pool
+    generation: 1
+    resourceSliceCount: 2
+  driver: dra.example.com
+  devices:
+  - name: device-1
+    consumesCounters:
+    - counterSet: gpu-1-counters
+      counters:
+        memory:
+          value: 6Gi
+  - name: device-2
+    consumesCounters:
+    - counterSet: gpu-1-counters
+      counters:
+        memory:
+          value: 6Gi

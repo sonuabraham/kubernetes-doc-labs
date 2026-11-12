@@ -1,0 +1,15 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: control-plane-resources
+spec:
+  nodeName: worker-1
+  pool:
+    name: central-pool
+    generation: 1
+    resourceSliceCount: 1
+  driver: control-plane.example.com
+  skipNodeOperations:
+  - "*"
+  devices:
+  - name: virtual-device-1

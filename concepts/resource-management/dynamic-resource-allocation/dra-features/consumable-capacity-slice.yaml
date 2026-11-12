@@ -1,0 +1,25 @@
+kind: ResourceSlice
+apiVersion: resource.k8s.io/v1
+metadata:
+  name: resourceslice
+spec:
+  nodeName: worker-1
+  pool:
+    name: pool
+    generation: 1
+    resourceSliceCount: 1
+  driver: dra.example.com
+  devices:
+  - name: eth1
+    allowMultipleAllocations: true
+    attributes:
+      name:
+        string: "eth1"
+    capacity:
+      bandwidth:
+        requestPolicy:
+          default: "1M"
+          validRange:
+            min: "1M"
+            step: "8"
+        value: "10G"

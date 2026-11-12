@@ -1,0 +1,15 @@
+# Namespace + DeviceClasses for the docs' slices (driver dra.example.com). The docs' bandwidth template asks for class
+# "resource.example.com" while its slice is published by "dra.example.com", so this lab's resource.example.com selects dra.example.com.
+apiVersion: v1
+kind: Namespace
+metadata: {name: dra-feat}
+---
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata: {name: dra.example.com}
+spec: {selectors: [{cel: {expression: 'device.driver == "dra.example.com"'}}]}
+---
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata: {name: resource.example.com}
+spec: {selectors: [{cel: {expression: 'device.driver == "dra.example.com"'}}]}

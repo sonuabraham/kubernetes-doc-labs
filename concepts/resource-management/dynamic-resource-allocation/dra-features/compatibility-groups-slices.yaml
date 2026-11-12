@@ -1,0 +1,45 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: gpu-counters
+spec:
+  nodeName: worker-1
+  pool:
+    name: gpu-pool
+    generation: 1
+    resourceSliceCount: 2
+  driver: gpu.example.com
+  sharedCounters:
+  - name: gpu-0-memory
+    counters:
+      memory:
+        value: 8Gi
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: gpu-devices
+spec:
+  nodeName: worker-1
+  pool:
+    name: gpu-pool
+    generation: 1
+    resourceSliceCount: 2
+  driver: gpu.example.com
+  devices:
+  - name: gpu-0-mig
+    consumesCounters:
+    - counterSet: gpu-0-memory
+      counters:
+        memory:
+          value: 4Gi
+      compatibilityGroups:
+      - mig
+  - name: gpu-0-vgpu
+    consumesCounters:
+    - counterSet: gpu-0-memory
+      counters:
+        memory:
+          value: 4Gi
+      compatibilityGroups:
+      - vgpu

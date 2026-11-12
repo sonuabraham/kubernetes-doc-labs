@@ -1,0 +1,11 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaim
+...
+status:
+  allocation:
+    devices:
+      results:
+      - consumedCapacity:
+          bandwidth: 1G
+        device: eth1
+        shareID: "a671734a-e8e5-11e4-8fde-42010af09327"
