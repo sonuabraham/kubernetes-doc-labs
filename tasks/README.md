@@ -12,9 +12,9 @@ Shared helpers live in `../concepts/` (e.g. `../concepts/scheduling-eviction/fak
 Status: ✅ lab written · ⬜ not yet
 
 ## Install Tools — `tools/`
-- ⬜ [Install and Set Up kubectl on Linux](tools/install-kubectl-linux/)
-- ⬜ [Install and Set Up kubectl on Windows](tools/install-kubectl-windows/)
-- ⬜ [Install and Set Up kubectl on macOS](tools/install-kubectl-macos/)
+- ✅ [Install and Set Up kubectl on Linux](tools/install-kubectl-linux/)
+- ✅ [Install and Set Up kubectl on Windows](tools/install-kubectl-windows/)
+- ✅ [Install and Set Up kubectl on macOS](tools/install-kubectl-macos/)
 - _(the `tools/included/` snippets are part of the install pages above)_
 
 ## Administer a Cluster — `administer-cluster/`

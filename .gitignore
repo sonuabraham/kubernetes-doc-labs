@@ -5,3 +5,5 @@
 .fake-windows-*.pid
 .cand-*.pid
 cand-*.log
+tasks/**/bin/
+tasks/**/dl/

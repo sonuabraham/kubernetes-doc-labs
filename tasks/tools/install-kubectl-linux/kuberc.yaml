@@ -1,0 +1,23 @@
+# kubectl user preferences (kuberc). Used here via KUBERC=./kuberc.yaml so ~/.kube/kuberc stays untouched.
+apiVersion: kubectl.config.k8s.io/v1beta1
+kind: Preference
+defaults:
+# always ask before deleting
+- command: delete
+  options:
+  - name: interactive
+    default: "true"
+# server-side apply by default
+- command: apply
+  options:
+  - name: server-side
+    default: "true"
+aliases:
+# "kubectl getsys pods" = kubectl get pods -n kube-system -o wide
+- name: getsys
+  command: get
+  options:
+  - name: namespace
+    default: kube-system
+  - name: output
+    default: wide
