@@ -1,0 +1,33 @@
+# A polite "fork bomb": forks children until fork() fails, then reports how far it got.
+apiVersion: v1
+kind: Pod
+metadata: {name: forker}
+spec:
+  restartPolicy: Never
+  containers:
+  - name: forker
+    image: python:3.12-alpine
+    command:
+    - python
+    - -c
+    - |
+      import os, time
+      n = 0
+      try:
+          while n < 500:
+              if os.fork() == 0:          # child: just sit there
+                  time.sleep(3600); os._exit(0)
+              n += 1
+      except OSError as e:
+          print(f"fork #{n+1} failed: {e}")
+      print(f"started {n} child processes")
+      print("pids.max", open("/sys/fs/cgroup/pids.max").read().strip(), "pids.current", open("/sys/fs/cgroup/pids.current").read().strip(), flush=True)
+      time.sleep(3600)
+---
+# A neighbour on the same node, to show it's unaffected
+apiVersion: v1
+kind: Pod
+metadata: {name: neighbour}
+spec:
+  containers:
+  - {name: neighbour, image: busybox:1.36, command: ["sh", "-c", "sleep 3600"]}
