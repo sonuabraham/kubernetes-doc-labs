@@ -1,0 +1,29 @@
+# 1) HA: ONE logical scheduler 'ha-scheduler' with 2 replicas and leader election (lease multi-sched/ha-scheduler)
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: ha-scheduler, namespace: multi-sched}
+data:
+  config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection: {leaderElect: true, resourceNamespace: multi-sched, resourceName: ha-scheduler}
+    profiles:
+    - schedulerName: ha-scheduler
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: ha-scheduler, namespace: multi-sched}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: ha-scheduler}}
+  template:
+    metadata: {labels: {app: ha-scheduler}}
+    spec:
+      serviceAccountName: scheduler
+      containers:
+      - name: kube-scheduler
+        image: registry.k8s.io/kube-scheduler:v1.37.0
+        command: ["kube-scheduler", "--config=/etc/s/config.yaml", "--bind-address=127.0.0.1", "--secure-port=0", "--v=2"]
+        volumeMounts: [{name: c, mountPath: /etc/s}]
+      volumes: [{name: c, configMap: {name: ha-scheduler}}]

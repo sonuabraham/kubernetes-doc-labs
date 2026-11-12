@@ -1,0 +1,33 @@
+# 2) ONE process, TWO profiles: 'packer' (MostAllocated = bin-packing) and 'spreader' (LeastAllocated, the default)
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: two-profiles, namespace: multi-sched}
+data:
+  config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection: {leaderElect: false, resourceNamespace: multi-sched, resourceName: two-profiles}
+    profiles:
+    - schedulerName: packer
+      pluginConfig:
+      - name: NodeResourcesFit
+        args: {scoringStrategy: {type: MostAllocated, resources: [{name: cpu, weight: 1}]}}
+    - schedulerName: spreader
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: two-profiles, namespace: multi-sched}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: two-profiles}}
+  template:
+    metadata: {labels: {app: two-profiles}}
+    spec:
+      serviceAccountName: scheduler
+      containers:
+      - name: kube-scheduler
+        image: registry.k8s.io/kube-scheduler:v1.37.0
+        command: ["kube-scheduler", "--config=/etc/s/config.yaml", "--bind-address=127.0.0.1", "--secure-port=0", "--v=2"]
+        volumeMounts: [{name: c, mountPath: /etc/s}]
+      volumes: [{name: c, configMap: {name: two-profiles}}]
