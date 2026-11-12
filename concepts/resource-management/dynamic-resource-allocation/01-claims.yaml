@@ -1,0 +1,28 @@
+# DRA basics on the fake driver:
+#   template "one-gpu"  : each Pod gets its OWN GPU (ResourceClaimTemplate → one ResourceClaim per Pod)
+#   claim "shared-h100" : ONE claim for an h100 (CEL selector), referenced by two Pods → they share the device
+apiVersion: v1
+kind: Namespace
+metadata: {name: dra-demo}
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaimTemplate
+metadata: {name: one-gpu, namespace: dra-demo}
+spec:
+  spec:
+    devices:
+      requests:
+      - name: gpu
+        exactly: {deviceClassName: gpu.example.com}
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaim
+metadata: {name: shared-h100, namespace: dra-demo}
+spec:
+  devices:
+    requests:
+    - name: gpu
+      exactly:
+        deviceClassName: gpu.example.com
+        selectors:
+        - cel: {expression: 'device.attributes["gpu.example.com"].model == "h100"'}
