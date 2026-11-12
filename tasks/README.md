@@ -1,0 +1,246 @@
+# Kubernetes Tasks – Hands-on Labs
+
+One folder per page of https://kubernetes.io/docs/tasks/, mirroring the docs URL slugs (`tasks/<section>/<page>/`).
+Same conventions as `../concepts/`: a README per lab (key ideas, step-by-step labs with **measured** output),
+docs YAML kept **verbatim**, a `cleanup.sh`, tested on the local minikube cluster (k8s v1.37, docker driver,
+containerd + kindnet). Pages that need things this machine can't run (cloud providers, Windows nodes, kubeadm
+multi-node) use throwaway minikube profiles, fake nodes or toy components, and say so.
+
+Shared helpers live in `../concepts/` (e.g. `../concepts/scheduling-eviction/fake-nodes.sh`, `delete-ns.sh`,
+`../concepts/windows/fake-windows-nodes.sh`).
+
+Status: ✅ lab written · ⬜ not yet
+
+## Install Tools — `tools/`
+- ⬜ [Install and Set Up kubectl on Linux](tools/install-kubectl-linux/)
+- ⬜ [Install and Set Up kubectl on Windows](tools/install-kubectl-windows/)
+- ⬜ [Install and Set Up kubectl on macOS](tools/install-kubectl-macos/)
+- _(the `tools/included/` snippets are part of the install pages above)_
+
+## Administer a Cluster — `administer-cluster/`
+- **Administration with kubeadm** (`administer-cluster/kubeadm/`)
+  - ⬜ [Adding Linux worker nodes](administer-cluster/kubeadm/adding-linux-nodes/)
+  - ⬜ [Adding Windows worker nodes](administer-cluster/kubeadm/adding-windows-nodes/)
+  - ⬜ [Upgrading kubeadm clusters](administer-cluster/kubeadm/kubeadm-upgrade/)
+  - ⬜ [Upgrading Linux nodes](administer-cluster/kubeadm/upgrading-linux-nodes/)
+  - ⬜ [Upgrading Windows nodes](administer-cluster/kubeadm/upgrading-windows-nodes/)
+  - ⬜ [Certificate Management with kubeadm](administer-cluster/kubeadm/kubeadm-certs/)
+  - ⬜ [Reconfiguring a kubeadm cluster](administer-cluster/kubeadm/kubeadm-reconfigure/)
+  - ⬜ [Changing The Kubernetes Package Repository](administer-cluster/kubeadm/change-package-repository/)
+- ⬜ [Overprovision Node Capacity For A Cluster](administer-cluster/node-overprovisioning/)
+- **Migrating from dockershim** (`administer-cluster/migrating-from-dockershim/`)
+  - ⬜ [Changing the Container Runtime on a Node from Docker Engine to containerd](administer-cluster/migrating-from-dockershim/change-runtime-containerd/)
+  - ⬜ [Find Out What Container Runtime is Used on a Node](administer-cluster/migrating-from-dockershim/find-out-runtime-you-use/)
+  - ⬜ [Troubleshooting CNI plugin-related errors](administer-cluster/migrating-from-dockershim/troubleshooting-cni-plugin-related-errors/)
+  - ⬜ [Check whether dockershim removal affects you](administer-cluster/migrating-from-dockershim/check-if-dockershim-removal-affects-you/)
+  - ⬜ [Migrating telemetry and security agents from dockershim](administer-cluster/migrating-from-dockershim/migrating-telemetry-and-security-agents/)
+- ⬜ [Generate Certificates Manually](administer-cluster/certificates/)
+- **Manage Memory, CPU, and API Resources** (`administer-cluster/manage-resources/`)
+  - ⬜ [Configure Default Memory Requests and Limits for a Namespace](administer-cluster/manage-resources/memory-default-namespace/)
+  - ⬜ [Configure Default CPU Requests and Limits for a Namespace](administer-cluster/manage-resources/cpu-default-namespace/)
+  - ⬜ [Configure Minimum and Maximum Memory Constraints for a Namespace](administer-cluster/manage-resources/memory-constraint-namespace/)
+  - ⬜ [Configure Minimum and Maximum CPU Constraints for a Namespace](administer-cluster/manage-resources/cpu-constraint-namespace/)
+  - ⬜ [Configure Memory and CPU Quotas for a Namespace](administer-cluster/manage-resources/quota-memory-cpu-namespace/)
+  - ⬜ [Configure a Pod Quota for a Namespace](administer-cluster/manage-resources/quota-pod-namespace/)
+- **Install a Network Policy Provider** (`administer-cluster/network-policy-provider/`)
+  - ⬜ [Use Antrea for NetworkPolicy](administer-cluster/network-policy-provider/antrea-network-policy/)
+  - ⬜ [Use Calico for NetworkPolicy](administer-cluster/network-policy-provider/calico-network-policy/)
+  - ⬜ [Use Cilium for NetworkPolicy](administer-cluster/network-policy-provider/cilium-network-policy/)
+  - ⬜ [Use Kube-router for NetworkPolicy](administer-cluster/network-policy-provider/kube-router-network-policy/)
+- ⬜ [Access Clusters Using the Kubernetes API](administer-cluster/access-cluster-api/)
+- ⬜ [Enable Or Disable Feature Gates](administer-cluster/configure-feature-gates/)
+- ⬜ [Advertise Extended Resources for a Node](administer-cluster/extended-resource-node/)
+- ⬜ [Autoscale the DNS Service in a Cluster](administer-cluster/dns-horizontal-autoscaling/)
+- ⬜ [Change the Access Mode of a PersistentVolume to ReadWriteOncePod](administer-cluster/change-pv-access-mode-readwriteoncepod/)
+- ⬜ [Change the default StorageClass](administer-cluster/change-default-storage-class/)
+- ⬜ [Switching from Polling to CRI Event-based Updates to Container Status](administer-cluster/switch-to-evented-pleg/)
+- ⬜ [Change the Reclaim Policy of a PersistentVolume](administer-cluster/change-pv-reclaim-policy/)
+- ⬜ [Cloud Controller Manager Administration](administer-cluster/running-cloud-controller/)
+- ⬜ [Configure a kubelet image credential provider](administer-cluster/kubelet-credential-provider/)
+- ⬜ [Configure Quotas for API Objects](administer-cluster/quota-api-object/)
+- ⬜ [Control CPU Management Policies on the Node](administer-cluster/cpu-management-policies/)
+- ⬜ [Control Memory Management Policies on a Node](administer-cluster/memory-manager/)
+- ⬜ [Control Topology Management Policies on a node](administer-cluster/topology-manager/)
+- ⬜ [Customizing DNS Service](administer-cluster/dns-custom-nameservers/)
+- ⬜ [Debugging DNS Resolution](administer-cluster/dns-debugging-resolution/)
+- ⬜ [Declare Network Policy](administer-cluster/declare-network-policy/)
+- ⬜ [Developing Cloud Controller Manager](administer-cluster/developing-cloud-controller-manager/)
+- ⬜ [Enable Or Disable A Kubernetes API](administer-cluster/enable-disable-api/)
+- ⬜ [Encrypting Confidential Data at Rest](administer-cluster/encrypt-data/)
+- ⬜ [Decrypt Confidential Data that is Already Encrypted at Rest](administer-cluster/decrypt-data/)
+- ⬜ [Guaranteed Scheduling For Critical Add-On Pods](administer-cluster/guaranteed-scheduling-critical-addon-pods/)
+- ⬜ [IP Masquerade Agent User Guide](administer-cluster/ip-masq-agent/)
+- ⬜ [Limit Storage Consumption](administer-cluster/limit-storage-consumption/)
+- ⬜ [Migrate Replicated Control Plane To Use Cloud Controller Manager](administer-cluster/controller-manager-leader-migration/)
+- ⬜ [Operating etcd clusters for Kubernetes](administer-cluster/configure-upgrade-etcd/)
+- ⬜ [Reserve Compute Resources for System Daemons](administer-cluster/reserve-compute-resources/)
+- ⬜ [Running Kubernetes Node Components as a Non-root User](administer-cluster/kubelet-in-userns/)
+- ⬜ [Safely Drain a Node](administer-cluster/safely-drain-node/)
+- ⬜ [Securing a Cluster](administer-cluster/securing-a-cluster/)
+- ⬜ [Harden Dynamic Resource Allocation in Your Cluster](administer-cluster/hardening-dra/)
+- ⬜ [Set Kubelet Parameters Via A Configuration File](administer-cluster/kubelet-config-file/)
+- ⬜ [Share a Cluster with Namespaces](administer-cluster/namespaces/)
+- ⬜ [Upgrade A Cluster](administer-cluster/cluster-upgrade/)
+- ⬜ [Use Cascading Deletion in a Cluster](administer-cluster/use-cascading-deletion/)
+- ⬜ [Using a KMS provider for data encryption](administer-cluster/kms-provider/)
+- ⬜ [Using CoreDNS for Service Discovery](administer-cluster/coredns/)
+- ⬜ [Using NodeLocal DNSCache in Kubernetes Clusters](administer-cluster/nodelocaldns/)
+- ⬜ [Using sysctls in a Kubernetes Cluster](administer-cluster/sysctl-cluster/)
+- ⬜ [Verify Signed Kubernetes Artifacts](administer-cluster/verify-signed-artifacts/)
+- **dns-custom-nameservers** (`administer-cluster/dns-custom-nameservers/`)
+
+## Configure Pods and Containers — `configure-pod-container/`
+- ⬜ [Assign Memory Resources to Containers and Pods](configure-pod-container/assign-memory-resource/)
+- ⬜ [Assign CPU Resources to Containers and Pods](configure-pod-container/assign-cpu-resource/)
+- **Assign Devices to Pods and Containers** (`configure-pod-container/assign-resources/`)
+  - ⬜ [Set Up DRA in a Cluster](configure-pod-container/assign-resources/set-up-dra-cluster/)
+  - ⬜ [Allocate Devices to Workloads with DRA](configure-pod-container/assign-resources/allocate-devices-dra/)
+  - ⬜ [Access DRA Device Metadata](configure-pod-container/assign-resources/access-dra-device-metadata/)
+- ⬜ [Assign Pod-level CPU and memory resources](configure-pod-container/assign-pod-level-resources/)
+- ⬜ [Configure GMSA for Windows Pods and containers](configure-pod-container/configure-gmsa/)
+- ⬜ [Resize CPU and Memory Resources assigned to Containers](configure-pod-container/resize-container-resources/)
+- ⬜ [Resize CPU and Memory Resources assigned to Pods](configure-pod-container/resize-pod-resources/)
+- ⬜ [Configure RunAsUserName for Windows pods and containers](configure-pod-container/configure-runasusername/)
+- ⬜ [Create a Windows HostProcess Pod](configure-pod-container/create-hostprocess-pod/)
+- ⬜ [Configure Quality of Service for Pods](configure-pod-container/quality-service-pod/)
+- ⬜ [Assign Extended Resources to a Container](configure-pod-container/extended-resource/)
+- ⬜ [Configure a Pod to Use a Volume for Storage](configure-pod-container/configure-volume-storage/)
+- ⬜ [Configure a Pod to Use a Projected Volume for Storage](configure-pod-container/configure-projected-volume-storage/)
+- ⬜ [Configure a Security Context for a Pod or Container](configure-pod-container/security-context/)
+- ⬜ [Configure Service Accounts for Pods](configure-pod-container/configure-service-account/)
+- ⬜ [Pull an Image from a Private Registry](configure-pod-container/pull-image-private-registry/)
+- ⬜ [Configure Liveness, Readiness and Startup Probes](configure-pod-container/configure-liveness-readiness-startup-probes/)
+- ⬜ [Assign Pods to Nodes](configure-pod-container/assign-pods-nodes/)
+- ⬜ [Assign Pods to Nodes using Node Affinity](configure-pod-container/assign-pods-nodes-using-node-affinity/)
+- ⬜ [Configure Pod Initialization](configure-pod-container/configure-pod-initialization/)
+- ⬜ [Attach Handlers to Container Lifecycle Events](configure-pod-container/attach-handler-lifecycle-event/)
+- ⬜ [Configure a Pod to Use a ConfigMap](configure-pod-container/configure-pod-configmap/)
+- ⬜ [Share Process Namespace between Containers in a Pod](configure-pod-container/share-process-namespace/)
+- ⬜ [Use a User Namespace With a Pod](configure-pod-container/user-namespaces/)
+- ⬜ [Use an Image Volume With a Pod](configure-pod-container/image-volumes/)
+- ⬜ [Set Permissions on an emptyDir Volume](configure-pod-container/configure-emptydir-volume-mode/)
+- ⬜ [Set Bind Mount Options on Volume Mounts](configure-pod-container/configure-bind-mount-options/)
+- ⬜ [Create static Pods](configure-pod-container/static-pod/)
+- ⬜ [Translate a Docker Compose File to Kubernetes Resources](configure-pod-container/translate-compose-kubernetes/)
+- ⬜ [Enforce Pod Security Standards by Configuring the Built-in Admission Controller](configure-pod-container/enforce-standards-admission-controller/)
+- ⬜ [Enforce Pod Security Standards with Namespace Labels](configure-pod-container/enforce-standards-namespace-labels/)
+- ⬜ [Migrate from PodSecurityPolicy to the Built-In PodSecurity Admission Controller](configure-pod-container/migrate-from-psp/)
+
+## Monitoring, Logging, and Debugging — `debug/`
+- **Logging in Kubernetes** (`debug/logging/`)
+- **Monitoring in Kubernetes** (`debug/monitoring/`)
+- **Troubleshooting Applications** (`debug/debug-application/`)
+  - ⬜ [Debug Pods](debug/debug-application/debug-pods/)
+  - ⬜ [Debug Services](debug/debug-application/debug-service/)
+  - ⬜ [Debug a StatefulSet](debug/debug-application/debug-statefulset/)
+  - ⬜ [Determine the Reason for Pod Failure](debug/debug-application/determine-reason-pod-failure/)
+  - ⬜ [Debug Init Containers](debug/debug-application/debug-init-containers/)
+  - ⬜ [Debug Running Pods](debug/debug-application/debug-running-pod/)
+  - ⬜ [Get a Shell to a Running Container](debug/debug-application/get-shell-running-container/)
+- **Troubleshooting Clusters** (`debug/debug-cluster/`)
+  - ⬜ [Troubleshooting kubectl](debug/debug-cluster/troubleshoot-kubectl/)
+  - ⬜ [Resource metrics pipeline](debug/debug-cluster/resource-metrics-pipeline/)
+  - ⬜ [Tools for Monitoring Resources](debug/debug-cluster/resource-usage-monitoring/)
+  - ⬜ [Monitor Node Health](debug/debug-cluster/monitor-node-health/)
+  - ⬜ [Debugging Kubernetes nodes with crictl](debug/debug-cluster/crictl/)
+  - ⬜ [Troubleshooting Topology Management](debug/debug-cluster/topology/)
+  - ⬜ [Auditing](debug/debug-cluster/audit/)
+  - ⬜ [Debugging Kubernetes Nodes With Kubectl](debug/debug-cluster/kubectl-node-debug/)
+  - ⬜ [Developing and debugging services locally using telepresence](debug/debug-cluster/local-debugging/)
+  - ⬜ [Windows debugging tips](debug/debug-cluster/windows/)
+
+## Manage Kubernetes Objects — `manage-kubernetes-objects/`
+- ⬜ [Declarative Management of Kubernetes Objects Using Configuration Files](manage-kubernetes-objects/declarative-config/)
+- ⬜ [Declarative Management of Kubernetes Objects Using Kustomize](manage-kubernetes-objects/kustomization/)
+- ⬜ [Managing Kubernetes Objects Using Imperative Commands](manage-kubernetes-objects/imperative-command/)
+- ⬜ [Imperative Management of Kubernetes Objects Using Configuration Files](manage-kubernetes-objects/imperative-config/)
+- ⬜ [Update API Objects in Place Using kubectl patch](manage-kubernetes-objects/update-api-object-kubectl-patch/)
+- ⬜ [Migrate Kubernetes Objects Using Storage Version Migration](manage-kubernetes-objects/storage-version-migration/)
+
+## Managing Secrets — `configmap-secret/`
+- ⬜ [Managing Secrets using kubectl](configmap-secret/managing-secret-using-kubectl/)
+- ⬜ [Managing Secrets using Configuration File](configmap-secret/managing-secret-using-config-file/)
+- ⬜ [Managing Secrets using Kustomize](configmap-secret/managing-secret-using-kustomize/)
+
+## Inject Data Into Applications — `inject-data-application/`
+- ⬜ [Define a Command and Arguments for a Container](inject-data-application/define-command-argument-container/)
+- ⬜ [Define Dependent Environment Variables](inject-data-application/define-interdependent-environment-variables/)
+- ⬜ [Define Environment Variables for a Container](inject-data-application/define-environment-variable-container/)
+- ⬜ [Define Environment Variable Values Using An Init Container](inject-data-application/define-environment-variable-via-file/)
+- ⬜ [Expose Pod Information to Containers Through Environment Variables](inject-data-application/environment-variable-expose-pod-information/)
+- ⬜ [Expose Pod Information to Containers Through Files](inject-data-application/downward-api-volume-expose-pod-information/)
+- ⬜ [Distribute Credentials Securely Using Secrets](inject-data-application/distribute-credentials-secure/)
+
+## Run Applications — `run-application/`
+- ⬜ [Run a Stateless Application Using a Deployment](run-application/run-stateless-application-deployment/)
+- ⬜ [Horizontal Manual Scaling for a Deployment](run-application/scale-deployment/)
+- ⬜ [Update a Deployment Without Downtime](run-application/update-deployment-rolling/)
+- ⬜ [Run a Single-Instance Stateful Application](run-application/run-single-instance-stateful-application/)
+- ⬜ [Run a Replicated Stateful Application](run-application/run-replicated-stateful-application/)
+- ⬜ [Scale a StatefulSet](run-application/scale-stateful-set/)
+- ⬜ [Delete a StatefulSet](run-application/delete-stateful-set/)
+- ⬜ [Force Delete StatefulSet Pods](run-application/force-delete-stateful-set-pod/)
+- ⬜ [HorizontalPodAutoscaler Walkthrough](run-application/horizontal-pod-autoscale-walkthrough/)
+- ⬜ [Specifying a Disruption Budget for your Application](run-application/configure-pdb/)
+- ⬜ [Accessing the Kubernetes API from a Pod](run-application/access-api-from-pod/)
+
+## Run Jobs — `job/`
+- ⬜ [Running Automated Tasks with a CronJob](job/automated-tasks-with-cron-jobs/)
+- ⬜ [Coarse Parallel Processing Using a Work Queue](job/coarse-parallel-processing-work-queue/)
+- ⬜ [Fine Parallel Processing Using a Work Queue](job/fine-parallel-processing-work-queue/)
+- ⬜ [Indexed Job for Parallel Processing with Static Work Assignment](job/indexed-parallel-processing-static/)
+- ⬜ [Job with Pod-to-Pod Communication](job/job-with-pod-to-pod-communication/)
+- ⬜ [Parallel Processing using Expansions](job/parallel-processing-expansion/)
+- ⬜ [Handling retriable and non-retriable pod failures with Pod failure policy](job/pod-failure-policy/)
+
+## Access Applications in a Cluster — `access-application-cluster/`
+- ⬜ [Deploy and Access the Kubernetes Dashboard](access-application-cluster/web-ui-dashboard/)
+- ⬜ [Accessing Clusters](access-application-cluster/access-cluster/)
+- ⬜ [Configure Access to Multiple Clusters](access-application-cluster/configure-access-multiple-clusters/)
+- ⬜ [Use Port Forwarding to Access Applications in a Cluster](access-application-cluster/port-forward-access-application-cluster/)
+- ⬜ [Use a Service to Access an Application in a Cluster](access-application-cluster/service-access-application-cluster/)
+- ⬜ [Connect a Frontend to a Backend Using Services](access-application-cluster/connecting-frontend-backend/)
+- ⬜ [Create an External Load Balancer](access-application-cluster/create-external-load-balancer/)
+- ⬜ [List All Container Images Running in a Cluster](access-application-cluster/list-all-running-container-images/)
+- ⬜ [Communicate Between Containers in the Same Pod Using a Shared Volume](access-application-cluster/communicate-containers-same-pod-shared-volume/)
+- ⬜ [Configure DNS for a Cluster](access-application-cluster/configure-dns-cluster/)
+- ⬜ [Access Services Running on Clusters](access-application-cluster/access-cluster-services/)
+
+## Extend Kubernetes — `extend-kubernetes/`
+- ⬜ [Configure the Aggregation Layer](extend-kubernetes/configure-aggregation-layer/)
+- **Use Custom Resources** (`extend-kubernetes/custom-resources/`)
+  - ⬜ [Extend the Kubernetes API with CustomResourceDefinitions](extend-kubernetes/custom-resources/custom-resource-definitions/)
+  - ⬜ [Versions in CustomResourceDefinitions](extend-kubernetes/custom-resources/custom-resource-definition-versioning/)
+- ⬜ [Set up an Extension API Server](extend-kubernetes/setup-extension-api-server/)
+- ⬜ [Configure Multiple Schedulers](extend-kubernetes/configure-multiple-schedulers/)
+- ⬜ [Use an HTTP Proxy to Access the Kubernetes API](extend-kubernetes/http-proxy-access-api/)
+- ⬜ [Use a SOCKS5 Proxy to Access the Kubernetes API](extend-kubernetes/socks5-proxy-access-api/)
+- ⬜ [Set up Konnectivity service](extend-kubernetes/setup-konnectivity/)
+
+## TLS — `tls/`
+- ⬜ [Issue a Certificate for a Kubernetes API Client Using a CertificateSigningRequest](tls/certificate-issue-client-csr/)
+- ⬜ [Configure Certificate Rotation for the Kubelet](tls/certificate-rotation/)
+- ⬜ [Manage TLS Certificates in a Cluster](tls/managing-tls-in-a-cluster/)
+- ⬜ [Manual Rotation of CA Certificates](tls/manual-rotation-of-ca-certificates/)
+
+## Manage Cluster Daemons — `manage-daemon/`
+- ⬜ [Building a Basic DaemonSet](manage-daemon/create-daemon-set/)
+- ⬜ [Perform a Rolling Update on a DaemonSet](manage-daemon/update-daemon-set/)
+- ⬜ [Perform a Rollback on a DaemonSet](manage-daemon/rollback-daemon-set/)
+- ⬜ [Running Pods on Only Some Nodes](manage-daemon/pods-some-nodes/)
+
+## Networking — `network/`
+- ⬜ [Adding entries to Pod /etc/hosts with HostAliases](network/customize-hosts-file-for-pods/)
+- ⬜ [Extend Service IP Ranges](network/extend-service-ip-ranges/)
+- ⬜ [Kubernetes Default ServiceCIDR Reconfiguration](network/reconfigure-default-service-ip-ranges/)
+- ⬜ [Validate IPv4/IPv6 dual-stack](network/validate-dual-stack/)
+
+## extend-kubectl — `extend-kubectl/`
+- ⬜ [Extend kubectl with plugins](extend-kubectl/kubectl-plugins/)
+
+## manage-gpus — `manage-gpus/`
+- ⬜ [Schedule GPUs](manage-gpus/scheduling-gpus/)
+
+## manage-hugepages — `manage-hugepages/`
+- ⬜ [Manage HugePages](manage-hugepages/scheduling-hugepages/)
+
