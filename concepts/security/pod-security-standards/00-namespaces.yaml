@@ -1,0 +1,18 @@
+# One namespace per Pod Security Standard, enforced by the built-in Pod Security Admission controller
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pss-privileged
+  labels: {pod-security.kubernetes.io/enforce: privileged}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pss-baseline
+  labels: {pod-security.kubernetes.io/enforce: baseline}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pss-restricted
+  labels: {pod-security.kubernetes.io/enforce: restricted}

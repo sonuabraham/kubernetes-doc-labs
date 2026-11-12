@@ -104,7 +104,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [kubeconfig Files](configuration/organize-cluster-access-kubeconfig/) · ✅ [Windows Resource Management](configuration/windows-resource-management/)
 
 ## Security — `security/`
-- ✅ [Cloud Native Security](security/cloud-native-security/) · ⬜ [Pod Security Standards](security/pod-security-standards/) · ⬜ [Pod Security Admission](security/pod-security-admission/)
+- ✅ [Cloud Native Security](security/cloud-native-security/) · ✅ [Pod Security Standards](security/pod-security-standards/) · ⬜ [Pod Security Admission](security/pod-security-admission/)
 - ⬜ [Service Accounts](security/service-accounts/) · ⬜ [Pod Security Policies](security/pod-security-policy/) · ⬜ [Linux Nodes](security/linux-security/) · ⬜ [Windows Nodes](security/windows-security/)
 - ⬜ [Controlling Access to the API](security/controlling-access/) · ⬜ [RBAC Good Practices](security/rbac-good-practices/) · ⬜ [Secrets Good Practices](security/secrets-good-practices/)
 - ⬜ [Multi-tenancy](security/multi-tenancy/) · ⬜ [Hardening: Authentication](security/hardening-guide/authentication-mechanisms/) · ⬜ [Hardening: DRA](security/hardening-guide/dynamic-resource-allocation/) · ⬜ [Hardening: Scheduler](security/hardening-guide/scheduler/)
