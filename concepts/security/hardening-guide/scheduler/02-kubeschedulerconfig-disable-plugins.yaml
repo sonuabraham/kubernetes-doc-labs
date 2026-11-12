@@ -1,0 +1,19 @@
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+profiles:
+  - schedulerName: my-scheduler
+    plugins:
+      # Disable specific plugins for different extension points
+      # You can disable all plugins for an extension point using "*"
+      queueSort:
+        disabled:
+        - name: "*"             # Disable all queueSort plugins
+      # - name: "PrioritySort"  # Disable specific queueSort plugin
+      filter:
+        disabled:
+        - name: "*"                 # Disable all filter plugins
+      # - name: "NodeResourcesFit"  # Disable specific filter plugin
+      permit:
+        disabled:
+        - name: "*"               # Disables all permit plugins
+      # - name: "TaintToleration" # Disable specific permit plugin

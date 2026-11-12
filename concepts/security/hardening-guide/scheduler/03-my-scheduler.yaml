@@ -1,0 +1,63 @@
+# Runs the docs' "my-scheduler" profile as a second scheduler, with two changes:
+#  - leaderElection off (a second scheduler must not fight the default one for the "kube-scheduler" lease)
+#  - queueSort NOT disabled: the docs' config disables all queueSort plugins without adding one, and kube-scheduler
+#    refuses to start: 'only one queue sort plugin required for profile ... but got 0'
+# filter and permit stay disabled ("*"), as in the docs.
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: my-scheduler, namespace: sched-harden}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: my-scheduler-as-kube-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:kube-scheduler"}
+subjects: [{kind: ServiceAccount, name: my-scheduler, namespace: sched-harden}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: my-scheduler-as-volume-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:volume-scheduler"}
+subjects: [{kind: ServiceAccount, name: my-scheduler, namespace: sched-harden}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: my-scheduler-auth-reader, namespace: kube-system}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: extension-apiserver-authentication-reader}
+subjects: [{kind: ServiceAccount, name: my-scheduler, namespace: sched-harden}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: my-scheduler-config, namespace: sched-harden}
+data:
+  config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection: {leaderElect: false}
+    profiles:
+      - schedulerName: my-scheduler
+        plugins:
+          filter:
+            disabled:
+            - name: "*"
+          permit:
+            disabled:
+            - name: "*"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: my-scheduler, namespace: sched-harden}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: my-scheduler}}
+  template:
+    metadata: {labels: {app: my-scheduler}}
+    spec:
+      serviceAccountName: my-scheduler
+      containers:
+      - name: kube-scheduler
+        image: registry.k8s.io/kube-scheduler:v1.37.0
+        command: ["kube-scheduler", "--config=/etc/my-scheduler/config.yaml", "--bind-address=127.0.0.1", "--secure-port=10260"]
+        volumeMounts: [{name: config, mountPath: /etc/my-scheduler}]
+      volumes:
+      - name: config
+        configMap: {name: my-scheduler-config}

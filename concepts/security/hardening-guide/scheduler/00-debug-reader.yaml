@@ -1,0 +1,21 @@
+# An identity allowed to read the scheduler's /metrics and /debug endpoints (non-resource URLs)
+apiVersion: v1
+kind: Namespace
+metadata: {name: sched-harden}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: debug-reader, namespace: sched-harden}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: sched-debug-reader}
+rules:
+- nonResourceURLs: ["/metrics", "/debug/*", "/configz"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: sched-debug-reader}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: sched-debug-reader}
+subjects: [{kind: ServiceAccount, name: debug-reader, namespace: sched-harden}]
