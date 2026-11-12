@@ -1,0 +1,14 @@
+# A container that writes 150Mi into its own writable layer (not a volume) with an ephemeral-storage limit of 100Mi
+apiVersion: v1
+kind: Pod
+metadata:
+  name: layer-hog
+spec:
+  restartPolicy: Never
+  containers:
+  - name: hog
+    image: busybox:1.36
+    command: ["sh", "-c", "dd if=/dev/zero of=/var/hog bs=1M count=150; echo wrote 150Mi; sleep 3600"]
+    resources:
+      requests: {ephemeral-storage: 50Mi}
+      limits: {ephemeral-storage: 100Mi}

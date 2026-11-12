@@ -1,0 +1,9 @@
+# The docs' note on quotas: a ResourceQuota on ephemeral-storage makes requests/limits MANDATORY in the namespace
+# (unless a LimitRange supplies defaults).
+apiVersion: v1
+kind: ResourceQuota
+metadata: {name: ephemeral-quota}
+spec:
+  hard:
+    requests.ephemeral-storage: 1Gi
+    limits.ephemeral-storage: 2Gi
