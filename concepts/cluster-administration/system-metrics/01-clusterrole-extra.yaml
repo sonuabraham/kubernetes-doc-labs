@@ -1,0 +1,18 @@
+# What the docs' ClusterRole is missing for a real scraper:
+#   kubelet endpoints are authorized as the node subresource nodes/metrics (not as a non-resource URL)
+#   the scheduler's /metrics/resources is its own path
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: prometheus-extra}
+rules:
+- nonResourceURLs: ["/metrics/resources", "/metrics/slis"]
+  verbs: ["get"]
+- apiGroups: [""]
+  resources: ["nodes/metrics"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: prometheus-extra-lab}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: prometheus-extra}
+subjects: [{kind: ServiceAccount, name: prometheus, namespace: metrics-lab}]

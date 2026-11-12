@@ -1,0 +1,14 @@
+# A "Prometheus" identity bound to the docs' ClusterRole (non-resource URL /metrics)
+apiVersion: v1
+kind: Namespace
+metadata: {name: metrics-lab}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: prometheus, namespace: metrics-lab}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: prometheus-lab}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: prometheus}
+subjects: [{kind: ServiceAccount, name: prometheus, namespace: metrics-lab}]
