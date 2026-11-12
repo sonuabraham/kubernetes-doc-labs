@@ -1,0 +1,8 @@
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+controllerManager:
+  extraArgs:
+  - name: "cluster-signing-cert-file"
+    value: "/etc/kubernetes/pki/ca.crt"
+  - name: "cluster-signing-key-file"
+    value: "/etc/kubernetes/pki/ca.key"

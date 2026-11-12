@@ -1,0 +1,4 @@
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+certificateValidityPeriod: 8760h # Default: 365 days × 24 hours = 1 year
+caCertificateValidityPeriod: 87600h # Default: 365 days × 24 hours * 10 = 10 years
