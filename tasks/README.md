@@ -19,7 +19,7 @@ Status: ✅ lab written · ⬜ not yet
 
 ## Administer a Cluster — `administer-cluster/`
 - **Administration with kubeadm** (`administer-cluster/kubeadm/`)
-  - ⬜ [Adding Linux worker nodes](administer-cluster/kubeadm/adding-linux-nodes/)
+  - ✅ [Adding Linux worker nodes](administer-cluster/kubeadm/adding-linux-nodes/)
   - ⬜ [Adding Windows worker nodes](administer-cluster/kubeadm/adding-windows-nodes/)
   - ✅ [Upgrading kubeadm clusters](administer-cluster/kubeadm/kubeadm-upgrade/)
   - ⬜ [Upgrading Linux nodes](administer-cluster/kubeadm/upgrading-linux-nodes/)
