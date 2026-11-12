@@ -1,0 +1,21 @@
+# One Pod with one dynamically provisioned CSI volume - used to walk the whole storage object chain
+apiVersion: v1
+kind: Namespace
+metadata: {name: storage-demo}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: data, namespace: storage-demo}
+spec:
+  storageClassName: csi-hostpath-sc
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: app, namespace: storage-demo}
+spec:
+  containers:
+  - {name: app, image: busybox:1.36, command: ["sh","-c","echo hello > /data/f; sleep 3600"], volumeMounts: [{name: data, mountPath: /data}]}
+  volumes:
+  - {name: data, persistentVolumeClaim: {claimName: data}}
