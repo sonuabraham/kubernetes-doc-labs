@@ -1,0 +1,36 @@
+# A Windows Pod using only storage features the page lists as SUPPORTED:
+# a whole PVC (no subPath), a read-only ConfigMap volume, a disk-backed emptyDir.
+apiVersion: v1
+kind: Namespace
+metadata: {name: winstor-demo}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: app-config, namespace: winstor-demo}
+data: {settings.json: '{"logLevel":"info"}'}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: win-data, namespace: winstor-demo}
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: win-app, namespace: winstor-demo}
+spec:
+  os: {name: windows}
+  nodeSelector: {kubernetes.io/os: windows}
+  containers:
+  - name: app
+    image: mcr.microsoft.com/windows/servercore:ltsc2022
+    command: ["powershell", "-Command", "Start-Sleep 3600"]
+    volumeMounts:
+    - {name: data, mountPath: 'C:\data'}
+    - {name: config, mountPath: 'C:\config', readOnly: true}       # read-only VOLUMES are fine
+    - {name: scratch, mountPath: 'C:\scratch'}
+  volumes:
+  - {name: data, persistentVolumeClaim: {claimName: win-data}}
+  - {name: config, configMap: {name: app-config}}
+  - {name: scratch, emptyDir: {}}                                  # disk, not medium: Memory

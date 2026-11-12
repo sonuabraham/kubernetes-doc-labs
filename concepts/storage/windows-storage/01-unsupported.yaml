@@ -1,0 +1,63 @@
+# Each Pod uses ONE storage feature the page says Windows nodes don't support.
+# Which does the API server reject (thanks to spec.os.name: windows), and which only fail on the node?
+apiVersion: v1
+kind: Pod
+metadata: {name: ro-rootfs, namespace: winstor-demo}
+spec:
+  os: {name: windows}
+  containers:
+  - {name: c, image: mcr.microsoft.com/windows/servercore:ltsc2022, securityContext: {readOnlyRootFilesystem: true}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: fsgroup, namespace: winstor-demo}
+spec:
+  os: {name: windows}
+  securityContext: {fsGroup: 2000}
+  containers:
+  - {name: c, image: mcr.microsoft.com/windows/servercore:ltsc2022}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: memory-emptydir, namespace: winstor-demo}
+spec:
+  os: {name: windows}
+  containers:
+  - {name: c, image: mcr.microsoft.com/windows/servercore:ltsc2022, volumeMounts: [{name: m, mountPath: 'C:\m'}]}
+  volumes: [{name: m, emptyDir: {medium: Memory}}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: subpath, namespace: winstor-demo}
+spec:
+  os: {name: windows}
+  containers:
+  - {name: c, image: mcr.microsoft.com/windows/servercore:ltsc2022, volumeMounts: [{name: cfg, mountPath: 'C:\cfg\settings.json', subPath: settings.json}]}
+  volumes: [{name: cfg, configMap: {name: app-config}}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: secret-defaultmode, namespace: winstor-demo}
+spec:
+  os: {name: windows}
+  containers:
+  - {name: c, image: mcr.microsoft.com/windows/servercore:ltsc2022, volumeMounts: [{name: s, mountPath: 'C:\s'}]}
+  volumes: [{name: s, secret: {secretName: x, defaultMode: 0400}}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: block-device, namespace: winstor-demo}
+spec:
+  os: {name: windows}
+  containers:
+  - {name: c, image: mcr.microsoft.com/windows/servercore:ltsc2022, volumeDevices: [{name: b, devicePath: '\\.\PhysicalDrive1'}]}
+  volumes: [{name: b, persistentVolumeClaim: {claimName: win-data}}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: nfs, namespace: winstor-demo}
+spec:
+  os: {name: windows}
+  containers:
+  - {name: c, image: mcr.microsoft.com/windows/servercore:ltsc2022, volumeMounts: [{name: share, mountPath: 'C:\share'}]}
+  volumes: [{name: share, nfs: {server: nfs.example.com, path: /export}}]
