@@ -1,0 +1,23 @@
+# A dra.example.com "driver" with two devices on fake-1 (the docs' DeviceTaintRule targets that driver),
+# one of them tainted BY THE DRIVER in the slice (NoSchedule), plus a class and namespace.
+apiVersion: v1
+kind: Namespace
+metadata: {name: dra-taint}
+---
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata: {name: dra.example.com}
+spec: {selectors: [{cel: {expression: 'device.driver == "dra.example.com"'}}]}
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata: {name: fake-1-dra.example.com}
+spec:
+  driver: dra.example.com
+  nodeName: fake-1
+  pool: {name: fake-1, generation: 1, resourceSliceCount: 1}
+  devices:
+  - name: dev-ok
+  - name: dev-degraded
+    taints:
+    - {key: dra.example.com/degraded, value: ecc-errors, effect: NoSchedule}

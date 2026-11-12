@@ -1,0 +1,7 @@
+# Dry-run a maintenance taint: effect None selects devices and REPORTS what NoExecute would evict, without doing it.
+apiVersion: resource.k8s.io/v1
+kind: DeviceTaintRule
+metadata: {name: preview}
+spec:
+  deviceSelector: {driver: gpu.example.com}
+  taint: {key: gpu.example.com/maintenance, value: planned, effect: None}
