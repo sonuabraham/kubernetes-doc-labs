@@ -1,0 +1,13 @@
+# The page's "Example resource constraints" ideas: per-Pod totals, PVC sizes and limit/request ratios
+apiVersion: v1
+kind: LimitRange
+metadata: {name: more-constraints}
+spec:
+  limits:
+  - type: Pod                          # sum over all containers of a Pod
+    max: {memory: 256Mi}
+  - type: Container
+    maxLimitRequestRatio: {memory: "2"} # limit may be at most 2x the request
+  - type: PersistentVolumeClaim
+    min: {storage: 1Gi}
+    max: {storage: 2Gi}
