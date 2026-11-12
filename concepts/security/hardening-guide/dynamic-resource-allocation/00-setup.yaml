@@ -1,0 +1,46 @@
+# Namespace, a DeviceClass + ResourceClaim for driver dra.example.com, and three ServiceAccounts:
+#   status-only  : just resourceclaims/status (the OLD way of granting DRA components)
+#   allocator    : bound to the docs' dra-binding-updater
+#   node-driver  : bound to the docs' dra-node-driver-status-updater (associated-node verbs)
+#   multi-driver : bound to the docs' dra-multinode-status-updater (arbitrary-node verbs)
+apiVersion: v1
+kind: Namespace
+metadata: {name: dra-harden}
+---
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata: {name: example-gpu}
+spec:
+  selectors:
+  - cel: {expression: 'device.driver == "dra.example.com"'}
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaim
+metadata: {name: gpu-claim, namespace: dra-harden}
+spec:
+  devices:
+    requests:
+    - name: gpu
+      exactly: {deviceClassName: example-gpu}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: status-only, namespace: dra-harden}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: allocator, namespace: dra-harden}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: node-driver, namespace: dra-harden}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: multi-driver, namespace: dra-harden}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: dra-status-only}
+rules:
+- {apiGroups: ["resource.k8s.io"], resources: ["resourceclaims/status"], verbs: ["get", "patch", "update"]}
