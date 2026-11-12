@@ -1,0 +1,10 @@
+# A reader ServiceAccount bound to the built-in "view" ClusterRole in cr-demo.
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: reader, namespace: cr-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: reader-view, namespace: cr-demo}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: view}
+subjects: [{kind: ServiceAccount, name: reader, namespace: cr-demo}]

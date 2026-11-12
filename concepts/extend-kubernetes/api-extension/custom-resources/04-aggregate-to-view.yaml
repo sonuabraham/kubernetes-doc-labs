@@ -1,0 +1,10 @@
+# Aggregates read access to the new types into the built-in "view" ClusterRole (label below).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: shirts-backups-view
+  labels: {rbac.authorization.k8s.io/aggregate-to-view: "true"}
+rules:
+- apiGroups: [stable.example.com, demo.example.com]
+  resources: [shirts, backups]
+  verbs: [get, list, watch]

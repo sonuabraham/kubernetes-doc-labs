@@ -1,0 +1,8 @@
+# Only "database" is set: everything else comes from the CRD's schema defaults.
+apiVersion: demo.example.com/v1
+kind: Backup
+metadata:
+  name: orders-db
+  namespace: cr-demo
+spec:
+  database: orders
