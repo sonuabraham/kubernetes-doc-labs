@@ -1,0 +1,13 @@
+# EncryptionConfiguration for kube-apiserver --encryption-provider-config.
+# Secrets are written with aescbc (key1); identity (plaintext) stays LAST so old, unencrypted data remains readable.
+# The key below is for this lab only - generate your own: head -c 32 /dev/urandom | base64
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+- resources: ["secrets"]
+  providers:
+  - aescbc:
+      keys:
+      - name: key1
+        secret: c2VjcmV0LWxhYi1rZXktMzItYnl0ZXMtbG9uZy0hISE=
+  - identity: {}
