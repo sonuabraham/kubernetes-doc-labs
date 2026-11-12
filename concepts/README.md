@@ -105,7 +105,7 @@ Status: ✅ lab written · ⬜ not yet
 
 ## Security — `security/`
 - ✅ [Cloud Native Security](security/cloud-native-security/) · ✅ [Pod Security Standards](security/pod-security-standards/) · ✅ [Pod Security Admission](security/pod-security-admission/)
-- ⬜ [Service Accounts](security/service-accounts/) · ⬜ [Pod Security Policies](security/pod-security-policy/) · ⬜ [Linux Nodes](security/linux-security/) · ⬜ [Windows Nodes](security/windows-security/)
+- ✅ [Service Accounts](security/service-accounts/) · ⬜ [Pod Security Policies](security/pod-security-policy/) · ⬜ [Linux Nodes](security/linux-security/) · ⬜ [Windows Nodes](security/windows-security/)
 - ⬜ [Controlling Access to the API](security/controlling-access/) · ⬜ [RBAC Good Practices](security/rbac-good-practices/) · ⬜ [Secrets Good Practices](security/secrets-good-practices/)
 - ⬜ [Multi-tenancy](security/multi-tenancy/) · ⬜ [Hardening: Authentication](security/hardening-guide/authentication-mechanisms/) · ⬜ [Hardening: DRA](security/hardening-guide/dynamic-resource-allocation/) · ⬜ [Hardening: Scheduler](security/hardening-guide/scheduler/)
 - ⬜ [API Server Bypass Risks](security/api-server-bypass-risks/) · ⬜ [Linux Kernel Security Constraints](security/linux-kernel-security-constraints/) · ⬜ [Security Checklist](security/security-checklist/) · ⬜ [Application Security Checklist](security/application-security-checklist/)
