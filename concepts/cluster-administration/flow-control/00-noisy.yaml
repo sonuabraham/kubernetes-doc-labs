@@ -1,0 +1,36 @@
+# A deliberately tiny priority level for one noisy client (ServiceAccount apf-lab/noisy): 1 nominal share,
+# no queuing (Reject) → under parallel load most of its requests get HTTP 429. Everyone else is unaffected.
+apiVersion: v1
+kind: Namespace
+metadata: {name: apf-lab}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: noisy, namespace: apf-lab}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: noisy-view, namespace: apf-lab}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: view}
+subjects: [{kind: ServiceAccount, name: noisy, namespace: apf-lab}]
+---
+apiVersion: flowcontrol.apiserver.k8s.io/v1
+kind: PriorityLevelConfiguration
+metadata: {name: tiny}
+spec:
+  type: Limited
+  limited:
+    nominalConcurrencyShares: 1
+    lendablePercent: 0
+    limitResponse: {type: Reject}
+---
+apiVersion: flowcontrol.apiserver.k8s.io/v1
+kind: FlowSchema
+metadata: {name: noisy-client}
+spec:
+  matchingPrecedence: 500
+  priorityLevelConfiguration: {name: tiny}
+  distinguisherMethod: {type: ByUser}
+  rules:
+  - subjects: [{kind: ServiceAccount, serviceAccount: {name: noisy, namespace: apf-lab}}]
+    resourceRules: [{verbs: ["*"], apiGroups: ["*"], resources: ["*"], namespaces: ["*"], clusterScope: true}]
