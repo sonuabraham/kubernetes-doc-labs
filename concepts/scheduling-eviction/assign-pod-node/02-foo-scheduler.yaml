@@ -1,0 +1,62 @@
+# Runs the docs' foo-scheduler profile (NodeAffinity addedAffinity: scheduler-profile=foo) as a second scheduler.
+# The docs' config ALSO declares "default-scheduler"; a second process with that name would compete with the real
+# default scheduler, so this copy keeps only foo-scheduler (+ leaderElection off).
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: foo-scheduler, namespace: apn-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: apn-foo-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:kube-scheduler"}
+subjects: [{kind: ServiceAccount, name: foo-scheduler, namespace: apn-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: apn-foo-volume-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:volume-scheduler"}
+subjects: [{kind: ServiceAccount, name: foo-scheduler, namespace: apn-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: apn-foo-auth-reader, namespace: kube-system}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: extension-apiserver-authentication-reader}
+subjects: [{kind: ServiceAccount, name: foo-scheduler, namespace: apn-demo}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: foo-scheduler, namespace: apn-demo}
+data:
+  config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection: {leaderElect: false}
+    profiles:
+      - schedulerName: foo-scheduler
+        pluginConfig:
+          - name: NodeAffinity
+            args:
+              addedAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: scheduler-profile
+                      operator: In
+                      values:
+                      - foo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: foo-scheduler, namespace: apn-demo}
+spec:
+  selector: {matchLabels: {app: foo-scheduler}}
+  template:
+    metadata: {labels: {app: foo-scheduler}}
+    spec:
+      serviceAccountName: foo-scheduler
+      containers:
+      - name: kube-scheduler
+        image: registry.k8s.io/kube-scheduler:v1.37.0
+        command: ["kube-scheduler", "--config=/etc/s/config.yaml", "--bind-address=127.0.0.1", "--secure-port=0"]
+        volumeMounts: [{name: c, mountPath: /etc/s}]
+      volumes: [{name: c, configMap: {name: foo-scheduler}}]

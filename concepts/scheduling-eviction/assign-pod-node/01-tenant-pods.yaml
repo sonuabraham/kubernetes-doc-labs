@@ -1,0 +1,28 @@
+# The docs' match/mismatchLabelKeys tenant example as runnable Pods (the docs' excerpt has "..."):
+# two tenants, node pools pool-1 (fake-1) and pool-2 (fake-2, fake-3). Applied with TENANT/NAME substituted.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: NAME
+  labels:
+    tenant: TENANT
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - matchLabelKeys:
+          - tenant
+        labelSelector: {}
+        topologyKey: node-pool
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - mismatchLabelKeys:
+        - tenant
+        labelSelector:
+          matchExpressions:
+          - key: tenant
+            operator: Exists
+        topologyKey: node-pool
+  nodeSelector: {type: fake}
+  containers:
+  - {name: c, image: registry.k8s.io/pause:3.8}
