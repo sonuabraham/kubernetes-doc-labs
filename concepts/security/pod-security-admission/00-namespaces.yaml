@@ -1,0 +1,17 @@
+# psa-modes: enforce baseline, but WARN and AUDIT at restricted (a common migration setup)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: psa-modes
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: latest
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: latest
+---
+# psa-legacy: no labels yet - we'll label it AFTER workloads exist
+apiVersion: v1
+kind: Namespace
+metadata: {name: psa-legacy}
