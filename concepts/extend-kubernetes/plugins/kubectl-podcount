@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# A kubectl plugin = any executable named kubectl-<name> on PATH. "kubectl podcount" runs this file.
+# Counts Pods per node and phase (all namespaces).
+kubectl get pods -A --no-headers -o custom-columns=NODE:.spec.nodeName,PHASE:.status.phase "$@" | sort | uniq -c | sort -rn

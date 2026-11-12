@@ -1,0 +1,58 @@
+# Steps 2-3 of the docs' example: "A Deployment that makes sure a Pod is running that contains the controller
+# part of the operator" + the operator code (sampledb_operator.py, shipped in a ConfigMap instead of a custom image).
+apiVersion: v1
+kind: Namespace
+metadata: {name: sampledb-system}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: sampledb-operator, namespace: sampledb-system}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: sampledb-operator}
+rules:
+- apiGroups: [sampledb.example.com]
+  resources: [sampledbs, sampledbs/status]
+  verbs: [get, list, watch, update, patch]
+- apiGroups: [apps]
+  resources: [statefulsets]
+  verbs: [get, list, watch, create, update, patch, delete]
+- apiGroups: [batch]
+  resources: [jobs, cronjobs]
+  verbs: [get, list, watch, create, update, patch, delete]
+- apiGroups: [""]
+  resources: [services, secrets, persistentvolumeclaims]
+  verbs: [get, list, watch, create, update, patch, delete, deletecollection]
+- apiGroups: [""]
+  resources: [namespaces]
+  verbs: [get]
+- apiGroups: [""]
+  resources: [events]
+  verbs: [create]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: sampledb-operator}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: sampledb-operator}
+subjects: [{kind: ServiceAccount, name: sampledb-operator, namespace: sampledb-system}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: sampledb-operator, namespace: sampledb-system}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: sampledb-operator}
+  template:
+    metadata:
+      labels: {app: sampledb-operator}
+    spec:
+      serviceAccountName: sampledb-operator
+      containers:
+      - name: operator
+        image: python:3.12-slim
+        command: [python, -u, /app/sampledb_operator.py]
+        volumeMounts: [{name: code, mountPath: /app}]
+      volumes:
+      - {name: code, configMap: {name: sampledb-operator-code}}

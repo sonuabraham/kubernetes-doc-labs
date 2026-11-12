@@ -1,0 +1,9 @@
+# What a user creates. The docs use "SampleDB/example-database".
+apiVersion: sampledb.example.com/v1
+kind: SampleDB
+metadata:
+  name: example-database
+  namespace: db-demo
+spec:
+  version: "16.4"
+  backupSchedule: "*/1 * * * *"     # every minute, so you can watch backups happen

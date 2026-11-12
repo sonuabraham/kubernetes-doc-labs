@@ -1,0 +1,13 @@
+# Mounts the snapshot PVC the operator left behind and shows the dump.
+apiVersion: v1
+kind: Pod
+metadata: {name: read-snapshot, namespace: db-demo}
+spec:
+  restartPolicy: Never
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: [sh, -c, "ls -l /snapshots; grep -A3 '^COPY public.items' /snapshots/*.sql"]
+    volumeMounts: [{name: s, mountPath: /snapshots}]
+  volumes:
+  - {name: s, persistentVolumeClaim: {claimName: example-database-snapshots}}
