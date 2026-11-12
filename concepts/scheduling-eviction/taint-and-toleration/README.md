@@ -55,7 +55,7 @@ kubectl get events $N --field-selector reason=TaintManagerEviction -o custom-col
 
 ## Lab 4 – Taint-based evictions (node unreachable)
 ```bash
-kill $(cat ../.fake-nodes.pid)          # stop the fake "kubelet" heartbeat
+kill $(cat ../.fake-nodes-minikube.pid)          # stop the fake "kubelet" heartbeat
 #   ~52s later:
 kubectl get node fake-3 -o jsonpath='{.spec.taints}'
 #   [{"effect":"NoSchedule","key":"node.kubernetes.io/unreachable",...},{"effect":"NoExecute","key":"node.kubernetes.io/unreachable",...}]

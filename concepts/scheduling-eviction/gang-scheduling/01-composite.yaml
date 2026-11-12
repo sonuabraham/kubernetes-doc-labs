@@ -1,0 +1,36 @@
+# Lab 5: a CompositePodGroup gang (minGroupCount 2) over two child gangs. Child "b" needs 3 Pods, "a" needs 2:
+# 5 × 3 CPU > 4 fake-node slots, so the hierarchy is all-or-nothing: neither child is placed.
+# Composite hierarchies need a Workload (v1alpha3) and workloadRefs - standalone PodGroups don't.
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: Workload
+metadata: {name: two-part, namespace: gang-sched}
+spec:
+  compositePodGroupTemplates:
+  - name: root
+    schedulingPolicy: {gang: {minGroupCount: 2}}
+    podGroupTemplates:
+    - {name: a, schedulingPolicy: {gang: {minCount: 2}}}
+    - {name: b, schedulingPolicy: {gang: {minCount: 3}}}
+---
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: CompositePodGroup
+metadata: {name: root, namespace: gang-sched}
+spec:
+  workloadRef: {workloadName: two-part, templateName: root}
+  schedulingPolicy: {gang: {minGroupCount: 2}}
+---
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: PodGroup
+metadata: {name: a, namespace: gang-sched}
+spec:
+  parentCompositePodGroupName: root
+  workloadRef: {workloadName: two-part, templateName: a}
+  schedulingPolicy: {gang: {minCount: 2}}
+---
+apiVersion: scheduling.k8s.io/v1alpha3
+kind: PodGroup
+metadata: {name: b, namespace: gang-sched}
+spec:
+  parentCompositePodGroupName: root
+  workloadRef: {workloadName: two-part, templateName: b}
+  schedulingPolicy: {gang: {minCount: 3}}

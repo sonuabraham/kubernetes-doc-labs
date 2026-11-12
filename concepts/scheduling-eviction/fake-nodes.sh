@@ -8,7 +8,10 @@
 #   - Fake nodes carry label type=fake and zones zone-a / zone-b / zone-c round-robin.
 #   - A DaemonSet-style controller (kindnet, kube-proxy) will create Pods for them too; they're harmless.
 set -euo pipefail
-cmd=${1:-up}; N=${2:-3}; DIR=$(cd "$(dirname "$0")" && pwd); PIDF=$DIR/.fake-nodes.pid
+cmd=${1:-up}; N=${2:-3}; DIR=$(cd "$(dirname "$0")" && pwd)
+# pin the cluster: the background heartbeat must keep talking to THIS context even if you switch later
+CTX=${CTX:-$(kubectl config current-context)}; export KUBECTL_CTX=$CTX; PIDF=$DIR/.fake-nodes-$CTX.pid
+kubectl(){ command kubectl --context "$KUBECTL_CTX" "$@"; }; export -f kubectl
 if [ "$cmd" = down ]; then
   [ -f "$PIDF" ] && kill "$(cat "$PIDF")" 2>/dev/null; rm -f "$PIDF"
   kubectl delete node -l type=fake --ignore-not-found; exit 0

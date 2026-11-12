@@ -1,0 +1,22 @@
+# Standalone PodGroups (no Workload needed for the scheduler to gang them)
+apiVersion: v1
+kind: Namespace
+metadata: {name: gang-sched}
+---
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: quorum, namespace: gang-sched}      # Lab 1: held until 4 Pods exist
+spec:
+  schedulingPolicy: {gang: {minCount: 4}}
+---
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: too-big, namespace: gang-sched}     # Lab 3: minCount 5, only 4 slots
+spec:
+  schedulingPolicy: {gang: {minCount: 5}}
+---
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: partial, namespace: gang-sched}     # Lab 2: minCount 4, 6 Pods, 4 slots
+spec:
+  schedulingPolicy: {gang: {minCount: 4}}
