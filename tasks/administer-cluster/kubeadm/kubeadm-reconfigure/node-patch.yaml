@@ -1,0 +1,5 @@
+# Patch for the Node object (kubectl patch no kubeadm-lab --patch-file node-patch.yaml).
+# Keep it around and re-apply after "kubeadm upgrade", which may rewrite labels/taints/annotations it owns.
+metadata:
+  labels:
+    lab.example.com/rack: r1

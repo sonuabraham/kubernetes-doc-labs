@@ -1,0 +1,10 @@
+# kubeadm patch for the CoreDNS Deployment (target "corednsdeployment"). Re-applied every time kubeadm
+# (re)creates CoreDNS when you pass --patches <dir> - so the 200Mi limit survives "kubeadm upgrade apply".
+spec:
+  template:
+    spec:
+      containers:
+      - name: coredns
+        resources:
+          limits:
+            memory: 200Mi

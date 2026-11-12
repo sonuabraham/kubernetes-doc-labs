@@ -25,7 +25,7 @@ Status: ✅ lab written · ⬜ not yet
   - ⬜ [Upgrading Linux nodes](administer-cluster/kubeadm/upgrading-linux-nodes/)
   - ⬜ [Upgrading Windows nodes](administer-cluster/kubeadm/upgrading-windows-nodes/)
   - ✅ [Certificate Management with kubeadm](administer-cluster/kubeadm/kubeadm-certs/)
-  - ⬜ [Reconfiguring a kubeadm cluster](administer-cluster/kubeadm/kubeadm-reconfigure/)
+  - ✅ [Reconfiguring a kubeadm cluster](administer-cluster/kubeadm/kubeadm-reconfigure/)
   - ✅ [Changing The Kubernetes Package Repository](administer-cluster/kubeadm/change-package-repository/)
 - ⬜ [Overprovision Node Capacity For A Cluster](administer-cluster/node-overprovisioning/)
 - **Migrating from dockershim** (`administer-cluster/migrating-from-dockershim/`)

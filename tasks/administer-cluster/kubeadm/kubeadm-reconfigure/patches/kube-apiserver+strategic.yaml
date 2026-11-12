@@ -1,0 +1,8 @@
+# kubeadm patch for the kube-apiserver static Pod manifest (target "kube-apiserver"). Node-specific: keep it
+# on the control-plane node and pass --patches <dir> to "kubeadm init phase control-plane" / "kubeadm upgrade".
+spec:
+  containers:
+  - name: kube-apiserver
+    resources:
+      requests:
+        cpu: 300m
