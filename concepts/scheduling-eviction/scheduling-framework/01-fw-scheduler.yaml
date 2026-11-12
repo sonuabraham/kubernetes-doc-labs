@@ -1,0 +1,41 @@
+# One scheduler process, three profiles, each changing ONE extension point of the framework:
+#   no-taint-filter : Filter      - TaintToleration disabled at the filter point (still scores)
+#   image-lover     : Score       - ImageLocality weight 50 (default 1): prefer nodes that already have the image
+#   no-preemption   : PostFilter  - DefaultPreemption disabled: an unschedulable Pod never preempts
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: fw-scheduler, namespace: fw-demo}
+data:
+  config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection: {leaderElect: false}
+    profiles:
+    - schedulerName: no-taint-filter
+      plugins:
+        filter:
+          disabled: [{name: TaintToleration}]
+    - schedulerName: image-lover
+      plugins:
+        multiPoint:
+          enabled: [{name: ImageLocality, weight: 50}]
+    - schedulerName: no-preemption
+      plugins:
+        postFilter:
+          disabled: [{name: DefaultPreemption}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: fw-scheduler, namespace: fw-demo}
+spec:
+  selector: {matchLabels: {app: fw-scheduler}}
+  template:
+    metadata: {labels: {app: fw-scheduler}}
+    spec:
+      serviceAccountName: fw-scheduler
+      containers:
+      - name: kube-scheduler
+        image: registry.k8s.io/kube-scheduler:v1.37.0
+        command: ["kube-scheduler", "--config=/etc/s/config.yaml", "--bind-address=127.0.0.1", "--secure-port=0"]
+        volumeMounts: [{name: c, mountPath: /etc/s}]
+      volumes: [{name: c, configMap: {name: fw-scheduler}}]

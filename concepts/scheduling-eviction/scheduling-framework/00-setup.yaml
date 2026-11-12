@@ -1,0 +1,37 @@
+# Namespace + identity for (a) reading the default scheduler's /configz and (b) running "fw-scheduler"
+apiVersion: v1
+kind: Namespace
+metadata: {name: fw-demo}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: fw-scheduler, namespace: fw-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: fw-demo-configz-reader}
+rules: [{nonResourceURLs: ["/configz", "/metrics"], verbs: ["get"]}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: fw-demo-configz-reader}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: fw-demo-configz-reader}
+subjects: [{kind: ServiceAccount, name: fw-scheduler, namespace: fw-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: fw-demo-kube-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:kube-scheduler"}
+subjects: [{kind: ServiceAccount, name: fw-scheduler, namespace: fw-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: fw-demo-volume-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:volume-scheduler"}
+subjects: [{kind: ServiceAccount, name: fw-scheduler, namespace: fw-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: fw-demo-auth-reader, namespace: kube-system}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: extension-apiserver-authentication-reader}
+subjects: [{kind: ServiceAccount, name: fw-scheduler, namespace: fw-demo}]

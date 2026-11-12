@@ -1,0 +1,10 @@
+# For the PostFilter (preemption) comparison
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: {name: fw-low}
+value: 10
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: {name: fw-high}
+value: 1000
