@@ -1,0 +1,22 @@
+# A Windows workload WITHOUT nodeSelector/tolerations. spec.os.name is set, but the
+# scheduler ignores it: replicas can land on the Linux node, where the kubelet rejects them.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: win-noselector
+  namespace: win-intro
+spec:
+  replicas: 4
+  selector:
+    matchLabels: {app: win-noselector}
+  template:
+    metadata:
+      labels: {app: win-noselector}
+    spec:
+      os: {name: windows}
+      containers:
+      - name: app
+        image: mcr.microsoft.com/windows/nanoserver:ltsc2022
+        command: ["cmd", "/c", "ping -t localhost"]
+        resources:
+          requests: {cpu: 100m, memory: 100Mi}

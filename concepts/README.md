@@ -133,7 +133,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Installing Addons](cluster-administration/addons/) · ✅ [Coordinated Leader Election](cluster-administration/coordinated-leader-election/)
 
 ## Windows in Kubernetes — `windows/`
-- ⬜ [Windows containers](windows/intro/) · ⬜ [User Guide](windows/user-guide/)
+- ✅ [Windows containers](windows/intro/) · ✅ [User Guide](windows/user-guide/)
 
 ## Extending Kubernetes — `extend-kubernetes/`
 - ⬜ [Network Plugins](extend-kubernetes/compute-storage-net/network-plugins/) · ⬜ [Device Plugins](extend-kubernetes/compute-storage-net/device-plugins/)

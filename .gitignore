@@ -2,3 +2,6 @@
 *.log
 .DS_Store
 .fake-nodes-*.pid
+.fake-windows-*.pid
+.cand-*.pid
+cand-*.log

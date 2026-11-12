@@ -1,0 +1,8 @@
+nodeSelector:
+    kubernetes.io/os: windows
+    node.kubernetes.io/windows-build: '10.0.20348'
+tolerations:
+    - key: "os"
+      operator: "Equal"
+      value: "windows"
+      effect: "NoSchedule"
