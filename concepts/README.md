@@ -100,7 +100,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Local ephemeral storage](storage/ephemeral-storage/) · ✅ [Volume Health Monitoring](storage/volume-health-monitoring/) · ✅ [Windows Storage](storage/windows-storage/)
 
 ## Configuration — `configuration/`
-- ⬜ [ConfigMaps](configuration/configmap/) · ⬜ [Secrets](configuration/secret/) · ⬜ [Resource Management for Pods](configuration/manage-resources-containers/)
+- ✅ [ConfigMaps](configuration/configmap/) · ⬜ [Secrets](configuration/secret/) · ⬜ [Resource Management for Pods](configuration/manage-resources-containers/)
 - ⬜ [kubeconfig Files](configuration/organize-cluster-access-kubeconfig/) · ⬜ [Windows Resource Management](configuration/windows-resource-management/)
 
 ## Security — `security/`

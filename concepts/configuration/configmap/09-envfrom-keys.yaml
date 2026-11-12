@@ -1,0 +1,23 @@
+# Which ConfigMap keys survive envFrom? (keys may contain - _ . ; env var names have their own rules)
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: odd-keys}
+data:
+  GOOD_KEY: "1"
+  with-dash: "2"
+  dotted.key: "3"
+  1starts-with-digit: "4"
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: envfrom-keys}
+spec:
+  restartPolicy: Never
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "env | grep -E '^(GOOD_KEY|with-dash|dotted.key|1starts|CFG_)' | sort"]
+    envFrom:
+    - configMapRef: {name: odd-keys}
+    - configMapRef: {name: odd-keys}
+      prefix: CFG_

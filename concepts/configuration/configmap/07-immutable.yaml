@@ -1,0 +1,8 @@
+# The docs' immutable ConfigMap with the "..." filled in
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frozen-config
+data:
+  mode: production
+immutable: true
