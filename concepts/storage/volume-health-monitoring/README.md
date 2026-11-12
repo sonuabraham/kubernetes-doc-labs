@@ -37,7 +37,7 @@ kubectl patch pvc my-claim -n health-demo --subresource=status --type=merge \
 ./start-vh-lab.sh          # profile vh-lab, --feature-gates=CSIVolumeHealth=true (switches kubectl context)
 kubectl create ns health-demo
 # claim + pod as in 00-setup.yaml but with the default class (no CSI driver in this profile):
-sed -e 's/  storageClassName: csi-hostpath-sc\n//' 00-setup.yaml | grep -v csi-hostpath-sc | kubectl apply -f -
+grep -v csi-hostpath-sc 00-setup.yaml | kubectl apply -f -
 J(){ python3 -c "import yaml,json;print(json.dumps(yaml.safe_load(open('$1'))['status']))"; }
 kubectl patch pvc my-claim -n health-demo --subresource=status --type=merge -p "{\"status\":$(J 03-pvc-healthstatus-excerpt.yaml)}" -o jsonpath='{.status.healthStatus}{"\n"}'
 #   {"healthConditions":[{"message":"volume not found on the storage backend","reason":"VolumeNotFound","status":"Inaccessible"}],"lastTransitionTime":"2026-07-20T12:00:00Z"}
