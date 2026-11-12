@@ -1,0 +1,30 @@
+# Two personas bound to the built-in aggregated roles: an operator (edit, one namespace) and a cluster admin.
+apiVersion: v1
+kind: Namespace
+metadata: {name: dra-admin-lab}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: operator, namespace: dra-admin-lab}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: operator-edit, namespace: dra-admin-lab}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: edit}
+subjects: [{kind: ServiceAccount, name: operator, namespace: dra-admin-lab}]
+---
+# lets us read component /metrics (controller-manager 10257, scheduler 10259) from the node
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: metrics, namespace: dra-admin-lab}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: dra-admin-lab-metrics}
+rules: [{nonResourceURLs: ["/metrics"], verbs: ["get"]}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: dra-admin-lab-metrics}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: dra-admin-lab-metrics}
+subjects: [{kind: ServiceAccount, name: metrics, namespace: dra-admin-lab}]
