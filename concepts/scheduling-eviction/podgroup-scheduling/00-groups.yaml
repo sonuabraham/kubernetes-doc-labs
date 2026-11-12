@@ -1,0 +1,16 @@
+# Two "training jobs" of 3 Pods × 3 CPU competing for 4 one-Pod slots (fake nodes)
+apiVersion: v1
+kind: Namespace
+metadata: {name: pg-sched}
+---
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: job-a, namespace: pg-sched}
+spec:
+  schedulingPolicy: {gang: {minCount: 3}}
+---
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: job-b, namespace: pg-sched}
+spec:
+  schedulingPolicy: {gang: {minCount: 3}}
