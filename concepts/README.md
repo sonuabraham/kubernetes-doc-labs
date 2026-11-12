@@ -115,7 +115,7 @@ Status: ✅ lab written · ⬜ not yet
 
 ## Scheduling, Preemption and Eviction — `scheduling-eviction/`
 - ✅ [kube-scheduler](scheduling-eviction/kube-scheduler/) · ✅ [Multiple Schedulers](scheduling-eviction/running-multiple-schedulers/) · ✅ [Assigning Pods to Nodes](scheduling-eviction/assign-pod-node/)
-- ✅ [Pod Overhead](scheduling-eviction/pod-overhead/) · ⬜ [Scheduling Readiness](scheduling-eviction/pod-scheduling-readiness/) · ⬜ [Topology Spread](scheduling-eviction/topology-spread-constraints/)
+- ✅ [Pod Overhead](scheduling-eviction/pod-overhead/) · ✅ [Scheduling Readiness](scheduling-eviction/pod-scheduling-readiness/) · ⬜ [Topology Spread](scheduling-eviction/topology-spread-constraints/)
 - ⬜ [Taints and Tolerations](scheduling-eviction/taint-and-toleration/) · ⬜ [Scheduling Framework](scheduling-eviction/scheduling-framework/) · ⬜ [Gang Scheduling](scheduling-eviction/gang-scheduling/)
 - ⬜ [Scheduler Perf Tuning](scheduling-eviction/scheduler-perf-tuning/) · ⬜ [PodGroup Scheduling](scheduling-eviction/podgroup-scheduling/) · ⬜ [Bin Packing](scheduling-eviction/resource-bin-packing/)
 - ⬜ [Workload-Aware Preemption](scheduling-eviction/workload-aware-preemption/) · ⬜ [Topology-Aware Scheduling](scheduling-eviction/topology-aware-scheduling/) · ⬜ [Priority and Preemption](scheduling-eviction/pod-priority-preemption/)
