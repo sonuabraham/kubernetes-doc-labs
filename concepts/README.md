@@ -136,6 +136,6 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Windows containers](windows/intro/) · ✅ [User Guide](windows/user-guide/)
 
 ## Extending Kubernetes — `extend-kubernetes/`
-- ⬜ [Network Plugins](extend-kubernetes/compute-storage-net/network-plugins/) · ⬜ [Device Plugins](extend-kubernetes/compute-storage-net/device-plugins/)
+- ✅ [Network Plugins](extend-kubernetes/compute-storage-net/network-plugins/) · ⬜ [Device Plugins](extend-kubernetes/compute-storage-net/device-plugins/)
 - ⬜ [Custom Resources](extend-kubernetes/api-extension/custom-resources/) · ⬜ [API Aggregation Layer](extend-kubernetes/api-extension/apiserver-aggregation/)
 - ⬜ [Operator pattern](extend-kubernetes/operator/)
