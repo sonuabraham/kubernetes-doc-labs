@@ -1,0 +1,8 @@
+# Namespaces: res-demo for most labs, pod-resources-example for the docs' pod-level-resources.yaml (pinned there)
+apiVersion: v1
+kind: Namespace
+metadata: {name: res-demo}
+---
+apiVersion: v1
+kind: Namespace
+metadata: {name: pod-resources-example}

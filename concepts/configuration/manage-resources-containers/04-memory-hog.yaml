@@ -1,0 +1,12 @@
+# Allocates ~200Mi with a 128Mi memory limit -> OOM-killed by the kernel (the container restarts)
+apiVersion: v1
+kind: Pod
+metadata: {name: memory-hog}
+spec:
+  containers:
+  - name: hog
+    image: python:3.12-alpine
+    command: ["python", "-c", "import time; x = bytearray(200*1024*1024); time.sleep(3600)"]
+    resources:
+      requests: {memory: 64Mi}
+      limits: {memory: 128Mi}
