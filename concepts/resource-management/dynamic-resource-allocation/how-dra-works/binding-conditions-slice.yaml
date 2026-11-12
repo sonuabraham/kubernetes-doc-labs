@@ -1,0 +1,29 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: gpu-slice-1
+spec:
+  driver: dra.example.com
+  nodeSelector:
+    nodeSelectorTerms:
+    - matchExpressions:
+      - key: accelerator-type
+        operator: In
+        values:
+        - "high-performance"
+  pool:
+    name: gpu-pool
+    generation: 1
+    resourceSliceCount: 1
+  devices:
+    - name: gpu-1
+      attributes:
+        vendor:
+          string: "example"
+        model:
+          string: "example-gpu"
+      bindsToNode: true
+      bindingConditions:
+        - dra.example.com/is-prepared
+      bindingFailureConditions:
+        - dra.example.com/preparing-failed

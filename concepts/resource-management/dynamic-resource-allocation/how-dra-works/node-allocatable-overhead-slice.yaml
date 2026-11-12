@@ -1,0 +1,20 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: my-node-xpus
+spec:
+  driver: xpu.example.com
+  nodeName: my-node
+  pool:
+    name: xpu-pool
+    generation: 1
+    resourceSliceCount: 1
+  devices:
+  - name: xpu-model-x-001
+    attributes:
+      example.com/model:
+        string: "model-x"
+    nodeAllocatableResources:
+      overhead:
+        memory:
+          perPod: "8Gi"

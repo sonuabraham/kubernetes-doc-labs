@@ -123,7 +123,7 @@ Status: ✅ lab written · ⬜ not yet
 
 ## Resource Management — `resource-management/`
 - ✅ [Resource managers](resource-management/resource-managers/) · ✅ [Pod-level resource managers](resource-management/pod-level-resource-managers/)
-- ✅ [Dynamic Resource Allocation](resource-management/dynamic-resource-allocation/): ✅ [API Objects](resource-management/dynamic-resource-allocation/dra-api/) · ⬜ [How DRA Works](resource-management/dynamic-resource-allocation/how-dra-works/) · ⬜ [Observability](resource-management/dynamic-resource-allocation/dra-observability/) · ⬜ [Features](resource-management/dynamic-resource-allocation/dra-features/) · ⬜ [Device Taints](resource-management/dynamic-resource-allocation/device-taints/)
+- ✅ [Dynamic Resource Allocation](resource-management/dynamic-resource-allocation/): ✅ [API Objects](resource-management/dynamic-resource-allocation/dra-api/) · ✅ [How DRA Works](resource-management/dynamic-resource-allocation/how-dra-works/) · ⬜ [Observability](resource-management/dynamic-resource-allocation/dra-observability/) · ⬜ [Features](resource-management/dynamic-resource-allocation/dra-features/) · ⬜ [Device Taints](resource-management/dynamic-resource-allocation/device-taints/)
 
 ## Cluster Administration — `cluster-administration/`
 - ⬜ [Node Shutdowns](cluster-administration/node-shutdown/) · ⬜ [Swap](cluster-administration/swap-memory-management/) · ⬜ [Node Autoscaling](cluster-administration/node-autoscaling/) · ⬜ [Certificates](cluster-administration/certificates/)

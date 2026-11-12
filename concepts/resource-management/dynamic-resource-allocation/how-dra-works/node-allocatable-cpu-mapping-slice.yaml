@@ -1,0 +1,29 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: my-node-cpus
+spec:
+  driver: cpu.example.com
+  nodeName: my-node
+  pool:
+    name: socket-cpus
+    generation: 1
+    resourceSliceCount: 1
+  devices:
+  - name: socket0cpus
+    allowMultipleAllocations: true
+    capacity:
+      "cpu.example.com/cpu": "128"
+    nodeAllocatableResources:
+      mapping:
+        cpu:
+          capacityKey: "cpu.example.com/cpu"
+  - name: socket1cpus
+    allowMultipleAllocations: true
+    capacity:
+      "cpu.example.com/cpu": "128"
+    nodeAllocatableResources:
+      mapping:
+        cpu:
+          capacityKey: "cpu.example.com/cpu"
+          capacityMultiplier: 1
