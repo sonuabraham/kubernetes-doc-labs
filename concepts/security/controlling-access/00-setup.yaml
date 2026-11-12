@@ -1,0 +1,32 @@
+# The docs' ABAC example ("bob may read pods in projectCaribou") expressed with RBAC.
+# Namespace names must be lowercase DNS labels, so projectCaribou becomes projectcaribou.
+# Plus admission objects: a LimitRange (mutating: fills defaults) and a ResourceQuota (validating: max 2 pods).
+apiVersion: v1
+kind: Namespace
+metadata: {name: projectcaribou}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: pod-reader, namespace: projectcaribou}
+rules:
+- {apiGroups: [""], resources: ["pods"], verbs: ["get", "list", "watch"]}     # "readonly": true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: bob-reads-pods, namespace: projectcaribou}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: pod-reader}
+subjects: [{apiGroup: rbac.authorization.k8s.io, kind: User, name: bob}]
+---
+apiVersion: v1
+kind: LimitRange
+metadata: {name: defaults, namespace: projectcaribou}
+spec:
+  limits:
+  - type: Container
+    default: {cpu: 200m, memory: 64Mi}
+    defaultRequest: {cpu: 100m, memory: 32Mi}
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata: {name: max-pods, namespace: projectcaribou}
+spec: {hard: {pods: "2"}}
