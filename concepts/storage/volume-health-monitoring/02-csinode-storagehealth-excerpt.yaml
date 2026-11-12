@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: CSINode
+# ...
+status:
+  storageHealth:
+  - name: csi.example.com
+    healthConditions:
+    - status: StorageUnreachable
+      reason: NetworkPartition
+      message: "data path to the storage backend is unreachable from this node"

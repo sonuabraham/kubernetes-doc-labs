@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+# ...
+status:
+  volumeHealth:
+  - name: my-volume
+    healthConditions:
+    - status: Inaccessible
+      reason: VolumeNotFound
+      message: "volume not found on the storage backend"
+    lastTransitionTime: "2026-07-20T12:00:00Z"
