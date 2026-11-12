@@ -1,0 +1,4 @@
+  scopeSelector:
+    matchExpressions:
+      - scopeName: BestEffort # Match pods that have best effort quality of service
+        operator: Exists # optional; "Exists" is implied for BestEffort scope

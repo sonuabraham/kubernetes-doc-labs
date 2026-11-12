@@ -1,0 +1,20 @@
+# PriorityClasses the docs' quota.yaml / high-priority-pod.yaml / priority-class-resourcequota.yaml refer to
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: {name: high}
+value: 1000
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: {name: medium}
+value: 500
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: {name: low}
+value: 100
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: {name: cluster-services}
+value: 2000

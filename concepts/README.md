@@ -111,7 +111,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [API Server Bypass Risks](security/api-server-bypass-risks/) · ✅ [Linux Kernel Security Constraints](security/linux-kernel-security-constraints/) · ✅ [Security Checklist](security/security-checklist/) · ✅ [Application Security Checklist](security/application-security-checklist/)
 
 ## Policies — `policy/`
-- ✅ [Limit Ranges](policy/limit-range/) · ⬜ [Resource Quotas](policy/resource-quotas/) · ⬜ [PID Limiting](policy/pid-limiting/) · ↪ Node Resource Managers moved to [resource-management/resource-managers](resource-management/resource-managers/)
+- ✅ [Limit Ranges](policy/limit-range/) · ✅ [Resource Quotas](policy/resource-quotas/) · ⬜ [PID Limiting](policy/pid-limiting/) · ↪ Node Resource Managers moved to [resource-management/resource-managers](resource-management/resource-managers/)
 
 ## Scheduling, Preemption and Eviction — `scheduling-eviction/`
 - ⬜ [kube-scheduler](scheduling-eviction/kube-scheduler/) · ⬜ [Multiple Schedulers](scheduling-eviction/running-multiple-schedulers/) · ⬜ [Assigning Pods to Nodes](scheduling-eviction/assign-pod-node/)
