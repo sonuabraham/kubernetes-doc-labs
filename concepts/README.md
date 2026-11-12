@@ -101,7 +101,7 @@ Status: ✅ lab written · ⬜ not yet
 
 ## Configuration — `configuration/`
 - ✅ [ConfigMaps](configuration/configmap/) · ✅ [Secrets](configuration/secret/) · ✅ [Resource Management for Pods](configuration/manage-resources-containers/)
-- ✅ [kubeconfig Files](configuration/organize-cluster-access-kubeconfig/) · ⬜ [Windows Resource Management](configuration/windows-resource-management/)
+- ✅ [kubeconfig Files](configuration/organize-cluster-access-kubeconfig/) · ✅ [Windows Resource Management](configuration/windows-resource-management/)
 
 ## Security — `security/`
 - ⬜ [Cloud Native Security](security/cloud-native-security/) · ⬜ [Pod Security Standards](security/pod-security-standards/) · ⬜ [Pod Security Admission](security/pod-security-admission/)

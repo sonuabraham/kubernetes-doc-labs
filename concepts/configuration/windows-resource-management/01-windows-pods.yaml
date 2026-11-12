@@ -1,0 +1,41 @@
+# Windows Pods (spec.os.name: windows) probing the resource/isolation rules from the page.
+# privileged: Windows has no privileged containers (job objects + namespace filter) -> rejected by the API.
+apiVersion: v1
+kind: Pod
+metadata: {name: win-privileged}
+spec:
+  os: {name: windows}
+  containers:
+  - name: c
+    image: mcr.microsoft.com/windows/servercore:ltsc2022
+    securityContext: {privileged: true}
+---
+# HostProcess containers are Windows' answer for node-level tasks: they must use hostNetwork and run as a host user.
+apiVersion: v1
+kind: Pod
+metadata: {name: win-hostprocess}
+spec:
+  os: {name: windows}
+  hostNetwork: true
+  securityContext:
+    windowsOptions:
+      hostProcess: true
+      runAsUserName: "NT AUTHORITY\\SYSTEM"
+  nodeSelector: {kubernetes.io/os: windows}
+  containers:
+  - name: c
+    image: mcr.microsoft.com/windows/nanoserver:ltsc2022
+    command: ["cmd", "/c", "ping -t localhost"]
+    resources:
+      limits: {cpu: 500m, memory: 256Mi}   # the page: always set limits on Windows (no OOM killer, memory pages to disk)
+---
+# Same, but forgetting hostNetwork
+apiVersion: v1
+kind: Pod
+metadata: {name: win-hostprocess-nohostnet}
+spec:
+  os: {name: windows}
+  securityContext:
+    windowsOptions: {hostProcess: true, runAsUserName: "NT AUTHORITY\\SYSTEM"}
+  containers:
+  - {name: c, image: mcr.microsoft.com/windows/nanoserver:ltsc2022}

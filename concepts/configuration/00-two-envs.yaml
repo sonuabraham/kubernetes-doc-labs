@@ -1,0 +1,68 @@
+# The same Deployment in two namespaces; only ConfigMap / Secret / limits differ.
+apiVersion: v1
+kind: Namespace
+metadata: {name: cfg-dev}
+---
+apiVersion: v1
+kind: Namespace
+metadata: {name: cfg-prod}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: app-config, namespace: cfg-dev}
+data: {ENVIRONMENT: dev, LOG_LEVEL: debug}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: app-config, namespace: cfg-prod}
+data: {ENVIRONMENT: prod, LOG_LEVEL: warn}
+---
+apiVersion: v1
+kind: Secret
+metadata: {name: app-secret, namespace: cfg-dev}
+stringData: {DB_PASSWORD: devpwd}
+---
+apiVersion: v1
+kind: Secret
+metadata: {name: app-secret, namespace: cfg-prod}
+stringData: {DB_PASSWORD: "pr0d-Long-Random-Pass!"}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: app, namespace: cfg-dev}
+spec:
+  selector: {matchLabels: {app: app}}
+  template:
+    metadata: {labels: {app: app}}
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.36
+        command: ["sh", "-c", "echo env=$ENVIRONMENT log_level=$LOG_LEVEL db_password_len=${#DB_PASSWORD} cpu_limit=$CPU_LIMIT; sleep 3600"]
+        envFrom:
+        - configMapRef: {name: app-config}
+        - secretRef: {name: app-secret}
+        env:
+        - name: CPU_LIMIT
+          valueFrom: {resourceFieldRef: {resource: limits.cpu}}
+        resources: {requests: {cpu: 50m}, limits: {cpu: "1", memory: 64Mi}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: app, namespace: cfg-prod}
+spec:
+  selector: {matchLabels: {app: app}}
+  template:
+    metadata: {labels: {app: app}}
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.36
+        command: ["sh", "-c", "echo env=$ENVIRONMENT log_level=$LOG_LEVEL db_password_len=${#DB_PASSWORD} cpu_limit=$CPU_LIMIT; sleep 3600"]
+        envFrom:
+        - configMapRef: {name: app-config}
+        - secretRef: {name: app-secret}
+        env:
+        - name: CPU_LIMIT
+          valueFrom: {resourceFieldRef: {resource: limits.cpu}}
+        resources: {requests: {cpu: 50m}, limits: {cpu: "2", memory: 128Mi}}
