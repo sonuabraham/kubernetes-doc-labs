@@ -37,7 +37,7 @@ for p in default/besteffort default/burstable default/guaranteed kube-system/bur
 ```
 Check the formula with the node's numbers (`free -b`: Mem 32589910016, Swap 8589930496):
 ```
-536870912 / 32589910016 × 8589930496 = 141,504,5xx  ≈ memory.swap.max 141504512
+536870912 / 32589910016 × 8589930496 = 141,506,491   vs  memory.swap.max 141,504,512   (≈2 KB apart: the kubelet's own reading of total memory)
 ```
 `kubectl top node --show-swap` needs metrics-server, which isn't enabled in this profile. On the main cluster (NoSwap) it shows `SWAP 0Mi`.
 
