@@ -1,0 +1,27 @@
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+profiles:
+  - schedulerName: default-scheduler
+    plugins:
+      placementScore:
+        enabled:
+          # 1) Change the default weights of the placement score plugins
+          - name: NodeResourcesFit
+            weight: 2
+          - name: PodGroupPodsCount
+            weight: 5
+    pluginConfig:
+      - name: NodeResourcesFit
+        args:
+          # 2) Changing the scoring resource weights for both pod-by-pod and placement scoring
+          # algorithms
+          scoringStrategy:
+            # The type will only be considered in pod-by-pod scheduling. Placement scoring always
+            # uses MostAllocated strategy
+            type: LeastAllocated
+            # Resource weights will be used in both pod-by-pod and placement scoring algorithms
+            resources:
+              - name: cpu
+                weight: 2
+              - name: memory
+                weight: 3

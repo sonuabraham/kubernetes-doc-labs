@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Namespace
+metadata: {name: tas}
+---
+# 2-Pod gang that must sit in ONE zone
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: train, namespace: tas}
+spec:
+  schedulingPolicy: {gang: {minCount: 2}}
+  schedulingConstraints:
+    topology:
+    - key: topology.kubernetes.io/zone
+---
+# 3-Pod gang in one zone (Lab 3): with the fill, only zone-b has room for three 2-CPU Pods
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: train3, namespace: tas}
+spec:
+  schedulingPolicy: {gang: {minCount: 3}}
+  schedulingConstraints:
+    topology:
+    - key: topology.kubernetes.io/zone
+---
+# Same 3-Pod gang WITHOUT a topology constraint (Lab 3 contrast)
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata: {name: train3-anywhere, namespace: tas}
+spec:
+  schedulingPolicy: {gang: {minCount: 3}}
