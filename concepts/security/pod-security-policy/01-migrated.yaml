@@ -1,0 +1,32 @@
+# The migration: most of the PSP maps to PSA "restricted"; readOnlyRootFilesystem doesn't,
+# so it becomes a ValidatingAdmissionPolicy (CEL, built in, GA).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: psp-migrated
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.37
+    require-readonly-rootfs: "true"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata: {name: require-readonly-rootfs}
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - {apiGroups: [""], apiVersions: ["v1"], operations: ["CREATE", "UPDATE"], resources: ["pods"]}
+  validations:
+  - expression: "object.spec.containers.all(c, has(c.securityContext) && has(c.securityContext.readOnlyRootFilesystem) && c.securityContext.readOnlyRootFilesystem == true)"
+    message: "all containers must set securityContext.readOnlyRootFilesystem: true (was PSP readOnlyRootFilesystem)"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata: {name: require-readonly-rootfs}
+spec:
+  policyName: require-readonly-rootfs
+  validationActions: [Deny]
+  matchResources:
+    namespaceSelector:
+      matchLabels: {require-readonly-rootfs: "true"}
