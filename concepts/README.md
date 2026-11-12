@@ -119,7 +119,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Taints and Tolerations](scheduling-eviction/taint-and-toleration/) · ✅ [Scheduling Framework](scheduling-eviction/scheduling-framework/) · ⬜ [Gang Scheduling](scheduling-eviction/gang-scheduling/)
 - ✅ [Scheduler Perf Tuning](scheduling-eviction/scheduler-perf-tuning/) · ⬜ [PodGroup Scheduling](scheduling-eviction/podgroup-scheduling/) · ✅ [Bin Packing](scheduling-eviction/resource-bin-packing/)
 - ⬜ [Workload-Aware Preemption](scheduling-eviction/workload-aware-preemption/) · ⬜ [Topology-Aware Scheduling](scheduling-eviction/topology-aware-scheduling/) · ✅ [Priority and Preemption](scheduling-eviction/pod-priority-preemption/)
-- ✅ [Node-pressure Eviction](scheduling-eviction/node-pressure-eviction/) · ⬜ [API-initiated Eviction](scheduling-eviction/api-eviction/) · ⬜ [Node Declared Features](scheduling-eviction/node-declared-features/)
+- ✅ [Node-pressure Eviction](scheduling-eviction/node-pressure-eviction/) · ✅ [API-initiated Eviction](scheduling-eviction/api-eviction/) · ⬜ [Node Declared Features](scheduling-eviction/node-declared-features/)
 
 ## Resource Management — `resource-management/`
 - ⬜ [Resource managers](resource-management/resource-managers/) · ⬜ [Pod-level resource managers](resource-management/pod-level-resource-managers/)
