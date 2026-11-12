@@ -1,0 +1,57 @@
+# A second copy of kube-scheduler (default plugins, profile name "verbose-scheduler") logging at -v=10,
+# so you can watch the two phases from the page: Filtering -> feasible nodes, Scoring -> node scores.
+apiVersion: v1
+kind: Namespace
+metadata: {name: sched-demo}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: verbose-scheduler, namespace: sched-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: verbose-scheduler-as-kube-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:kube-scheduler"}
+subjects: [{kind: ServiceAccount, name: verbose-scheduler, namespace: sched-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: verbose-scheduler-as-volume-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:volume-scheduler"}
+subjects: [{kind: ServiceAccount, name: verbose-scheduler, namespace: sched-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: verbose-scheduler-auth-reader, namespace: kube-system}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: extension-apiserver-authentication-reader}
+subjects: [{kind: ServiceAccount, name: verbose-scheduler, namespace: sched-demo}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: verbose-scheduler-config, namespace: sched-demo}
+data:
+  config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection: {leaderElect: false}
+    profiles:
+    - schedulerName: verbose-scheduler
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: verbose-scheduler, namespace: sched-demo}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: verbose-scheduler}}
+  template:
+    metadata: {labels: {app: verbose-scheduler}}
+    spec:
+      serviceAccountName: verbose-scheduler
+      containers:
+      - name: kube-scheduler
+        image: registry.k8s.io/kube-scheduler:v1.37.0
+        command: ["kube-scheduler", "--config=/etc/vs/config.yaml", "--bind-address=127.0.0.1", "--secure-port=10261", "--v=10"]
+        volumeMounts: [{name: config, mountPath: /etc/vs}]
+      volumes:
+      - name: config
+        configMap: {name: verbose-scheduler-config}

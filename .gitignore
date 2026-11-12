@@ -1,3 +1,4 @@
 # local scratch
 *.log
 .DS_Store
+.fake-nodes.pid
