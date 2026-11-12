@@ -18,7 +18,7 @@ Based on: https://kubernetes.io/docs/concepts/services-networking/network-polici
 | **Namespace by name** | Use the automatic label `kubernetes.io/metadata.name: <ns>`. |
 | **Layer 4 only** | Policies cover TCP, UDP and SCTP. ICMP (ping) behaviour is undefined, so test with `curl`, not `ping`. |
 
-**Important:** NetworkPolicy objects do nothing unless your CNI plugin enforces them. Use Calico, Cilium, etc.
+**Important:** NetworkPolicy objects do nothing unless your CNI plugin enforces them (kindnet on this minikube does; otherwise Calico, Cilium, etc.).
 
 ## The demo app
 
@@ -37,13 +37,14 @@ All pods are `nginx` (port 80, has `curl`). `./test.sh` runs curl from each clie
 
 ## Step 0 – Cluster with a policy-capable CNI
 
+The repo's main `minikube` cluster (containerd + **kindnet**) already enforces NetworkPolicy: kindnet ships the `kube-network-policies` controller (its log says `Starting controller name="kube-network-policies"`). No extra CNI is needed:
 ```bash
-# minikube (already installed on this machine)
-minikube start --cni=calico
+kubectl logs -n kube-system -l app=kindnet --tail=-1 | grep -m1 kube-network-policies
+```
+On a cluster whose CNI does **not** enforce policies (for example minikube with the plain `bridge` CNI), use a policy-capable one:
+```bash
+minikube start -p np-lab --cni=calico
 kubectl get pods -n kube-system -l k8s-app=calico-node   # wait until Running
-
-# OR kind (v0.24+ kindnet enforces NetworkPolicy; otherwise install Calico)
-# kind create cluster
 ```
 
 ## Step 1 – Deploy the app and see the default (everything open)
