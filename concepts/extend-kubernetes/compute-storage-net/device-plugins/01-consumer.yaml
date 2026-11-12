@@ -1,0 +1,14 @@
+# Shows what the plugin's Allocate response turned into inside the container: env, device nodes, mounts.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: consumer
+  namespace: dp-demo
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: [sh, -c, "echo FOO_DEVICES=$FOO_DEVICES; ls -l /dev/foo-*; cat /etc/foo/*/info; sleep 36000"]
+    resources:
+      limits:
+        hardware-vendor.example/foo: 1

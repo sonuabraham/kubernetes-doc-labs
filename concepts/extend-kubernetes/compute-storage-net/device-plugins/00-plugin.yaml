@@ -1,0 +1,51 @@
+# The toy device plugin deployed the way the page recommends: a privileged DaemonSet with
+# /var/lib/kubelet/device-plugins mounted. Plus a "monitoring agent" Pod with the pod-resources DIRECTORY mounted.
+apiVersion: v1
+kind: Namespace
+metadata: {name: dp-demo}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: toy-foo-plugin
+  namespace: dp-demo
+spec:
+  selector:
+    matchLabels: {app: toy-foo-plugin}
+  template:
+    metadata:
+      labels: {app: toy-foo-plugin}
+    spec:
+      nodeSelector: {kubernetes.io/os: linux}
+      containers:
+      - name: plugin
+        image: toy-foo-plugin:1          # built with: minikube image build -t toy-foo-plugin:1 toy-plugin/
+        imagePullPolicy: Never
+        env: [{name: DEVICES, value: "4"}]
+        securityContext: {privileged: true}
+        volumeMounts:
+        - {name: device-plugins, mountPath: /var/lib/kubelet/device-plugins}
+        - {name: toy-foo, mountPath: /var/lib/toy-foo}
+      volumes:
+      - name: device-plugins
+        hostPath: {path: /var/lib/kubelet/device-plugins, type: Directory}
+      - name: toy-foo
+        hostPath: {path: /var/lib/toy-foo, type: DirectoryOrCreate}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: monitor
+  namespace: dp-demo
+spec:
+  containers:
+  - name: agent
+    image: toy-foo-plugin:1
+    imagePullPolicy: Never
+    command: [sleep, "36000"]
+    securityContext: {privileged: true}
+    volumeMounts:
+    - {name: pod-resources, mountPath: /var/lib/kubelet/pod-resources}   # the directory, not kubelet.sock
+  volumes:
+  - name: pod-resources
+    hostPath: {path: /var/lib/kubelet/pod-resources, type: Directory}
