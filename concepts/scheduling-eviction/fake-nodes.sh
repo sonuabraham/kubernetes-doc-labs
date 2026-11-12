@@ -13,22 +13,22 @@ if [ "$cmd" = down ]; then
   [ -f "$PIDF" ] && kill "$(cat "$PIDF")" 2>/dev/null; rm -f "$PIDF"
   kubectl delete node -l type=fake --ignore-not-found; exit 0
 fi
-zones=(zone-a zone-b zone-c)
-for i in $(seq 1 "$N"); do
-  n=fake-$i; z=${zones[$(( (i-1) % 3 ))]}
+mk(){ i=$1; n=fake-$i; z=$(( (i-1) % 3 )); zone=zone-$(echo abc | cut -c$((z+1)))
   kubectl apply -f - >/dev/null <<Y
 apiVersion: v1
 kind: Node
 metadata:
   name: $n
-  labels: {type: fake, kubernetes.io/hostname: $n, kubernetes.io/os: linux, kubernetes.io/arch: amd64, topology.kubernetes.io/zone: $z}
+  labels: {type: fake, kubernetes.io/hostname: $n, kubernetes.io/os: linux, kubernetes.io/arch: amd64, topology.kubernetes.io/zone: $zone}
 Y
-done
+}
+export -f mk
+seq 1 "$N" | xargs -P 10 -I{} bash -c 'mk {}'
 beat(){ while true; do
   now=$(date -u +%FT%TZ)
-  for n in $(kubectl get nodes -l type=fake -o name 2>/dev/null); do
-    kubectl patch $n --subresource=status --type=merge -p "{\"status\":{\"capacity\":{\"cpu\":\"4\",\"memory\":\"8Gi\",\"pods\":\"110\"},\"allocatable\":{\"cpu\":\"4\",\"memory\":\"8Gi\",\"pods\":\"110\"},\"conditions\":[{\"type\":\"Ready\",\"status\":\"True\",\"reason\":\"FakeKubelet\",\"message\":\"fake heartbeat\",\"lastHeartbeatTime\":\"$now\",\"lastTransitionTime\":\"2026-01-01T00:00:00Z\"}]}}" >/dev/null 2>&1
-  done; sleep 10; done; }
+  P="{\"status\":{\"capacity\":{\"cpu\":\"4\",\"memory\":\"8Gi\",\"pods\":\"110\"},\"allocatable\":{\"cpu\":\"4\",\"memory\":\"8Gi\",\"pods\":\"110\"},\"conditions\":[{\"type\":\"Ready\",\"status\":\"True\",\"reason\":\"FakeKubelet\",\"message\":\"fake heartbeat\",\"lastHeartbeatTime\":\"$now\",\"lastTransitionTime\":\"2026-01-01T00:00:00Z\"}]}}"
+  kubectl get nodes -l type=fake -o name 2>/dev/null | xargs -r -P 10 -I{} kubectl patch {} --subresource=status --type=merge -p "$P" >/dev/null 2>&1
+  sleep 10; done; }
 [ -f "$PIDF" ] && kill "$(cat "$PIDF")" 2>/dev/null || true
 beat >/dev/null 2>&1 & echo $! > "$PIDF"; disown
 sleep 3; kubectl get nodes -L topology.kubernetes.io/zone

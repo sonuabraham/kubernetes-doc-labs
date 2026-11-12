@@ -1,0 +1,60 @@
+# Three profiles that differ only in percentageOfNodesToScore (v1 API; the docs' example uses the removed v1alpha1):
+#   adaptive : not set   -> 50% - nodes/125, min 5%, and never fewer than 100 nodes
+#   pct-10   : 10        -> still at least 100 nodes
+#   pct-100  : 100       -> every feasible node is scored
+apiVersion: v1
+kind: Namespace
+metadata: {name: perf-demo}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: perf-scheduler, namespace: perf-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: perf-demo-kube-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:kube-scheduler"}
+subjects: [{kind: ServiceAccount, name: perf-scheduler, namespace: perf-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: perf-demo-volume-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:volume-scheduler"}
+subjects: [{kind: ServiceAccount, name: perf-scheduler, namespace: perf-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: perf-demo-auth-reader, namespace: kube-system}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: extension-apiserver-authentication-reader}
+subjects: [{kind: ServiceAccount, name: perf-scheduler, namespace: perf-demo}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: perf-scheduler, namespace: perf-demo}
+data:
+  config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection: {leaderElect: false}
+    profiles:
+    - schedulerName: adaptive
+    - schedulerName: pct-10
+      percentageOfNodesToScore: 10
+    - schedulerName: pct-100
+      percentageOfNodesToScore: 100
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: perf-scheduler, namespace: perf-demo}
+spec:
+  selector: {matchLabels: {app: perf-scheduler}}
+  template:
+    metadata: {labels: {app: perf-scheduler}}
+    spec:
+      serviceAccountName: perf-scheduler
+      containers:
+      - name: kube-scheduler
+        image: registry.k8s.io/kube-scheduler:v1.37.0
+        command: ["kube-scheduler", "--config=/etc/s/config.yaml", "--bind-address=127.0.0.1", "--secure-port=0", "--v=2"]
+        volumeMounts: [{name: c, mountPath: /etc/s}]
+      volumes: [{name: c, configMap: {name: perf-scheduler}}]
