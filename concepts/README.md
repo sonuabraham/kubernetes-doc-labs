@@ -130,7 +130,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Cluster Networking](cluster-administration/networking/) · ✅ [Observability](cluster-administration/observability/) · ✅ [Admission Webhook Good Practices](cluster-administration/admission-webhooks-good-practices/) · ✅ [DRA for Admins](cluster-administration/dra/)
 - ✅ [Logging Architecture](cluster-administration/logging/) · ✅ [Compatibility Version](cluster-administration/compatibility-version/) · ✅ [System Metrics](cluster-administration/system-metrics/) · ✅ [kube-state-metrics](cluster-administration/kube-state-metrics/)
 - ✅ [System Logs](cluster-administration/system-logs/) · ✅ [System Traces](cluster-administration/system-traces/) · ✅ [Proxies](cluster-administration/proxies/) · ✅ [API Priority and Fairness](cluster-administration/flow-control/)
-- ✅ [Installing Addons](cluster-administration/addons/) · ⬜ [Coordinated Leader Election](cluster-administration/coordinated-leader-election/)
+- ✅ [Installing Addons](cluster-administration/addons/) · ✅ [Coordinated Leader Election](cluster-administration/coordinated-leader-election/)
 
 ## Windows in Kubernetes — `windows/`
 - ⬜ [Windows containers](windows/intro/) · ⬜ [User Guide](windows/user-guide/)
