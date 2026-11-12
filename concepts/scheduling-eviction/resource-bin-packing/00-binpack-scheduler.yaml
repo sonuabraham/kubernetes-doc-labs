@@ -1,0 +1,90 @@
+# The docs' two configs as named profiles of one extra scheduler (the docs' profiles have no schedulerName, i.e.
+# they'd replace "default-scheduler"), plus the docs' inverted shape (spreading) for comparison.
+apiVersion: v1
+kind: Namespace
+metadata: {name: binpack-demo}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: binpack-scheduler, namespace: binpack-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: binpack-demo-kube-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:kube-scheduler"}
+subjects: [{kind: ServiceAccount, name: binpack-scheduler, namespace: binpack-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: binpack-demo-volume-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:volume-scheduler"}
+subjects: [{kind: ServiceAccount, name: binpack-scheduler, namespace: binpack-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: binpack-demo-auth-reader, namespace: kube-system}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: extension-apiserver-authentication-reader}
+subjects: [{kind: ServiceAccount, name: binpack-scheduler, namespace: binpack-demo}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: binpack-scheduler, namespace: binpack-demo}
+data:
+  config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection: {leaderElect: false}
+    profiles:
+    - schedulerName: most-allocated
+      pluginConfig:
+      - args:
+          scoringStrategy:
+            resources:
+            - {name: cpu, weight: 1}
+            - {name: memory, weight: 1}
+            - {name: intel.com/foo, weight: 3}
+            - {name: intel.com/bar, weight: 3}
+            type: MostAllocated
+        name: NodeResourcesFit
+    - schedulerName: ratio-binpack
+      pluginConfig:
+      - args:
+          scoringStrategy:
+            resources:
+            - {name: intel.com/foo, weight: 3}
+            - {name: intel.com/bar, weight: 3}
+            requestedToCapacityRatio:
+              shape:
+              - {utilization: 0, score: 0}
+              - {utilization: 100, score: 10}
+            type: RequestedToCapacityRatio
+        name: NodeResourcesFit
+    - schedulerName: ratio-spread
+      pluginConfig:
+      - args:
+          scoringStrategy:
+            resources:
+            - {name: intel.com/foo, weight: 3}
+            - {name: intel.com/bar, weight: 3}
+            requestedToCapacityRatio:
+              shape:
+              - {utilization: 0, score: 10}
+              - {utilization: 100, score: 0}
+            type: RequestedToCapacityRatio
+        name: NodeResourcesFit
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: binpack-scheduler, namespace: binpack-demo}
+spec:
+  selector: {matchLabels: {app: binpack-scheduler}}
+  template:
+    metadata: {labels: {app: binpack-scheduler}}
+    spec:
+      serviceAccountName: binpack-scheduler
+      containers:
+      - name: kube-scheduler
+        image: registry.k8s.io/kube-scheduler:v1.37.0
+        command: ["kube-scheduler", "--config=/etc/s/config.yaml", "--bind-address=127.0.0.1", "--secure-port=0"]
+        volumeMounts: [{name: c, mountPath: /etc/s}]
+      volumes: [{name: c, configMap: {name: binpack-scheduler}}]

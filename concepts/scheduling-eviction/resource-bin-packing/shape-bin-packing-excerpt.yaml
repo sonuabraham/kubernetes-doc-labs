@@ -1,0 +1,5 @@
+shape:
+  - utilization: 0
+    score: 0
+  - utilization: 100
+    score: 10

@@ -1,0 +1,7 @@
+resources:
+  - name: intel.com/foo
+    weight: 5
+  - name: cpu
+    weight: 3
+  - name: memory
+    weight: 1
