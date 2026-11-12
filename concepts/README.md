@@ -122,7 +122,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Node-pressure Eviction](scheduling-eviction/node-pressure-eviction/) · ✅ [API-initiated Eviction](scheduling-eviction/api-eviction/) · ✅ [Node Declared Features](scheduling-eviction/node-declared-features/)
 
 ## Resource Management — `resource-management/`
-- ⬜ [Resource managers](resource-management/resource-managers/) · ⬜ [Pod-level resource managers](resource-management/pod-level-resource-managers/)
+- ✅ [Resource managers](resource-management/resource-managers/) · ⬜ [Pod-level resource managers](resource-management/pod-level-resource-managers/)
 - ⬜ [Dynamic Resource Allocation](resource-management/dynamic-resource-allocation/): ⬜ [API Objects](resource-management/dynamic-resource-allocation/dra-api/) · ⬜ [How DRA Works](resource-management/dynamic-resource-allocation/how-dra-works/) · ⬜ [Observability](resource-management/dynamic-resource-allocation/dra-observability/) · ⬜ [Features](resource-management/dynamic-resource-allocation/dra-features/) · ⬜ [Device Taints](resource-management/dynamic-resource-allocation/device-taints/)
 
 ## Cluster Administration — `cluster-administration/`
