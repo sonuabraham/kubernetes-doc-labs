@@ -1,0 +1,4 @@
+tolerations:
+- key: "key1"
+  operator: "Exists"
+  effect: "NoSchedule"

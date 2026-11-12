@@ -1,0 +1,5 @@
+tolerations:
+- key: "servicelevel.organization.example/agreed-service-level"
+  operator: "Lt"
+  value: "1000"
+  effect: "NoSchedule"
