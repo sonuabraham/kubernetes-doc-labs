@@ -1,0 +1,13 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaimTemplate
+metadata:
+  name: large-black-cat-claim-template
+spec:
+  spec:
+    devices:
+      requests:
+      - name: req-0
+        exactly:
+          deviceClassName: resource.example.com
+          allocationMode: All
+          adminAccess: true

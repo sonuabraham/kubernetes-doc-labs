@@ -1,0 +1,24 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaim
+metadata:
+  name: gpu-nic-numa-alignment
+spec:
+  devices:
+    requests:
+    - name: gpu
+      exactly:
+        deviceClassName: gpu.example.com
+        count: 1
+        derivedAttributes:
+        - name: derived/numa
+          expression: device.attributes["gpu.example.com"].numa
+    - name: nic
+      exactly:
+        deviceClassName: nic.example.com
+        count: 1
+        derivedAttributes:
+        - name: derived/numa
+          expression: device.attributes["nic.example.com"].numaNode
+    constraints:
+    - requests: ["gpu", "nic"]
+      matchAttribute: derived/numa

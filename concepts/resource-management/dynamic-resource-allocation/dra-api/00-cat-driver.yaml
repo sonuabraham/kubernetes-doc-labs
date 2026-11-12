@@ -1,0 +1,23 @@
+# What the docs' "cat" examples need: DeviceClass resource.example.com for driver resource-driver.example.com,
+# plus a second slice with two small white cats (the prioritized list's fallback). The docs' cat-slice.yaml has the large black one.
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata: {name: resource.example.com}
+spec:
+  selectors:
+  - cel: {expression: 'device.driver == "resource-driver.example.com"'}
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata: {name: white-cat-slice}
+spec:
+  driver: resource-driver.example.com
+  pool: {name: white-cat-pool, generation: 1, resourceSliceCount: 1}
+  allNodes: true
+  devices:
+  - {name: small-white-cat-1, attributes: {color: {string: white}, size: {string: small}, cat: {bool: true}}}
+  - {name: small-white-cat-2, attributes: {color: {string: white}, size: {string: small}, cat: {bool: true}}}
+---
+apiVersion: v1
+kind: Namespace
+metadata: {name: dra-api}

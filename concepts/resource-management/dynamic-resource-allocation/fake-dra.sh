@@ -23,10 +23,10 @@ spec:
   pool: {name: $1, generation: 1, resourceSliceCount: 1}
   devices:
   - name: gpu-0
-    attributes: {model: {string: $2}, index: {int: 0}, driverVersion: {version: 1.2.0}}
+    attributes: {type: {string: gpu}, model: {string: $2}, index: {int: 0}, driverVersion: {version: 1.2.0}}
     capacity: {memory: {value: $3}}
   - name: gpu-1
-    attributes: {model: {string: $2}, index: {int: 1}, driverVersion: {version: 1.2.0}}
+    attributes: {type: {string: gpu}, model: {string: $2}, index: {int: 1}, driverVersion: {version: 1.2.0}}
     capacity: {memory: {value: $3}}
 Y
 }

@@ -1,0 +1,18 @@
+kind: ResourceSlice
+apiVersion: resource.k8s.io/v1
+metadata:
+  name: example-resourceslice
+spec:
+  nodeName: worker-1
+  pool:
+    name: pool
+    generation: 1
+    resourceSliceCount: 1
+  driver: dra.example.com
+  devices:
+  - name: gpu-0
+    attributes:
+      dra.example.com/supported-models:
+        strings:
+        - model-a
+        - model-b

@@ -1,0 +1,21 @@
+apiVersion: resource.k8s.io/v1
+kind: ResourceSlice
+metadata:
+  name: cat-slice
+spec:
+  driver: "resource-driver.example.com"
+  pool:
+    generation: 1
+    name: "black-cat-pool"
+    resourceSliceCount: 1
+  # The allNodes field defines whether any node in the cluster can access the device.
+  allNodes: true
+  devices:
+  - name: "large-black-cat"
+    attributes:
+      color:
+        string: "black"
+      size:
+        string: "large"
+      cat:
+        bool: true

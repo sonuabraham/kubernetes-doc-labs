@@ -1,0 +1,31 @@
+apiVersion: scheduling.k8s.io/v1beta1
+kind: PodGroup
+metadata:
+  name: training-group
+  namespace: some-ns
+spec:
+  ...
+  resourceClaims:
+  - name: pg-claim
+    resourceClaimName: my-pg-claim
+  - name: pg-claim-template
+    resourceClaimTemplateName: my-pg-template
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: training-group-pod-1
+  namespace: some-ns
+spec:
+  ...
+  schedulingGroup:
+    podGroupName: training-group
+  resourceClaims:
+  - name: pod-claim
+    resourceClaimName: my-pod-claim
+  - name: pod-claim-template
+    resourceClaimTemplateName: my-pod-template
+  - name: pg-claim
+    resourceClaimName: my-pg-claim
+  - name: pg-claim-template
+    resourceClaimTemplateName: my-pg-template
