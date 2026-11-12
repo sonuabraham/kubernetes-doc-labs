@@ -35,10 +35,11 @@ routes: 10.244.0.x dev vethXXXX scope host        <- one /32 route per Pod (kind
 kindnet's config is `ptp` + `host-local` IPAM with `"subnet": "10.244.0.0/24"`: point-to-point veth pairs and per-Pod host routes, no bridge. With more nodes, every node gets its own /24, and adding two fake nodes (`../../scheduling-eviction/fake-nodes.sh up 2`) shows it immediately:
 ```
 NODE      PODCIDR
-fake-1    10.244.1.0/24
-fake-2    10.244.2.0/24
+fake-1    10.244.78.0/24
+fake-2    10.244.77.0/24
 minikube  10.244.0.0/24
 ```
+(Not .1 and .2: the scheduling labs created and deleted hundreds of fake nodes, and the allocator doesn't hand ranges out in order.)
 The three ranges must not overlap each other or the node network (192.168.58.0/24 here).
 
 ---
