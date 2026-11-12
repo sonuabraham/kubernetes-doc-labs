@@ -1,0 +1,39 @@
+# The extension API server: a Deployment + Service in agg-demo. The code comes from ConfigMap toy-apiserver-code,
+# the serving cert from Secret toy-tls, and the requestheader CA from ConfigMap requestheader (deploy.sh creates all three).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: toy-apiserver
+  namespace: agg-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: toy-apiserver}
+  template:
+    metadata:
+      labels: {app: toy-apiserver}
+    spec:
+      containers:
+      - name: server
+        image: python:3.12-slim
+        command: [python, -u, /app/toy_apiserver.py]
+        ports: [{containerPort: 8443}]
+        readinessProbe:
+          httpGet: {path: /healthz, port: 8443, scheme: HTTPS}
+        volumeMounts:
+        - {name: code, mountPath: /app}
+        - {name: tls, mountPath: /tls}
+        - {name: requestheader, mountPath: /requestheader}
+      volumes:
+      - {name: code, configMap: {name: toy-apiserver-code}}
+      - {name: tls, secret: {secretName: toy-tls}}
+      - {name: requestheader, configMap: {name: requestheader}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: toy-apiserver
+  namespace: agg-demo
+spec:
+  selector: {app: toy-apiserver}
+  ports: [{port: 443, targetPort: 8443}]

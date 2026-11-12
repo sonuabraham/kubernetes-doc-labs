@@ -1,0 +1,16 @@
+# Claims /apis/toys.example.com/v1 and points the aggregator at the Service.
+# caBundle (the CA that signed the server cert) is filled in by deploy.sh.
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1.toys.example.com
+spec:
+  group: toys.example.com
+  version: v1
+  groupPriorityMinimum: 1000
+  versionPriority: 15
+  service:
+    name: toy-apiserver
+    namespace: agg-demo
+    port: 443
+  caBundle: CA_BUNDLE

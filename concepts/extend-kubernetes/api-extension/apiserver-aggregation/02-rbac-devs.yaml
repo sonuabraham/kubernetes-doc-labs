@@ -1,0 +1,14 @@
+# The aggregator authorizes BEFORE proxying, with normal RBAC on the aggregated resources.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: toys-reader}
+rules:
+- apiGroups: [toys.example.com]
+  resources: [whoamis, clocks]
+  verbs: [get, list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: toys-reader-devs}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: toys-reader}
+subjects: [{apiGroup: rbac.authorization.k8s.io, kind: Group, name: devs}]

