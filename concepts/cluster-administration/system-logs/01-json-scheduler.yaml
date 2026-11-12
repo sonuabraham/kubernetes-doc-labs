@@ -1,0 +1,53 @@
+# A throwaway kube-scheduler (no leader election, profile "json-scheduler") that logs in JSON at verbosity 4,
+# so its log lines can be compared with the text (klog) format of the real scheduler.
+apiVersion: v1
+kind: Namespace
+metadata: {name: syslogs-lab}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: json-scheduler, namespace: syslogs-lab}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: syslogs-lab-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:kube-scheduler"}
+subjects: [{kind: ServiceAccount, name: json-scheduler, namespace: syslogs-lab}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: syslogs-lab-volume-scheduler}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: "system:volume-scheduler"}
+subjects: [{kind: ServiceAccount, name: json-scheduler, namespace: syslogs-lab}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: syslogs-lab-auth-reader, namespace: kube-system}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: extension-apiserver-authentication-reader}
+subjects: [{kind: ServiceAccount, name: json-scheduler, namespace: syslogs-lab}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: json-scheduler, namespace: syslogs-lab}
+data:
+  config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection: {leaderElect: false}
+    profiles: [{schedulerName: json-scheduler}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: json-scheduler, namespace: syslogs-lab}
+spec:
+  selector: {matchLabels: {app: json-scheduler}}
+  template:
+    metadata: {labels: {app: json-scheduler}}
+    spec:
+      serviceAccountName: json-scheduler
+      containers:
+      - name: kube-scheduler
+        image: registry.k8s.io/kube-scheduler:v1.37.0
+        command: ["kube-scheduler", "--config=/etc/s/config.yaml", "--bind-address=127.0.0.1", "--secure-port=0", "--logging-format=json", "--v=4"]
+        volumeMounts: [{name: c, mountPath: /etc/s}]
+      volumes: [{name: c, configMap: {name: json-scheduler}}]
