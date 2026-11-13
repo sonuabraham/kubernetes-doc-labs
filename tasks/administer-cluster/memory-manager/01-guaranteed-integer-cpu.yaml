@@ -1,0 +1,21 @@
+# The docs' first excerpt ("A Pod with integer CPU(s) runs in the Guaranteed QoS class"), spec verbatim,
+# wrapped in apiVersion/kind/metadata. example.com/device is an extended resource: advertise it on the node
+# first (see README; ../extended-resource-node).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: guaranteed-integer-cpu
+  namespace: mem-demo
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      limits:
+        memory: "200Mi"
+        cpu: "2"
+        example.com/device: "1"
+      requests:
+        memory: "200Mi"
+        cpu: "2"
+        example.com/device: "1"
