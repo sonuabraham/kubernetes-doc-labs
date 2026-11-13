@@ -1,0 +1,20 @@
+# Not from the docs: resourceclaim.yaml with allocationMode ExactCount/count 1 instead of All. With "All", the shared
+# claim takes EVERY matching GPU on the node, so the Job's per-Pod template claims (same selector) can never be
+# allocated alongside it ("cannot allocate all claims").
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaim
+metadata:
+  name: example-resource-claim
+spec:
+  devices:
+    requests:
+    - name: single-gpu-claim
+      exactly:
+        deviceClassName: example-device-class
+        allocationMode: ExactCount
+        count: 1
+        selectors:
+        - cel:
+            expression: |-
+              device.attributes["driver.example.com"].type == "gpu" &&
+              device.capacity["driver.example.com"].memory == quantity("64Gi")

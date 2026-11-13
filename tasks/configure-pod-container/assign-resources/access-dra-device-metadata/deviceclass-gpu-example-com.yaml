@@ -1,0 +1,10 @@
+# Not from the docs: the docs' metadata examples request deviceClassName "gpu.example.com" (the class that the
+# dra-example-driver installs). Here it selects every device of this lab's driver instance named gpu.example.com.
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata:
+  name: gpu.example.com
+spec:
+  selectors:
+  - cel:
+      expression: device.driver == "gpu.example.com"

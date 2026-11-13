@@ -13,3 +13,4 @@ tasks/**/work/
 fake-ccm.log
 tasks/**/fakecloud-ccm/bin/
 tasks/**/lab-kms-plugin/lab-kms-plugin
+tasks/**/lab-dra-driver/lab-dra-driver
