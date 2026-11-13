@@ -9,3 +9,5 @@ tasks/**/bin/
 tasks/**/dl/
 .win-kubelet-version
 tasks/**/work/
+.fake-ccm-*.pid
+fake-ccm.log
