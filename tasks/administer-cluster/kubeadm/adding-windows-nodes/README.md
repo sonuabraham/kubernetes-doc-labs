@@ -15,7 +15,7 @@ Based on: https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/adding-win
 | `Install-Containerd.ps1 -ContainerDVersion 1.7.22` | Enables the **Containers** feature (and Hyper-V unless `-skipHypervisorSupportCheck`). Downloads containerd (no `v` prefix in the version) and crictl. Puts CNI paths into `config.toml` (`-CNIBinPath c:/opt/cni/bin`, `-CNIConfigPath c:/etc/cni/net.d`). Registers containerd as a service. **May reboot.** |
 | `PrepareNode.ps1 -KubernetesVersion v1.37.x` | Downloads `kubelet.exe` + `kubeadm.exe` into `C:\k` and puts it on PATH. Writes a start script that reads `/var/lib/kubelet/kubeadm-flags.env`. Registers the kubelet as an **nssm** service (depends on containerd). Opens TCP 10250. Prints the kube-proxy/CNI DaemonSet commands to run **from the control plane** afterwards. |
 | `kubeadm join ...` | The same command as on Linux (token + CA hash). See [../adding-linux-nodes](../adding-linux-nodes/). |
-| **Networking** | Linux CNI and kube-proxy DaemonSets must **not** land on Windows nodes. Windows gets its own **HostProcess** DaemonSets (sig-windows-tools flannel/calico `kube-proxy.yml`, or Calico for Windows). Only a few CNIs support Windows. |
+| **Networking** | Linux CNI and kube-proxy DaemonSets must **not** land on Windows nodes. Windows gets its own **HostProcess** DaemonSets (sig-windows-tools `hostprocess/calico/kube-proxy/kube-proxy.yml`, or Calico for Windows). Only a few CNIs support Windows. |
 | **kubectl** | Optional on the node. See [../../../tools/install-kubectl-windows](../../../tools/install-kubectl-windows/). |
 
 What `kubeadm join` does, step by step (Lab 2 and Lab 3 replay it):
@@ -55,7 +55,7 @@ grep -nE "dl.k8s.io|kubeadm-flags.env|nssm install|DependOnService|NetFirewallRu
 #   $FileContent = Get-Content -Path "/var/lib/kubelet/kubeadm-flags.env"      <- same flags file as on Linux
 #   nssm install kubelet ...   nssm set kubelet DependOnService containerd
 #   New-NetFirewallRule -Name kubelet ... -LocalPort 10250
-#   curl.exe -LO $repoUrl/hostprocess/flannel/kube-proxy/kube-proxy.yml      <- Windows kube-proxy, applied from the control plane
+#   curl.exe -LO $repoUrl/hostprocess/flannel/kube-proxy/kube-proxy.yml      <- printed hint; this flannel path is 404 now, only hostprocess/calico/... exists (see ../upgrading-windows-nodes)
 cd ..
 ```
 

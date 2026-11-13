@@ -7,3 +7,4 @@
 cand-*.log
 tasks/**/bin/
 tasks/**/dl/
+.win-kubelet-version
