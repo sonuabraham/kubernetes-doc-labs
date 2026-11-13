@@ -27,7 +27,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Certificate Management with kubeadm](administer-cluster/kubeadm/kubeadm-certs/)
   - ✅ [Reconfiguring a kubeadm cluster](administer-cluster/kubeadm/kubeadm-reconfigure/)
   - ✅ [Changing The Kubernetes Package Repository](administer-cluster/kubeadm/change-package-repository/)
-- ⬜ [Overprovision Node Capacity For A Cluster](administer-cluster/node-overprovisioning/)
+- ✅ [Overprovision Node Capacity For A Cluster](administer-cluster/node-overprovisioning/)
 - **Migrating from dockershim** (`administer-cluster/migrating-from-dockershim/`)
   - ⬜ [Changing the Container Runtime on a Node from Docker Engine to containerd](administer-cluster/migrating-from-dockershim/change-runtime-containerd/)
   - ⬜ [Find Out What Container Runtime is Used on a Node](administer-cluster/migrating-from-dockershim/find-out-runtime-you-use/)
