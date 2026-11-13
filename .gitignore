@@ -11,3 +11,4 @@ tasks/**/dl/
 tasks/**/work/
 .fake-ccm-*.pid
 fake-ccm.log
+tasks/**/fakecloud-ccm/bin/

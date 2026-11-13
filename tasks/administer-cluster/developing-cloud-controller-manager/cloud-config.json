@@ -1,0 +1,6 @@
+{
+  "region": "eu-lab-1",
+  "instances": {
+    "ccmdev-lab": {"zone": "eu-lab-1a", "type": "fake.large"}
+  }
+}
