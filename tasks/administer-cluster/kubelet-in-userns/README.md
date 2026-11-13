@@ -59,6 +59,17 @@ minikube ssh -- 'sudo containerd --config /tmp/userns-containerd.toml config dum
 ```
 The docs' file is still accepted by containerd 2.x, but it's in the **old version-2 format**. Convert it with `containerd config migrate` (or write the version-3/4 layout) so it doesn't depend on the automatic migration.
 
+The docs' kube-proxy config ([kube-proxy-config-docs.yaml](kube-proxy-config-docs.yaml): `conntrack` values of 0 skip the `nf_conntrack_*` sysctls a user namespace can't set), validated by the real v1.37 binary:
+```bash
+docker run --rm --entrypoint kube-proxy -v $PWD/kube-proxy-config-docs.yaml:/c.yaml:ro registry.k8s.io/kube-proxy:v1.37.0 --config=/c.yaml --cleanup
+#   (no error - mode "iptables" is valid)
+# with the alternative from its comment, mode: "userspace":
+#   "command failed" err="failed validate: KubeProxyConfiguration.Mode.ProxyMode: Invalid value: \"userspace\": must be iptables, ipvs, nftables or blank ..."
+```
+The userspace proxy mode was removed in v1.26, so the comment `# or "userspace"` is out of date.
+
+**Caveats (from the page):** most non-local volume drivers (`nfs`, `iscsi`) don't work, while `local`, `hostPath`, `emptyDir`, `configMap`, `secret` and `downwardAPI` do. Some CNI plugins don't work; Flannel (VXLAN) is known to work.
+
 ## Lab 3 – User-namespace Pods (the Kubernetes-in-Kubernetes building block)
 ```bash
 kubectl apply -f userns-pod.yaml                    # userns-demo (hostUsers: false) + hostusers-demo (default)
