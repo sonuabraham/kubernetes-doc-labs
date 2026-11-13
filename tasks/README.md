@@ -81,7 +81,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Set Kubelet Parameters Via A Configuration File](administer-cluster/kubelet-config-file/)
 - ✅ [Share a Cluster with Namespaces](administer-cluster/namespaces/)
 - ✅ [Upgrade A Cluster](administer-cluster/cluster-upgrade/)
-- ⬜ [Use Cascading Deletion in a Cluster](administer-cluster/use-cascading-deletion/)
+- ✅ [Use Cascading Deletion in a Cluster](administer-cluster/use-cascading-deletion/)
 - ⬜ [Using a KMS provider for data encryption](administer-cluster/kms-provider/)
 - ⬜ [Using CoreDNS for Service Discovery](administer-cluster/coredns/)
 - ⬜ [Using NodeLocal DNSCache in Kubernetes Clusters](administer-cluster/nodelocaldns/)
