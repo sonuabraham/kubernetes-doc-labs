@@ -53,7 +53,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Autoscale the DNS Service in a Cluster](administer-cluster/dns-horizontal-autoscaling/)
 - ✅ [Change the Access Mode of a PersistentVolume to ReadWriteOncePod](administer-cluster/change-pv-access-mode-readwriteoncepod/)
 - ✅ [Change the default StorageClass](administer-cluster/change-default-storage-class/)
-- ⬜ [Switching from Polling to CRI Event-based Updates to Container Status](administer-cluster/switch-to-evented-pleg/)
+- ✅ [Switching from Polling to CRI Event-based Updates to Container Status](administer-cluster/switch-to-evented-pleg/)
 - ⬜ [Change the Reclaim Policy of a PersistentVolume](administer-cluster/change-pv-reclaim-policy/)
 - ⬜ [Cloud Controller Manager Administration](administer-cluster/running-cloud-controller/)
 - ⬜ [Configure a kubelet image credential provider](administer-cluster/kubelet-credential-provider/)
