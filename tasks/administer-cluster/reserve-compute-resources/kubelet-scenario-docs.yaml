@@ -1,0 +1,5 @@
+# The docs' "Example Scenario" settings, verbatim, as KubeletConfiguration fields (append to /var/lib/kubelet/config.yaml).
+# NOTE: the kubelet REJECTS the evictionHard values in this form - see kubelet-scenario-fixed.yaml.
+kubeReserved: {cpu: 1000m, memory: 2Gi, ephemeral-storage: 1Gi}
+systemReserved: {cpu: 500m, memory: 1Gi, ephemeral-storage: 1Gi}
+evictionHard: {memory.available: "<500Mi", nodefs.available: "<10%"}

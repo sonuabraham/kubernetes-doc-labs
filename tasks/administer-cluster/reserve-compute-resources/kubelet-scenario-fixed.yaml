@@ -1,0 +1,5 @@
+# Same scenario, with the evictionHard values written as config-file quantities: the "<" belongs only to the
+# --eviction-hard FLAG syntax (memory.available<500Mi).
+kubeReserved: {cpu: 1000m, memory: 2Gi, ephemeral-storage: 1Gi}
+systemReserved: {cpu: 500m, memory: 1Gi, ephemeral-storage: 1Gi}
+evictionHard: {memory.available: "500Mi", nodefs.available: "10%"}

@@ -73,7 +73,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Limit Storage Consumption](administer-cluster/limit-storage-consumption/)
 - ✅ [Migrate Replicated Control Plane To Use Cloud Controller Manager](administer-cluster/controller-manager-leader-migration/)
 - ✅ [Operating etcd clusters for Kubernetes](administer-cluster/configure-upgrade-etcd/)
-- ⬜ [Reserve Compute Resources for System Daemons](administer-cluster/reserve-compute-resources/)
+- ✅ [Reserve Compute Resources for System Daemons](administer-cluster/reserve-compute-resources/)
 - ⬜ [Running Kubernetes Node Components as a Non-root User](administer-cluster/kubelet-in-userns/)
 - ⬜ [Safely Drain a Node](administer-cluster/safely-drain-node/)
 - ⬜ [Securing a Cluster](administer-cluster/securing-a-cluster/)
