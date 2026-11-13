@@ -1,0 +1,28 @@
+# Not from the docs: reuse a Released (Retain) volume. First clear its claimRef
+#   kubectl patch pv <pv> --type=json -p '[{"op":"remove","path":"/spec/claimRef"}]'
+# then bind a new claim to it explicitly with volumeName (PV name filled in at apply time: sed s/<PV_NAME>/$PV/).
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim3-restored
+spec:
+  storageClassName: standard
+  volumeName: <PV_NAME>
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 4Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: reader
+spec:
+  restartPolicy: Never
+  containers:
+  - name: r
+    image: busybox:1.36
+    command: ["cat", "/data/data.txt"]
+    volumeMounts: [{name: d, mountPath: /data}]
+  volumes:
+  - {name: d, persistentVolumeClaim: {claimName: claim3-restored}}

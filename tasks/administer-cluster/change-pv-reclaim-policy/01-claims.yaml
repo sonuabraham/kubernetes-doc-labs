@@ -1,0 +1,31 @@
+# Not from the docs: the three claims in the docs' sample output (default/claim1..3, 4Gi, RWO), dynamically
+# provisioned by minikube's default "standard" class (reclaimPolicy Delete), plus a Pod writing a file to each.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: claim1}
+spec: {accessModes: [ReadWriteOnce], resources: {requests: {storage: 4Gi}}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: claim2}
+spec: {accessModes: [ReadWriteOnce], resources: {requests: {storage: 4Gi}}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: claim3}
+spec: {accessModes: [ReadWriteOnce], resources: {requests: {storage: 4Gi}}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: writer}
+spec:
+  restartPolicy: Never
+  containers:
+  - name: w
+    image: busybox:1.36
+    command: ["sh", "-c", "for c in 1 2 3; do echo precious-data-$c > /c$c/data.txt; done; ls /c*"]
+    volumeMounts: [{name: c1, mountPath: /c1}, {name: c2, mountPath: /c2}, {name: c3, mountPath: /c3}]
+  volumes:
+  - {name: c1, persistentVolumeClaim: {claimName: claim1}}
+  - {name: c2, persistentVolumeClaim: {claimName: claim2}}
+  - {name: c3, persistentVolumeClaim: {claimName: claim3}}
