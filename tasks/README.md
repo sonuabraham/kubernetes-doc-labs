@@ -86,7 +86,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Using CoreDNS for Service Discovery](administer-cluster/coredns/)
 - ✅ [Using NodeLocal DNSCache in Kubernetes Clusters](administer-cluster/nodelocaldns/)
 - ✅ [Using sysctls in a Kubernetes Cluster](administer-cluster/sysctl-cluster/)
-- ⬜ [Verify Signed Kubernetes Artifacts](administer-cluster/verify-signed-artifacts/)
+- ✅ [Verify Signed Kubernetes Artifacts](administer-cluster/verify-signed-artifacts/)
 - **dns-custom-nameservers** (`administer-cluster/dns-custom-nameservers/`)
 
 ## Configure Pods and Containers — `configure-pod-container/`
