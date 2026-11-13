@@ -78,7 +78,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Safely Drain a Node](administer-cluster/safely-drain-node/)
 - ✅ [Securing a Cluster](administer-cluster/securing-a-cluster/)
 - ✅ [Harden Dynamic Resource Allocation in Your Cluster](administer-cluster/hardening-dra/)
-- ⬜ [Set Kubelet Parameters Via A Configuration File](administer-cluster/kubelet-config-file/)
+- ✅ [Set Kubelet Parameters Via A Configuration File](administer-cluster/kubelet-config-file/)
 - ⬜ [Share a Cluster with Namespaces](administer-cluster/namespaces/)
 - ⬜ [Upgrade A Cluster](administer-cluster/cluster-upgrade/)
 - ⬜ [Use Cascading Deletion in a Cluster](administer-cluster/use-cascading-deletion/)
