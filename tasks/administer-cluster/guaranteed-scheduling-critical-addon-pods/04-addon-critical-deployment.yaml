@@ -1,0 +1,21 @@
+# Not from the docs: a critical add-on managed by a Deployment - if its Pod is evicted/deleted it is recreated
+# and, being system-cluster-critical, gets back onto the full node ahead of the Pending ordinary Pods.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addon
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: lab-addon}
+  template:
+    metadata:
+      labels: {app: lab-addon}
+    spec:
+      priorityClassName: system-cluster-critical
+      containers:
+      - name: addon
+        image: registry.k8s.io/pause:3.10
+        resources:
+          requests: {cpu: "1"}

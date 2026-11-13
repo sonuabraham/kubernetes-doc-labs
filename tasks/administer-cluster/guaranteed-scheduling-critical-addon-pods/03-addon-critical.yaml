@@ -1,0 +1,13 @@
+# Not from the docs: the same add-on marked critical the way the docs say - priorityClassName system-cluster-critical.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addon-critical
+  namespace: kube-system
+spec:
+  priorityClassName: system-cluster-critical
+  containers:
+  - name: addon
+    image: registry.k8s.io/pause:3.10
+    resources:
+      requests: {cpu: "1"}

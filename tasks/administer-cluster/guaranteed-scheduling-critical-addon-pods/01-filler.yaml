@@ -1,0 +1,20 @@
+# Not from the docs: ordinary workload (priority 0) that fills the node's CPU (7 x 1 CPU on an 8-CPU node with
+# ~0.95 CPU already requested by system Pods), so there is no room left for an add-on.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filler
+  namespace: default
+spec:
+  replicas: 7
+  selector:
+    matchLabels: {app: filler}
+  template:
+    metadata:
+      labels: {app: filler}
+    spec:
+      containers:
+      - name: pause
+        image: registry.k8s.io/pause:3.10
+        resources:
+          requests: {cpu: "1"}
