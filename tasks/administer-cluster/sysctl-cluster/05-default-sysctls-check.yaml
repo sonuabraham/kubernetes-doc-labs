@@ -1,0 +1,33 @@
+# Not from the docs: three Pods that print the sysctls the docs' defaultPodSysctls set -
+#  plain (gets the defaults), override (sets net.core.somaxconn itself: per-key precedence),
+#  hostnet (hostNetwork: net.* defaults are skipped).
+apiVersion: v1
+kind: Pod
+metadata: {name: plain}
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "for s in net.ipv4.ip_forward net.core.somaxconn net.ipv4.tcp_rmem kernel.msgmax kernel.sem fs.mqueue.msg_max; do echo $s=$(sysctl -n $s | tr '\\t' ' '); done; sleep 3600"]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: override}
+spec:
+  securityContext:
+    sysctls:
+    - {name: net.core.somaxconn, value: "2048"}
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "for s in net.ipv4.ip_forward net.core.somaxconn net.ipv4.tcp_rmem kernel.msgmax kernel.sem fs.mqueue.msg_max; do echo $s=$(sysctl -n $s | tr '\\t' ' '); done; sleep 3600"]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: hostnet}
+spec:
+  hostNetwork: true
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "for s in net.ipv4.ip_forward net.core.somaxconn net.ipv4.tcp_rmem kernel.msgmax kernel.sem fs.mqueue.msg_max; do echo $s=$(sysctl -n $s | tr '\\t' ' '); done; sleep 3600"]

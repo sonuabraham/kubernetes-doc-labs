@@ -1,0 +1,19 @@
+# The docs' Pod: securityContext verbatim (one safe + two unsafe sysctls); the docs' "..." is filled with a
+# container that prints the values it got.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sysctl-example
+spec:
+  securityContext:
+    sysctls:
+    - name: kernel.shm_rmid_forced
+      value: "0"
+    - name: net.core.somaxconn
+      value: "1024"
+    - name: kernel.msgmax
+      value: "65536"
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "for s in kernel.shm_rmid_forced net.core.somaxconn kernel.msgmax; do echo $s=$(sysctl -n $s); done; sleep 3600"]
