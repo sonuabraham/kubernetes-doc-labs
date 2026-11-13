@@ -58,7 +58,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Cloud Controller Manager Administration](administer-cluster/running-cloud-controller/)
 - ✅ [Configure a kubelet image credential provider](administer-cluster/kubelet-credential-provider/)
 - ✅ [Configure Quotas for API Objects](administer-cluster/quota-api-object/)
-- ⬜ [Control CPU Management Policies on the Node](administer-cluster/cpu-management-policies/)
+- ✅ [Control CPU Management Policies on the Node](administer-cluster/cpu-management-policies/)
 - ⬜ [Control Memory Management Policies on a Node](administer-cluster/memory-manager/)
 - ⬜ [Control Topology Management Policies on a node](administer-cluster/topology-manager/)
 - ⬜ [Customizing DNS Service](administer-cluster/dns-custom-nameservers/)

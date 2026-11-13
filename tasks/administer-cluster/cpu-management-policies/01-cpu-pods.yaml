@@ -1,0 +1,41 @@
+# Not from the docs: three Pods whose containers print the CPUs they may run on (cpuset) - to compare the
+# none and static CPU manager policies. Only the Guaranteed Pod with an INTEGER CPU request gets exclusive CPUs.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cpu-demo
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: guaranteed-int, namespace: cpu-demo}
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "echo cpuset=$(cat /sys/fs/cgroup/cpuset.cpus.effective); sleep 3600"]
+    resources:
+      requests: {cpu: "2", memory: 64Mi}
+      limits:   {cpu: "2", memory: 64Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: guaranteed-fraction, namespace: cpu-demo}
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "echo cpuset=$(cat /sys/fs/cgroup/cpuset.cpus.effective); sleep 3600"]
+    resources:
+      requests: {cpu: 500m, memory: 64Mi}
+      limits:   {cpu: 500m, memory: 64Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: burstable, namespace: cpu-demo}
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "echo cpuset=$(cat /sys/fs/cgroup/cpuset.cpus.effective); sleep 3600"]
+    resources:
+      requests: {cpu: "1"}
