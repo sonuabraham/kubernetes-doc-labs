@@ -1,0 +1,14 @@
+# Not from the docs: key rotation, step 1: new key2 added as the SECOND key (can decrypt, not yet used to encrypt)
+---
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key1
+              secret: <BASE 64 ENCODED SECRET>
+            - name: key2
+              secret: <KEY2>

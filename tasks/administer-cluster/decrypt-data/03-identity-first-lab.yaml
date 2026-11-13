@@ -1,0 +1,14 @@
+# Not from the docs: 02-identity-first-docs.yaml with this lab's real key (key2 from the encrypt-data lab, filled in
+# on the node by ../encrypt-data/install-config.sh). identity FIRST = write plaintext; aescbc still READS old data.
+---
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+    providers:
+      - identity: {} # add this line
+      - aescbc:
+          keys:
+            - name: key2
+              secret: <KEY2>

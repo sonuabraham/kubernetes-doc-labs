@@ -1,0 +1,14 @@
+# Not from the docs: key rotation, step 2: key2 FIRST - new writes use key2; key1 still decrypts old data
+---
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key2
+              secret: <KEY2>
+            - name: key1
+              secret: <BASE 64 ENCODED SECRET>

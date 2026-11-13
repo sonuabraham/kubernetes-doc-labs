@@ -1,0 +1,12 @@
+# Not from the docs: key rotation, step 3: after re-encrypting everything with key2, key1 removed
+---
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: key2
+              secret: <KEY2>
