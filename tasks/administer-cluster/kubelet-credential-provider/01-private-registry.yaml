@@ -1,0 +1,40 @@
+# Not from the docs: a private registry for the lab. registry:2 with basic auth (labuser/labpass), hostNetwork so
+# the node itself reaches it as localhost:5000 (containerd allows plain HTTP for localhost). The htpasswd Secret
+# is created separately (bcrypt):  kubectl -n cred-demo create secret generic registry-htpasswd --from-literal=htpasswd="$HT"
+apiVersion: v1
+kind: Pod
+metadata:
+  name: registry
+  namespace: cred-demo
+  labels: {app: registry}
+spec:
+  hostNetwork: true
+  containers:
+  - name: registry
+    image: registry:2
+    env:
+    - {name: REGISTRY_AUTH, value: htpasswd}
+    - {name: REGISTRY_AUTH_HTPASSWD_REALM, value: lab}
+    - {name: REGISTRY_AUTH_HTPASSWD_PATH, value: /auth/htpasswd}
+    - {name: REGISTRY_HTTP_ADDR, value: "127.0.0.1:5000"}
+    volumeMounts: [{name: auth, mountPath: /auth}]
+  volumes:
+  - name: auth
+    secret: {secretName: registry-htpasswd}
+---
+# push a copy of busybox into it as localhost:5000/private/busybox:1.36
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: push-private-image
+  namespace: cred-demo
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      hostNetwork: true
+      restartPolicy: Never
+      containers:
+      - name: crane
+        image: gcr.io/go-containerregistry/crane:debug
+        command: ["sh", "-c", "crane auth login localhost:5000 -u labuser -p labpass && crane copy --insecure busybox:1.36 localhost:5000/private/busybox:1.36 && crane ls --insecure localhost:5000/private/busybox"]

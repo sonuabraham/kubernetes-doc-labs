@@ -56,7 +56,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Switching from Polling to CRI Event-based Updates to Container Status](administer-cluster/switch-to-evented-pleg/)
 - ✅ [Change the Reclaim Policy of a PersistentVolume](administer-cluster/change-pv-reclaim-policy/)
 - ✅ [Cloud Controller Manager Administration](administer-cluster/running-cloud-controller/)
-- ⬜ [Configure a kubelet image credential provider](administer-cluster/kubelet-credential-provider/)
+- ✅ [Configure a kubelet image credential provider](administer-cluster/kubelet-credential-provider/)
 - ⬜ [Configure Quotas for API Objects](administer-cluster/quota-api-object/)
 - ⬜ [Control CPU Management Policies on the Node](administer-cluster/cpu-management-policies/)
 - ⬜ [Control Memory Management Policies on a Node](administer-cluster/memory-manager/)

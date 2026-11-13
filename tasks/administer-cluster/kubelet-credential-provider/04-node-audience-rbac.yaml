@@ -1,0 +1,24 @@
+# Not from the docs page itself (it points to "Service account token audience restriction"): allow kubelets
+# (group system:nodes) to request ServiceAccount tokens for the audience "lab-registry". The audience is the
+# "resource" of the special verb request-serviceaccounts-token-audience.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: lab-registry-token-audience
+rules:
+- apiGroups: [""]
+  resources: ["lab-registry"]
+  verbs: ["request-serviceaccounts-token-audience"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: lab-registry-token-audience
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: lab-registry-token-audience
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:nodes
