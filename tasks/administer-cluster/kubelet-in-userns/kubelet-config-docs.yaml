@@ -1,0 +1,7 @@
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+featureGates:
+  KubeletInUserNamespace: true
+# We use cgroupfs that is delegated by systemd, so we do not use "systemd" driver
+# (unless you run another systemd in the namespace)
+cgroupDriver: "cgroupfs"

@@ -1,0 +1,18 @@
+version = 2
+
+[plugins."io.containerd.grpc.v1.cri"]
+# Disable AppArmor
+disable_apparmor = true
+# Ignore an error during setting oom_score_adj
+restrict_oom_score_adj = true
+# Disable hugetlb cgroup v2 controller (because systemd does not support delegating hugetlb controller)
+disable_hugetlb_controller = true
+
+[plugins."io.containerd.grpc.v1.cri".containerd]
+# Using non-fuse overlayfs is also possible for kernel >= 5.11, but requires SELinux to be disabled
+snapshotter = "fuse-overlayfs"
+
+[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+# We use cgroupfs that is delegated by systemd, so we do not use SystemdCgroup driver
+# (unless you run another systemd in the namespace)
+SystemdCgroup = false

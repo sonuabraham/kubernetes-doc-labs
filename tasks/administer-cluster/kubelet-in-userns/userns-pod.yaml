@@ -1,0 +1,23 @@
+# Not from the docs: a Pod in its own user namespace (hostUsers: false) - the mechanism the page's
+# "Kubernetes inside Kubernetes, as user namespace pods" (Usernetes) section builds on.
+# Root inside the container is mapped to an unprivileged, high host UID.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: userns-demo
+spec:
+  hostUsers: false
+  containers:
+  - name: shell
+    image: busybox:1.36
+    command: ["sh", "-c", "id; echo uid_map:; cat /proc/self/uid_map; sleep 3600"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostusers-demo
+spec:
+  containers:
+  - name: shell
+    image: busybox:1.36
+    command: ["sh", "-c", "id; echo uid_map:; cat /proc/self/uid_map; sleep 3600"]
