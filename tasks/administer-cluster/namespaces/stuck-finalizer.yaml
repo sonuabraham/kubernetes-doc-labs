@@ -1,0 +1,9 @@
+# Not from the docs: the page's warning - a namespace with a NONEXISTENT finalizer is created fine, but stays in
+# Terminating forever when deleted (nothing ever removes the finalizer).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stuck-demo
+spec:
+  finalizers:
+  - example.com/nobody-handles-this
