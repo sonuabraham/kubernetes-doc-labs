@@ -22,7 +22,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Adding Linux worker nodes](administer-cluster/kubeadm/adding-linux-nodes/)
   - ✅ [Adding Windows worker nodes](administer-cluster/kubeadm/adding-windows-nodes/)
   - ✅ [Upgrading kubeadm clusters](administer-cluster/kubeadm/kubeadm-upgrade/)
-  - ⬜ [Upgrading Linux nodes](administer-cluster/kubeadm/upgrading-linux-nodes/)
+  - ✅ [Upgrading Linux nodes](administer-cluster/kubeadm/upgrading-linux-nodes/)
   - ⬜ [Upgrading Windows nodes](administer-cluster/kubeadm/upgrading-windows-nodes/)
   - ✅ [Certificate Management with kubeadm](administer-cluster/kubeadm/kubeadm-certs/)
   - ✅ [Reconfiguring a kubeadm cluster](administer-cluster/kubeadm/kubeadm-reconfigure/)
