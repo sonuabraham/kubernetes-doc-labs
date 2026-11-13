@@ -63,7 +63,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Control Topology Management Policies on a node](administer-cluster/topology-manager/)
 - ✅ [Customizing DNS Service](administer-cluster/dns-custom-nameservers/)
 - ✅ [Debugging DNS Resolution](administer-cluster/dns-debugging-resolution/)
-- ⬜ [Declare Network Policy](administer-cluster/declare-network-policy/)
+- ✅ [Declare Network Policy](administer-cluster/declare-network-policy/)
 - ⬜ [Developing Cloud Controller Manager](administer-cluster/developing-cloud-controller-manager/)
 - ⬜ [Enable Or Disable A Kubernetes API](administer-cluster/enable-disable-api/)
 - ⬜ [Encrypting Confidential Data at Rest](administer-cluster/encrypt-data/)
