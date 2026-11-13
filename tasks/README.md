@@ -84,7 +84,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Use Cascading Deletion in a Cluster](administer-cluster/use-cascading-deletion/)
 - ✅ [Using a KMS provider for data encryption](administer-cluster/kms-provider/)
 - ✅ [Using CoreDNS for Service Discovery](administer-cluster/coredns/)
-- ⬜ [Using NodeLocal DNSCache in Kubernetes Clusters](administer-cluster/nodelocaldns/)
+- ✅ [Using NodeLocal DNSCache in Kubernetes Clusters](administer-cluster/nodelocaldns/)
 - ⬜ [Using sysctls in a Kubernetes Cluster](administer-cluster/sysctl-cluster/)
 - ⬜ [Verify Signed Kubernetes Artifacts](administer-cluster/verify-signed-artifacts/)
 - **dns-custom-nameservers** (`administer-cluster/dns-custom-nameservers/`)
