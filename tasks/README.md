@@ -90,7 +90,7 @@ Status: ✅ lab written · ⬜ not yet
 - **dns-custom-nameservers** (`administer-cluster/dns-custom-nameservers/`)
 
 ## Configure Pods and Containers — `configure-pod-container/`
-- ⬜ [Assign Memory Resources to Containers and Pods](configure-pod-container/assign-memory-resource/)
+- ✅ [Assign Memory Resources to Containers and Pods](configure-pod-container/assign-memory-resource/)
 - ⬜ [Assign CPU Resources to Containers and Pods](configure-pod-container/assign-cpu-resource/)
 - **Assign Devices to Pods and Containers** (`configure-pod-container/assign-resources/`)
   - ⬜ [Set Up DRA in a Cluster](configure-pod-container/assign-resources/set-up-dra-cluster/)
