@@ -1,0 +1,14 @@
+# FIXED copy of ../04-wildcard-with-nodeipam.yaml for v1.37: resourceLock removed (unknown field), "*" quoted (bare * is a YAML alias), stray '-' removed.
+# wildcard version, with nodeipam
+kind: LeaderMigrationConfiguration
+apiVersion: controllermanager.config.k8s.io/v1
+leaderName: cloud-provider-extraction-migration
+controllerLeaders:
+  - name: route
+    component: "*"
+  - name: service
+    component: "*"
+  - name: cloud-node-lifecycle
+    component: "*"
+  - name: nodeipam
+    component: "*"

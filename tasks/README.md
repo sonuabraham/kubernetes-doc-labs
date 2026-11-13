@@ -71,7 +71,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Guaranteed Scheduling For Critical Add-On Pods](administer-cluster/guaranteed-scheduling-critical-addon-pods/)
 - ✅ [IP Masquerade Agent User Guide](administer-cluster/ip-masq-agent/)
 - ✅ [Limit Storage Consumption](administer-cluster/limit-storage-consumption/)
-- ⬜ [Migrate Replicated Control Plane To Use Cloud Controller Manager](administer-cluster/controller-manager-leader-migration/)
+- ✅ [Migrate Replicated Control Plane To Use Cloud Controller Manager](administer-cluster/controller-manager-leader-migration/)
 - ⬜ [Operating etcd clusters for Kubernetes](administer-cluster/configure-upgrade-etcd/)
 - ⬜ [Reserve Compute Resources for System Daemons](administer-cluster/reserve-compute-resources/)
 - ⬜ [Running Kubernetes Node Components as a Non-root User](administer-cluster/kubelet-in-userns/)

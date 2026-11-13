@@ -1,0 +1,11 @@
+kind: LeaderMigrationConfiguration
+apiVersion: controllermanager.config.k8s.io/v1
+leaderName: cloud-provider-extraction-migration
+resourceLock: leases
+controllerLeaders:
+  - name: route
+    component: cloud-controller-manager
+  - name: service
+    component: cloud-controller-manager
+  - name: cloud-node-lifecycle
+    component: cloud-controller-manager

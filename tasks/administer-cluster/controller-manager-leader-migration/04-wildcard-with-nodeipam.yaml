@@ -1,0 +1,14 @@
+# wildcard version, with nodeipam
+kind: LeaderMigrationConfiguration
+apiVersion: controllermanager.config.k8s.io/v1
+leaderName: cloud-provider-extraction-migration
+resourceLock: leases
+controllerLeaders:
+  - name: route
+    component: *
+  - name: service
+    component: *
+  - name: cloud-node-lifecycle
+    component: *
+  - name: nodeipam
+-   component: *

@@ -1,0 +1,11 @@
+# FIXED copy of ../03-n-plus-1-ccm.yaml for v1.37: resourceLock removed (unknown field), "*" quoted (bare * is a YAML alias), stray '-' removed.
+kind: LeaderMigrationConfiguration
+apiVersion: controllermanager.config.k8s.io/v1
+leaderName: cloud-provider-extraction-migration
+controllerLeaders:
+  - name: route
+    component: cloud-controller-manager
+  - name: service
+    component: cloud-controller-manager
+  - name: cloud-node-lifecycle
+    component: cloud-controller-manager
