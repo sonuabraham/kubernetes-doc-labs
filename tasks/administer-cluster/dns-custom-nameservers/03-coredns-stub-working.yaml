@@ -1,0 +1,42 @@
+# Not from the docs: minikube's own Corefile (log, hosts block for host.minikube.internal, cache tweaks) plus the
+# docs' stub-domain stanza, pointed at the stand-in Consul server. Upstream forwarding is left on /etc/resolv.conf.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+data:
+  Corefile: |
+    .:53 {
+        log
+        errors
+        health {
+           lameduck 5s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           pods insecure
+           fallthrough in-addr.arpa ip6.arpa
+           ttl 30
+        }
+        prometheus :9153
+        hosts {
+           192.168.184.1 host.minikube.internal
+           fallthrough
+        }
+        forward . /etc/resolv.conf {
+           max_concurrent 1000
+        }
+        cache 30 {
+           disable success cluster.local
+           disable denial cluster.local
+        }
+        loop
+        reload
+        loadbalance
+    }
+    consul.local:53 {
+        errors
+        cache 30
+        forward . 10.100.150.1
+    }
