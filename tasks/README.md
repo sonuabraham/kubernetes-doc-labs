@@ -34,7 +34,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Troubleshooting CNI plugin-related errors](administer-cluster/migrating-from-dockershim/troubleshooting-cni-plugin-related-errors/)
   - ✅ [Check whether dockershim removal affects you](administer-cluster/migrating-from-dockershim/check-if-dockershim-removal-affects-you/)
   - ✅ [Migrating telemetry and security agents from dockershim](administer-cluster/migrating-from-dockershim/migrating-telemetry-and-security-agents/)
-- ⬜ [Generate Certificates Manually](administer-cluster/certificates/)
+- ✅ [Generate Certificates Manually](administer-cluster/certificates/)
 - **Manage Memory, CPU, and API Resources** (`administer-cluster/manage-resources/`)
   - ⬜ [Configure Default Memory Requests and Limits for a Namespace](administer-cluster/manage-resources/memory-default-namespace/)
   - ⬜ [Configure Default CPU Requests and Limits for a Namespace](administer-cluster/manage-resources/cpu-default-namespace/)
