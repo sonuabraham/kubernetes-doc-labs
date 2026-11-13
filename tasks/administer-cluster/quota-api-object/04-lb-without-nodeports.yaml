@@ -1,0 +1,13 @@
+# Not from the docs: with services.nodeports: "0" in the quota, an ordinary LoadBalancer Service is rejected
+# because it also allocates NodePorts. allocateLoadBalancerNodePorts: false makes it count only against
+# services.loadbalancers. Apply with NAME substituted: sed s/NAME/lb1/ 04-lb-without-nodeports.yaml | kubectl apply -n quota-object-example -f -
+apiVersion: v1
+kind: Service
+metadata:
+  name: NAME
+spec:
+  type: LoadBalancer
+  allocateLoadBalancerNodePorts: false
+  selector: {app: none}
+  ports:
+  - port: 80

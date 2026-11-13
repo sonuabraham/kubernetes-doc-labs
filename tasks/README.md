@@ -57,7 +57,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Change the Reclaim Policy of a PersistentVolume](administer-cluster/change-pv-reclaim-policy/)
 - ✅ [Cloud Controller Manager Administration](administer-cluster/running-cloud-controller/)
 - ✅ [Configure a kubelet image credential provider](administer-cluster/kubelet-credential-provider/)
-- ⬜ [Configure Quotas for API Objects](administer-cluster/quota-api-object/)
+- ✅ [Configure Quotas for API Objects](administer-cluster/quota-api-object/)
 - ⬜ [Control CPU Management Policies on the Node](administer-cluster/cpu-management-policies/)
 - ⬜ [Control Memory Management Policies on a Node](administer-cluster/memory-manager/)
 - ⬜ [Control Topology Management Policies on a node](administer-cluster/topology-manager/)
