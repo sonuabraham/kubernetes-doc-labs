@@ -50,7 +50,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Access Clusters Using the Kubernetes API](administer-cluster/access-cluster-api/)
 - ✅ [Enable Or Disable Feature Gates](administer-cluster/configure-feature-gates/)
 - ✅ [Advertise Extended Resources for a Node](administer-cluster/extended-resource-node/)
-- ⬜ [Autoscale the DNS Service in a Cluster](administer-cluster/dns-horizontal-autoscaling/)
+- ✅ [Autoscale the DNS Service in a Cluster](administer-cluster/dns-horizontal-autoscaling/)
 - ⬜ [Change the Access Mode of a PersistentVolume to ReadWriteOncePod](administer-cluster/change-pv-access-mode-readwriteoncepod/)
 - ⬜ [Change the default StorageClass](administer-cluster/change-default-storage-class/)
 - ⬜ [Switching from Polling to CRI Event-based Updates to Container Status](administer-cluster/switch-to-evented-pleg/)
