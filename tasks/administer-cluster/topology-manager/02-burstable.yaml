@@ -1,0 +1,15 @@
+# The docs' "Pod interactions with topology manager policies" example #2 (Burstable), spec verbatim, wrapped.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: burstable
+  namespace: topo-demo
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      limits:
+        memory: "200Mi"
+      requests:
+        memory: "100Mi"

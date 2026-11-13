@@ -1,0 +1,10 @@
+# The docs' "Pod interactions with topology manager policies" example #1 (BestEffort), spec verbatim, wrapped.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: besteffort
+  namespace: topo-demo
+spec:
+  containers:
+  - name: nginx
+    image: nginx
