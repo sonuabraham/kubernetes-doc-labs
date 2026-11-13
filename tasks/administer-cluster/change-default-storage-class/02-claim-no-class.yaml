@@ -1,0 +1,12 @@
+# Not from the docs: a PVC with NO storageClassName - it gets whatever StorageClass is default at the time
+# (or later: retroactive default assignment, GA in 1.28).  Apply with: kubectl apply -f - with NAME substituted.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: NAME
+  namespace: sc-demo
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 100Mi

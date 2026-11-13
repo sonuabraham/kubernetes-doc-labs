@@ -1,0 +1,26 @@
+# Not from the docs: the page's note "a PVC created with a volumeName stays Pending if the static volume's
+# storageClassName does not match the StorageClass on the PVC". The PV has class "standard"; the PVC names the
+# PV but omits storageClassName, so it gets the current default (gold) -> mismatch -> Pending.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: static-pv
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 100Mi
+  accessModes: [ReadWriteOnce]
+  hostPath:
+    path: /tmp/static-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: c4-volumename
+  namespace: sc-demo
+spec:
+  volumeName: static-pv
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 100Mi
