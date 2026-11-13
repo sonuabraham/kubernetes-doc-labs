@@ -1,0 +1,11 @@
+# Not from the docs: a PVC template for the tests. Name and size are filled in at apply time:
+#   sed -e s/NAME/pvc-a/ -e s/SIZE/2Gi/ 03-pvc.yaml | kubectl apply -n storage-demo -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: NAME
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: SIZE

@@ -70,7 +70,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Decrypt Confidential Data that is Already Encrypted at Rest](administer-cluster/decrypt-data/)
 - ✅ [Guaranteed Scheduling For Critical Add-On Pods](administer-cluster/guaranteed-scheduling-critical-addon-pods/)
 - ✅ [IP Masquerade Agent User Guide](administer-cluster/ip-masq-agent/)
-- ⬜ [Limit Storage Consumption](administer-cluster/limit-storage-consumption/)
+- ✅ [Limit Storage Consumption](administer-cluster/limit-storage-consumption/)
 - ⬜ [Migrate Replicated Control Plane To Use Cloud Controller Manager](administer-cluster/controller-manager-leader-migration/)
 - ⬜ [Operating etcd clusters for Kubernetes](administer-cluster/configure-upgrade-etcd/)
 - ⬜ [Reserve Compute Resources for System Daemons](administer-cluster/reserve-compute-resources/)
