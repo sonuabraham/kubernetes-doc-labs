@@ -1,0 +1,30 @@
+# Not from the docs: a toy "telemetry agent" DaemonSet of the old kind - it mounts the node's Docker socket
+# and asks dockerd for the containers every 15 s (what `docker ps`-based agents do).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: agents-demo
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: docker-agent
+  namespace: agents-demo
+spec:
+  selector:
+    matchLabels: {app: docker-agent}
+  template:
+    metadata:
+      labels: {app: docker-agent}
+    spec:
+      containers:
+      - name: agent
+        image: docker:27-cli
+        command: ["sh", "-c", "while true; do echo \"$(date +%T) containers seen: $(docker ps -q | wc -l)\"; docker ps --format '{{.Names}}' | grep -m1 k8s_coredns; sleep 15; done"]
+        volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
