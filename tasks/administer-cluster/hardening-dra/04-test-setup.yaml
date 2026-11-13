@@ -1,0 +1,71 @@
+# Not from the docs: things to test the docs' ClusterRoles against.
+# - a DeviceClass and a ResourceClaim in namespace dra-demo
+# - one ServiceAccount per DRA component, each bound to ONE of the docs' roles (plus "status-only", which has only
+#   the pre-1.36 permission resourceclaims/status, to show what the synthetic subresources add)
+apiVersion: v1
+kind: Namespace
+metadata: {name: dra-demo}
+---
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata: {name: dra-demo.example.com}
+spec:
+  selectors:
+  - cel: {expression: 'device.driver == "dra.example.com"'}
+---
+apiVersion: resource.k8s.io/v1
+kind: ResourceClaim
+metadata: {name: gpu-claim, namespace: dra-demo}
+spec:
+  devices:
+    requests:
+    - name: gpu
+      exactly: {deviceClassName: dra-demo.example.com}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: allocator, namespace: dra-demo}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: node-driver, namespace: dra-demo}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: multinode-controller, namespace: dra-demo}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: status-only, namespace: dra-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: dra-demo-status-only}
+rules:
+- apiGroups: ["resource.k8s.io"]
+  resources: ["resourceclaims/status"]
+  verbs: ["get", "patch", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: dra-demo-allocator}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: dra-binding-updater}
+subjects: [{kind: ServiceAccount, name: allocator, namespace: dra-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: dra-demo-node-driver}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: dra-node-driver-status-updater}
+subjects: [{kind: ServiceAccount, name: node-driver, namespace: dra-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: dra-demo-multinode}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: dra-multinode-status-updater}
+subjects: [{kind: ServiceAccount, name: multinode-controller, namespace: dra-demo}]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: dra-demo-status-only}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: dra-demo-status-only}
+subjects: [{kind: ServiceAccount, name: status-only, namespace: dra-demo}]
