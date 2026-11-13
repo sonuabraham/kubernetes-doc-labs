@@ -42,7 +42,7 @@ cd tasks/configure-pod-container/assign-resources
 $K get resourceslices
 #   NAME                                     NODE      DRIVER               POOL      AGE
 #   00000-driver.example.com-dra-lab-r9bhr   dra-lab   driver.example.com   dra-lab   8s
-$K get resourceslice -o yaml | yq '.items[0].spec'
+$K get resourceslice -o yaml        # .items[0].spec, abbreviated:
 #   driver: driver.example.com
 #   nodeName: dra-lab
 #   pool: {generation: 1, name: dra-lab, resourceSliceCount: 1}

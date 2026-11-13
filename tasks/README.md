@@ -96,7 +96,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Set Up DRA in a Cluster](configure-pod-container/assign-resources/set-up-dra-cluster/)
   - ✅ [Allocate Devices to Workloads with DRA](configure-pod-container/assign-resources/allocate-devices-dra/)
   - ✅ [Access DRA Device Metadata](configure-pod-container/assign-resources/access-dra-device-metadata/)
-- ⬜ [Assign Pod-level CPU and memory resources](configure-pod-container/assign-pod-level-resources/)
+- ✅ [Assign Pod-level CPU and memory resources](configure-pod-container/assign-pod-level-resources/)
 - ⬜ [Configure GMSA for Windows Pods and containers](configure-pod-container/configure-gmsa/)
 - ⬜ [Resize CPU and Memory Resources assigned to Containers](configure-pod-container/resize-container-resources/)
 - ⬜ [Resize CPU and Memory Resources assigned to Pods](configure-pod-container/resize-pod-resources/)
