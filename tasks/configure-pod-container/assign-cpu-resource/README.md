@@ -36,7 +36,7 @@ The image has no shell, so look at its cgroup from the node:
 U=$(kubectl get pod cpu-demo -n cpu-example -o jsonpath='{.metadata.uid}' | tr - _)
 minikube ssh -- "sudo cat /sys/fs/cgroup/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-pod$U.slice/cpu.max /sys/fs/cgroup/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-pod$U.slice/cpu.weight"
 #   100000 100000        <- quota 100ms per 100ms period = 1 CPU
-#   20                   <- cpu.weight from the 500m request (cgroup v2 weight, vs 79 for 2000m ...)
+#   20                   <- cpu.weight derived from the 500m request (relative share under contention)
 kubectl delete pod cpu-demo --namespace=cpu-example
 ```
 
