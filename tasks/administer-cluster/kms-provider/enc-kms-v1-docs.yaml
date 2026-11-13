@@ -1,0 +1,18 @@
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+      - configmaps
+      - pandas.awesome.bears.example
+    providers:
+      - kms:
+          name: myKmsPluginFoo
+          endpoint: unix:///tmp/socketfile-foo.sock
+          cachesize: 100
+          timeout: 3s
+      - kms:
+          name: myKmsPluginBar
+          endpoint: unix:///tmp/socketfile-bar.sock
+          cachesize: 100
+          timeout: 3s

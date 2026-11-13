@@ -1,0 +1,16 @@
+# Not from the docs: enc-kms-v2-docs.yaml reduced to the ONE plugin that exists here (lab-kms-plugin), with its
+# real socket path (mounted into the API server Pod), plus the identity fallback the docs recommend until all
+# existing data has been re-encrypted.
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+      - configmaps
+    providers:
+      - kms:
+          apiVersion: v2
+          name: labKmsPlugin
+          endpoint: unix:///var/run/kmsplugin/socket.sock
+          timeout: 3s
+      - identity: {}

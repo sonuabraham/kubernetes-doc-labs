@@ -12,3 +12,4 @@ tasks/**/work/
 .fake-ccm-*.pid
 fake-ccm.log
 tasks/**/fakecloud-ccm/bin/
+tasks/**/lab-kms-plugin/lab-kms-plugin
