@@ -1,0 +1,13 @@
+# Variant of the docs' cat-pictures-pvc.yaml (not from the docs): same claim, but on the CSI storage class.
+# ReadWriteOncePod is CSI-only, and minikube's default class "standard" is not CSI. Used for the first creation.
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cat-pictures-pvc
+spec:
+  storageClassName: csi-hostpath-sc
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

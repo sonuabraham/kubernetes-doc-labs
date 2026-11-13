@@ -1,0 +1,15 @@
+# The docs' "edit your PVC in cat-pictures-pvc.yaml before applying" step, done: ReadWriteOncePod as the ONLY
+# access mode, and spec.volumeName pinned to the existing PV. The PV name comes from dynamic provisioning, so
+# it's filled in at apply time:  sed "s/<PV_NAME>/$PV/" cat-pictures-pvc-rwop.yaml | kubectl apply -f -
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cat-pictures-pvc
+spec:
+  storageClassName: csi-hostpath-sc
+  volumeName: <PV_NAME>
+  accessModes:
+  - ReadWriteOncePod
+  resources:
+    requests:
+      storage: 1Gi
