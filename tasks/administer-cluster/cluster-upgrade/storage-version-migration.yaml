@@ -1,0 +1,11 @@
+# Not from the docs: the page's "Switch your cluster's storage API version" step done by the built-in migrator
+# instead of a manual read/write loop - every Secret is rewritten through the API server in the current
+# storage version.
+apiVersion: storagemigration.k8s.io/v1
+kind: StorageVersionMigration
+metadata:
+  name: secrets-after-upgrade
+spec:
+  resource:
+    group: ""
+    resource: secrets
