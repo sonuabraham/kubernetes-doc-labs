@@ -48,7 +48,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Use Cilium for NetworkPolicy](administer-cluster/network-policy-provider/cilium-network-policy/)
   - ✅ [Use Kube-router for NetworkPolicy](administer-cluster/network-policy-provider/kube-router-network-policy/)
 - ✅ [Access Clusters Using the Kubernetes API](administer-cluster/access-cluster-api/)
-- ⬜ [Enable Or Disable Feature Gates](administer-cluster/configure-feature-gates/)
+- ✅ [Enable Or Disable Feature Gates](administer-cluster/configure-feature-gates/)
 - ⬜ [Advertise Extended Resources for a Node](administer-cluster/extended-resource-node/)
 - ⬜ [Autoscale the DNS Service in a Cluster](administer-cluster/dns-horizontal-autoscaling/)
 - ⬜ [Change the Access Mode of a PersistentVolume to ReadWriteOncePod](administer-cluster/change-pv-access-mode-readwriteoncepod/)

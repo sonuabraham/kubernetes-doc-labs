@@ -1,0 +1,23 @@
+# Not from the docs: a Pod using the ALPHA field lifecycle.stopSignal (feature gate ContainerStopSignals, needed on
+# BOTH kube-apiserver - to keep the field - and the kubelet - to send that signal). On deletion the script appends
+# the signal it received to /tmp/stop-signal/received on the node (hostPath; read it with minikube ssh).
+# (stopSignal requires spec.os.name.)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stop-signal-demo
+spec:
+  os:
+    name: linux
+  terminationGracePeriodSeconds: 10
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sh", "-c", "trap 'echo \"$(date +%T) got SIGTERM\" >> /out/received; exit 0' TERM; trap 'echo \"$(date +%T) got SIGUSR1\" >> /out/received; exit 0' USR1; while true; do sleep 1; done"]
+    lifecycle:
+      stopSignal: SIGUSR1
+    volumeMounts:
+    - {name: out, mountPath: /out}
+  volumes:
+  - name: out
+    hostPath: {path: /tmp/stop-signal, type: DirectoryOrCreate}

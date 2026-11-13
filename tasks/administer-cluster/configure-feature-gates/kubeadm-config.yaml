@@ -1,0 +1,16 @@
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+apiServer:
+  extraArgs:
+    feature-gates: "FeatureName=true"
+controllerManager:
+  extraArgs:
+    feature-gates: "FeatureName=true"
+scheduler:
+  extraArgs:
+    feature-gates: "FeatureName=true"
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+featureGates:
+  FeatureName: true

@@ -1,0 +1,21 @@
+# Not from the docs: the same intent in the shape kubeadm v1beta4 actually accepts (extraArgs is a list of
+# name/value pairs since v1beta4), with a real gate instead of the "FeatureName" placeholder.
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+apiServer:
+  extraArgs:
+  - name: feature-gates
+    value: "ContainerStopSignals=true"
+controllerManager:
+  extraArgs:
+  - name: feature-gates
+    value: "ContainerStopSignals=true"
+scheduler:
+  extraArgs:
+  - name: feature-gates
+    value: "ContainerStopSignals=true"
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+featureGates:
+  ContainerStopSignals: true
