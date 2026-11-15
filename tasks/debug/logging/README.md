@@ -6,8 +6,8 @@ Based on: https://kubernetes.io/docs/tasks/debug/logging/
 
 | Docs link | Lab in this repo |
 |---|---|
-| Logging Architecture | [concepts/cluster-administration/logging](../../../concepts/cluster-administration/logging/): container logs, rotation, `kubectl logs --previous`, sidecar/agent patterns |
-| System Logs | [concepts/cluster-administration/system-logs](../../../concepts/cluster-administration/system-logs/): kubelet/journal logs, verbosity, structured & JSON logging, `/logs` endpoints |
+| Logging Architecture | [concepts/cluster-administration/logging](../../../concepts/cluster-administration/logging/): basic `kubectl logs`, where logs live on the node, streaming sidecars, the fluentd agent sidecar |
+| System Logs | [concepts/cluster-administration/system-logs](../../../concepts/cluster-administration/system-logs/): structured/contextual logs, JSON format and verbosity, node log query |
 | A Practical Guide to Kubernetes Logging (CNCF blog) | external reading |
 
 Quick reminders:

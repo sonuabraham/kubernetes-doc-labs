@@ -6,8 +6,8 @@ Based on: https://kubernetes.io/docs/tasks/debug/monitoring/
 
 | Docs link | Lab in this repo |
 |---|---|
-| Metrics For Kubernetes System Components | [concepts/cluster-administration/system-metrics](../../../concepts/cluster-administration/system-metrics/): `/metrics` of each component, stability levels, `kubernetes_feature_enabled` |
-| Traces For Kubernetes System Components | [concepts/cluster-administration/system-traces](../../../concepts/cluster-administration/system-traces/): OpenTelemetry tracing of apiserver/kubelet |
+| Metrics For Kubernetes System Components | [concepts/cluster-administration/system-metrics](../../../concepts/cluster-administration/system-metrics/): scraping component `/metrics` with the docs ClusterRole, what that role misses, PSI metrics |
+| Traces For Kubernetes System Components | [concepts/cluster-administration/system-traces](../../../concepts/cluster-administration/system-traces/): turning on component tracing and looking at the spans |
 
 See also, in this section: [debug-cluster/resource-metrics-pipeline](../debug-cluster/resource-metrics-pipeline/) and
 [debug-cluster/resource-usage-monitoring](../debug-cluster/resource-usage-monitoring/).
