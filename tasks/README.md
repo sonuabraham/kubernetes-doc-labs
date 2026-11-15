@@ -165,9 +165,9 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Managing Secrets using Kustomize](configmap-secret/managing-secret-using-kustomize/)
 
 ## Inject Data Into Applications — `inject-data-application/`
-- ⬜ [Define a Command and Arguments for a Container](inject-data-application/define-command-argument-container/)
-- ⬜ [Define Dependent Environment Variables](inject-data-application/define-interdependent-environment-variables/)
-- ⬜ [Define Environment Variables for a Container](inject-data-application/define-environment-variable-container/)
+- ✅ [Define a Command and Arguments for a Container](inject-data-application/define-command-argument-container/)
+- ✅ [Define Dependent Environment Variables](inject-data-application/define-interdependent-environment-variables/)
+- ✅ [Define Environment Variables for a Container](inject-data-application/define-environment-variable-container/)
 - ⬜ [Define Environment Variable Values Using An Init Container](inject-data-application/define-environment-variable-via-file/)
 - ⬜ [Expose Pod Information to Containers Through Environment Variables](inject-data-application/environment-variable-expose-pod-information/)
 - ⬜ [Expose Pod Information to Containers Through Files](inject-data-application/downward-api-volume-expose-pod-information/)

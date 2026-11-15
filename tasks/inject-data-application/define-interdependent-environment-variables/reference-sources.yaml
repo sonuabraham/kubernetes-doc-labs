@@ -1,0 +1,31 @@
+# NOT from the docs: which variables can a $(VAR) reference see?
+#   FROM_CM   comes from envFrom (a ConfigMap)            -> resolvable? (envFrom is processed before env)
+#   POD_IP    comes from the downward API (valueFrom)     -> resolvable?
+#   A <-> B   a circular reference                        -> what happens?
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: ref-cm}
+data: {FROM_CM: "from-configmap"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: ref-sources-demo}
+spec:
+  restartPolicy: Never
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "env | grep -E '^(USES_|A=|B=)' | sort"]
+    envFrom:
+    - configMapRef: {name: ref-cm}
+    env:
+    - name: POD_IP
+      valueFrom: {fieldRef: {fieldPath: status.podIP}}
+    - name: USES_CM
+      value: "cm=$(FROM_CM)"
+    - name: USES_POD_IP
+      value: "http://$(POD_IP):8080"
+    - name: A
+      value: "a-then-$(B)"
+    - name: B
+      value: "b-then-$(A)"

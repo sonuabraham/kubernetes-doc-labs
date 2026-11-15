@@ -1,0 +1,49 @@
+# The docs' two snippets ("Use environment variables to define arguments", "Run a command in a shell") made into
+# Pods (the wrappers are NOT from the docs; env/command/args are verbatim). Plus, not from the docs:
+#   args-only-demo : only args -> the image's ENTRYPOINT runs with the new arguments
+#   no-paren-demo  : which spellings Kubernetes expands in args
+apiVersion: v1
+kind: Pod
+metadata: {name: env-arg-demo}
+spec:
+  restartPolicy: Never
+  containers:
+  - name: c
+    image: debian
+    env:
+    - name: MESSAGE
+      value: "hello world"
+    command: ["/bin/echo"]
+    args: ["$(MESSAGE)"]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: shell-demo}
+spec:
+  containers:
+  - name: c
+    image: debian
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo hello; sleep 10;done"]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: args-only-demo}
+spec:
+  restartPolicy: Never
+  containers:
+  - name: c
+    image: nginx:1.27
+    args: ["nginx", "-v"]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: no-paren-demo}
+spec:
+  restartPolicy: Never
+  containers:
+  - name: c
+    image: debian
+    env: [{name: MESSAGE, value: "hello world"}]
+    command: ["/bin/echo"]
+    args: ["$MESSAGE", "${MESSAGE}", "$(MESSAGE)", "$$(MESSAGE)", "$(UNDEFINED)"]
