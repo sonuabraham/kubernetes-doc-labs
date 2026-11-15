@@ -156,7 +156,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Declarative Management of Kubernetes Objects Using Kustomize](manage-kubernetes-objects/kustomization/)
 - ✅ [Managing Kubernetes Objects Using Imperative Commands](manage-kubernetes-objects/imperative-command/)
 - ✅ [Imperative Management of Kubernetes Objects Using Configuration Files](manage-kubernetes-objects/imperative-config/)
-- ⬜ [Update API Objects in Place Using kubectl patch](manage-kubernetes-objects/update-api-object-kubectl-patch/)
+- ✅ [Update API Objects in Place Using kubectl patch](manage-kubernetes-objects/update-api-object-kubectl-patch/)
 - ⬜ [Migrate Kubernetes Objects Using Storage Version Migration](manage-kubernetes-objects/storage-version-migration/)
 
 ## Managing Secrets — `configmap-secret/`
