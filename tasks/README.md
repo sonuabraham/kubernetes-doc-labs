@@ -136,7 +136,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Debug a StatefulSet](debug/debug-application/debug-statefulset/)
   - ✅ [Determine the Reason for Pod Failure](debug/debug-application/determine-reason-pod-failure/)
   - ✅ [Debug Init Containers](debug/debug-application/debug-init-containers/)
-  - ⬜ [Debug Running Pods](debug/debug-application/debug-running-pod/)
+  - ✅ [Debug Running Pods](debug/debug-application/debug-running-pod/)
   - ⬜ [Get a Shell to a Running Container](debug/debug-application/get-shell-running-container/)
 - **Troubleshooting Clusters** (`debug/debug-cluster/`)
   - ⬜ [Troubleshooting Clusters (section page)](debug/debug-cluster/)
