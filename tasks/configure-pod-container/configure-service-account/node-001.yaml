@@ -1,0 +1,9 @@
+# NOT from the docs: an API-only Node object (no kubelet behind it) to bind a token to, with the docs' name.
+# Tainted NoSchedule so nothing is ever scheduled onto it; delete it right after the lab.
+apiVersion: v1
+kind: Node
+metadata:
+  name: node-001
+spec:
+  taints:
+  - {key: lab/fake, effect: NoSchedule}
