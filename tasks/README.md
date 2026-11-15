@@ -108,7 +108,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Configure a Pod to Use a Projected Volume for Storage](configure-pod-container/configure-projected-volume-storage/)
 - ✅ [Configure a Security Context for a Pod or Container](configure-pod-container/security-context/)
 - ✅ [Configure Service Accounts for Pods](configure-pod-container/configure-service-account/)
-- ⬜ [Pull an Image from a Private Registry](configure-pod-container/pull-image-private-registry/)
+- ✅ [Pull an Image from a Private Registry](configure-pod-container/pull-image-private-registry/)
 - ⬜ [Configure Liveness, Readiness and Startup Probes](configure-pod-container/configure-liveness-readiness-startup-probes/)
 - ⬜ [Assign Pods to Nodes](configure-pod-container/assign-pods-nodes/)
 - ⬜ [Assign Pods to Nodes using Node Affinity](configure-pod-container/assign-pods-nodes-using-node-affinity/)

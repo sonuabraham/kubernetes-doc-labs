@@ -1,0 +1,30 @@
+# NOT from the docs: a private, password-protected registry for the lab (instead of Docker Hub).
+# registry:2 with htpasswd auth, on the node's network at localhost:5000 so that containerd on the node
+# can pull from it over plain HTTP (containerd only allows HTTP without extra config for localhost).
+# The htpasswd Secret is created by setup-registry.sh (user janedoe).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: private-registry
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: registry
+  namespace: private-registry
+  labels: {app: registry}
+spec:
+  hostNetwork: true
+  containers:
+  - name: registry
+    image: registry:2
+    env:
+    - {name: REGISTRY_HTTP_ADDR, value: "127.0.0.1:5000"}
+    - {name: REGISTRY_AUTH, value: htpasswd}
+    - {name: REGISTRY_AUTH_HTPASSWD_REALM, value: "lab registry"}
+    - {name: REGISTRY_AUTH_HTPASSWD_PATH, value: /auth/htpasswd}
+    volumeMounts:
+    - {name: auth, mountPath: /auth, readOnly: true}
+  volumes:
+  - name: auth
+    secret: {secretName: registry-htpasswd}
