@@ -1,0 +1,29 @@
+# "Debugging Services": the docs' selector name=nginx,type=frontend.
+#   svc-mismatch : selector matches no Pod (the Pods are labelled type=front-end)  -> no endpoints
+#   svc-port     : selector OK, but targetPort 8080 while nginx listens on 80      -> endpoints, but connection refused
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: nginx, namespace: debug-pods-demo}
+spec:
+  replicas: 3
+  selector: {matchLabels: {name: nginx}}
+  template:
+    metadata: {labels: {name: nginx, type: front-end}}
+    spec:
+      containers: [{name: nginx, image: nginx, ports: [{containerPort: 80}]}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: svc-mismatch, namespace: debug-pods-demo}
+spec:
+  selector:
+    name: nginx
+    type: frontend
+  ports: [{port: 80, targetPort: 80}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: svc-port, namespace: debug-pods-demo}
+spec:
+  selector: {name: nginx}
+  ports: [{port: 80, targetPort: 8080}]

@@ -131,7 +131,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Logging in Kubernetes](debug/logging/) _(link page → concept labs)_
 - ✅ [Monitoring in Kubernetes](debug/monitoring/) _(link page → concept labs)_
 - **Troubleshooting Applications** (`debug/debug-application/`)
-  - ⬜ [Debug Pods](debug/debug-application/debug-pods/)
+  - ✅ [Debug Pods](debug/debug-application/debug-pods/)
   - ⬜ [Debug Services](debug/debug-application/debug-service/)
   - ⬜ [Debug a StatefulSet](debug/debug-application/debug-statefulset/)
   - ⬜ [Determine the Reason for Pod Failure](debug/debug-application/determine-reason-pod-failure/)

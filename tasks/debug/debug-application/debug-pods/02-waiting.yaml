@@ -1,0 +1,6 @@
+# "My pod stays waiting": an image name that doesn't exist.
+apiVersion: v1
+kind: Pod
+metadata: {name: bad-image, namespace: debug-pods-demo}
+spec:
+  containers: [{name: c, image: busybox:1.36-typo}]

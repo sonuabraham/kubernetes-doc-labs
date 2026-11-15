@@ -1,0 +1,4 @@
+# NOT from the docs (the page has no manifests): one namespace with a broken example for every case the page covers.
+apiVersion: v1
+kind: Namespace
+metadata: {name: debug-pods-demo}
