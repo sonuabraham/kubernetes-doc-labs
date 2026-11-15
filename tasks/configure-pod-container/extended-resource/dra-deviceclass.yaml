@@ -1,0 +1,12 @@
+# NOT from the docs (the page points to the DRA concept page for this): a DeviceClass that maps the
+# extended resource name example.com/gpu onto DRA devices of the lab driver driver.example.com.
+# Pods keep using resources.requests/limits - the scheduler turns the request into a ResourceClaim.
+apiVersion: resource.k8s.io/v1
+kind: DeviceClass
+metadata:
+  name: gpu.example.com
+spec:
+  extendedResourceName: example.com/gpu
+  selectors:
+  - cel:
+      expression: device.driver == "driver.example.com"
