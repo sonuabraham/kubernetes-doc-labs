@@ -1,0 +1,21 @@
+# NOT from the docs: a gRPC server that really speaks TLS (etcd with a self-signed --auto-tls cert), for
+# the `mode: TLS` probe. The docs' grpc-tls-liveness.yaml uses agnhost grpc-health-checking, which only
+# serves PLAINTEXT gRPC - so with the GRPCContainerProbeTLS gate on, the docs' Pod FAILS its probe.
+# The kubelet uses InsecureSkipVerify, so the self-signed cert is fine.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: etcd-with-grpc-tls
+spec:
+  containers:
+  - name: etcd
+    image: registry.k8s.io/etcd:3.5.1-0
+    command: [ "/usr/local/bin/etcd", "--data-dir", "/var/lib/etcd", "--auto-tls",
+               "--listen-client-urls", "https://0.0.0.0:2379", "--advertise-client-urls", "https://127.0.0.1:2379"]
+    ports:
+    - containerPort: 2379
+    livenessProbe:
+      grpc:
+        port: 2379
+        mode: TLS
+      initialDelaySeconds: 10
