@@ -174,7 +174,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Distribute Credentials Securely Using Secrets](inject-data-application/distribute-credentials-secure/)
 
 ## Run Applications — `run-application/`
-- ⬜ [Run a Stateless Application Using a Deployment](run-application/run-stateless-application-deployment/)
+- ✅ [Run a Stateless Application Using a Deployment](run-application/run-stateless-application-deployment/)
 - ⬜ [Horizontal Manual Scaling for a Deployment](run-application/scale-deployment/)
 - ⬜ [Update a Deployment Without Downtime](run-application/update-deployment-rolling/)
 - ⬜ [Run a Single-Instance Stateful Application](run-application/run-single-instance-stateful-application/)
