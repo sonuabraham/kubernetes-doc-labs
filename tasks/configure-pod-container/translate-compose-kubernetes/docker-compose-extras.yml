@@ -1,0 +1,18 @@
+# NOT from the docs: one compose file that exercises the page's "Restart", "Labels" and
+# "Warning about Deployment Configurations" sections.
+services:
+  pival:                       # the docs' restart: on-failure example -> a bare Pod
+    image: perl
+    command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+    restart: "on-failure"
+  web_service:                 # underscore in the name -> renamed to web-service
+    image: nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - web-data:/usr/share/nginx/html   # a volume -> PVC + Deployment strategy Recreate
+    labels:
+      kompose.service.type: nodeport
+      kompose.service.expose: "web.example.com"   # -> an Ingress
+volumes:
+  web-data:

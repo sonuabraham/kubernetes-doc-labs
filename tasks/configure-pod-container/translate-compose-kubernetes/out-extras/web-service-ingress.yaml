@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kompose.cmd: ../bin/kompose convert -f ../docker-compose-extras.yml
+    kompose.service.expose: web.example.com
+    kompose.service.type: nodeport
+    kompose.version: 1.34.0 (cbf2835db)
+  labels:
+    io.kompose.service: web-service
+  name: web-service
+spec:
+  rules:
+    - host: web.example.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: web-service
+                port:
+                  number: 8081
+            path: /
+            pathType: Prefix

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    kompose.cmd: ../bin/kompose convert -f ../docker-compose.yml --controller daemonSet -o ds/
+    kompose.service.type: LoadBalancer
+    kompose.version: 1.34.0 (cbf2835db)
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  selector:
+    matchLabels:
+      io.kompose.service: web
+  template:
+    metadata:
+      labels:
+        io.kompose.service: web
+    spec:
+      containers:
+        - env:
+            - name: GET_HOSTS_FROM
+              value: dns
+          image: quay.io/kompose/web
+          name: web
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      restartPolicy: Always

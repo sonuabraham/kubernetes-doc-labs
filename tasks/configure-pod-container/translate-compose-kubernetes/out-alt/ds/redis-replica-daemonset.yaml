@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    kompose.cmd: ../bin/kompose convert -f ../docker-compose.yml --controller daemonSet -o ds/
+    kompose.version: 1.34.0 (cbf2835db)
+  labels:
+    io.kompose.service: redis-replica
+  name: redis-replica
+spec:
+  selector:
+    matchLabels:
+      io.kompose.service: redis-replica
+  template:
+    metadata:
+      labels:
+        io.kompose.service: redis-replica
+    spec:
+      containers:
+        - args:
+            - redis-server
+            - --replicaof
+            - redis-leader
+            - "6379"
+            - --dir
+            - /tmp
+          image: redis
+          name: redis-replica
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+      restartPolicy: Always
