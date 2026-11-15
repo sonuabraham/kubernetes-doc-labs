@@ -1,0 +1,14 @@
+# NOT from the docs: nodeName skips the scheduler - but the KUBELET still checks nodeSelector/affinity
+# when it admits the Pod. This Pod names the real node and asks for a label it doesn't have.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-nodename-mismatch
+spec:
+  nodeName: minikube
+  nodeSelector:
+    disktype: hdd
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent

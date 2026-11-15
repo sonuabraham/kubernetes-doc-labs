@@ -110,7 +110,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Configure Service Accounts for Pods](configure-pod-container/configure-service-account/)
 - ✅ [Pull an Image from a Private Registry](configure-pod-container/pull-image-private-registry/)
 - ✅ [Configure Liveness, Readiness and Startup Probes](configure-pod-container/configure-liveness-readiness-startup-probes/)
-- ⬜ [Assign Pods to Nodes](configure-pod-container/assign-pods-nodes/)
+- ✅ [Assign Pods to Nodes](configure-pod-container/assign-pods-nodes/)
 - ⬜ [Assign Pods to Nodes using Node Affinity](configure-pod-container/assign-pods-nodes-using-node-affinity/)
 - ⬜ [Configure Pod Initialization](configure-pod-container/configure-pod-initialization/)
 - ⬜ [Attach Handlers to Container Lifecycle Events](configure-pod-container/attach-handler-lifecycle-event/)
