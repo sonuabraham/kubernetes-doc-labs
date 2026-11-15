@@ -1,0 +1,37 @@
+# NOT from the docs: test-crd-v2.yaml with (1) metadata.name indented (the docs' file has `name:` at the top
+# level, so the CRD has no name) and (2) conversion strategy None instead of the placeholder webhook.
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: selfierequests.example.com
+spec:
+  group: example.com
+  names:
+    plural: selfierequests
+    singular: selfierequest
+    kind: SelfieRequest
+    listKind: SelfieRequestList
+  scope: Namespaced
+  versions:
+    - name: v2
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            host:
+              type: string
+            port:
+              type: string
+    - name: v1
+      served: true
+      storage: false
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            hostPort:
+              type: string
+  conversion:
+    strategy: None

@@ -1,0 +1,17 @@
+# NOT from the docs: enc-config-key2.yaml + identity: {} as the LAST provider (read-only fallback). Without it, Secrets
+# written before encryption was enabled (here kubeadm's bootstrap token) can't be read anymore, and the migration fails.
+kind: EncryptionConfiguration
+apiVersion: apiserver.config.k8s.io/v1
+resources:
+- resources:
+  - secrets
+  providers:
+  - aescbc:
+      keys:
+      - name: key2
+        secret: c2VjcmV0IGlzIHNlY3VyZSwgaXMgaXQ/
+  - aescbc:
+      keys:
+      - name: key1
+        secret: c2VjcmV0IGlzIHNlY3VyZQ==
+  - identity: {}
