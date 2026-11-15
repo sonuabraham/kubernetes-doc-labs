@@ -1,0 +1,20 @@
+# NOT from the docs: bind-mount-options.yaml with the image pinned. registry.k8s.io/busybox (= :latest) is a schema-1 image that
+# containerd >= 2.1 refuses to pull (ImagePullBackOff: media type ...manifest.v1+prettyjws is no longer supported).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bind-mount-options-demo
+spec:
+  containers:
+  - image: registry.k8s.io/busybox:1.27.2
+    name: test-container
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - mountPath: /tmp
+      name: tmp-volume
+      bindMountOptions:
+      - noexec
+      - nosuid
+  volumes:
+  - name: tmp-volume
+    emptyDir: {}

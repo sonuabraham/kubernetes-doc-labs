@@ -1,0 +1,18 @@
+# NOT from the docs: emptydir-volume-mode.yaml with the image pinned. registry.k8s.io/busybox (= :latest) is a schema-1 image that
+# containerd >= 2.1 refuses to pull (ImagePullBackOff: media type ...manifest.v1+prettyjws is no longer supported).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir-mode-demo
+spec:
+  containers:
+  - image: registry.k8s.io/busybox:1.27.2
+    name: test-container
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - mountPath: /tmp
+      name: tmp-volume
+  volumes:
+  - name: tmp-volume
+    emptyDir:
+      mode: 01777
