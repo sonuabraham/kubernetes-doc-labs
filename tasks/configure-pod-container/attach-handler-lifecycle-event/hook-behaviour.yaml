@@ -1,0 +1,55 @@
+# NOT from the docs - what the hooks really do (timestamps are written to /tmp/log):
+#  poststart-blocks : postStart sleeps 10 s. The entrypoint already runs meanwhile, but the container is
+#                     not reported Running / Ready until the hook returns.
+#  poststart-fails  : postStart exits 1 -> FailedPostStartHook, container killed and restarted.
+#  prestop-sleep    : preStop uses the built-in sleep action (no shell needed) for 8 s, then SIGTERM -> delete ~8 s.
+#  prestop-too-long : preStop sleeps 60 s but terminationGracePeriodSeconds is 5 -> killed after 5 s + 2 s.
+apiVersion: v1
+kind: Pod
+metadata: {name: poststart-blocks}
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "echo \"entrypoint $(date +%T)\" >> /tmp/log; sleep 3600"]
+    lifecycle:
+      postStart:
+        exec: {command: ["sh", "-c", "echo \"postStart begin $(date +%T)\" >> /tmp/log; sleep 10; echo \"postStart end $(date +%T)\" >> /tmp/log"]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: poststart-fails}
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    lifecycle:
+      postStart:
+        exec: {command: ["sh", "-c", "echo cannot register with config server >&2; exit 1"]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: prestop-sleep}
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    # exits on SIGTERM (a bare `sleep` as PID 1 ignores it and would use up the whole 30 s grace period)
+    command: ["sh", "-c", "trap 'exit 0' TERM; sleep 3600 & wait"]
+    lifecycle:
+      preStop:
+        sleep: {seconds: 8}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: prestop-too-long}
+spec:
+  terminationGracePeriodSeconds: 5
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    lifecycle:
+      preStop:
+        exec: {command: ["sleep", "60"]}
