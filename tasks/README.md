@@ -127,8 +127,9 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Migrate from PodSecurityPolicy to the Built-In PodSecurity Admission Controller](configure-pod-container/migrate-from-psp/)
 
 ## Monitoring, Logging, and Debugging — `debug/`
-- **Logging in Kubernetes** (`debug/logging/`)
-- **Monitoring in Kubernetes** (`debug/monitoring/`)
+- ✅ [Section overview (Getting help)](debug/)
+- ✅ [Logging in Kubernetes](debug/logging/) _(link page → concept labs)_
+- ✅ [Monitoring in Kubernetes](debug/monitoring/) _(link page → concept labs)_
 - **Troubleshooting Applications** (`debug/debug-application/`)
   - ⬜ [Debug Pods](debug/debug-application/debug-pods/)
   - ⬜ [Debug Services](debug/debug-application/debug-service/)
@@ -138,6 +139,7 @@ Status: ✅ lab written · ⬜ not yet
   - ⬜ [Debug Running Pods](debug/debug-application/debug-running-pod/)
   - ⬜ [Get a Shell to a Running Container](debug/debug-application/get-shell-running-container/)
 - **Troubleshooting Clusters** (`debug/debug-cluster/`)
+  - ⬜ [Troubleshooting Clusters (section page)](debug/debug-cluster/)
   - ⬜ [Troubleshooting kubectl](debug/debug-cluster/troubleshoot-kubectl/)
   - ⬜ [Resource metrics pipeline](debug/debug-cluster/resource-metrics-pipeline/)
   - ⬜ [Tools for Monitoring Resources](debug/debug-cluster/resource-usage-monitoring/)
