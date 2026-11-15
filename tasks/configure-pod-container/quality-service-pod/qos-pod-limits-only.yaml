@@ -1,0 +1,14 @@
+# NOT from the docs: only limits are set -> requests are defaulted to the limits -> Guaranteed.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: qos-demo-5
+  namespace: qos-example
+spec:
+  containers:
+  - name: qos-demo-5-ctr
+    image: nginx
+    resources:
+      limits:
+        memory: "200Mi"
+        cpu: "700m"
