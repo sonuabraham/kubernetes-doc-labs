@@ -1,0 +1,10 @@
+# NOT from the docs: memory "working set" = cgroup memory usage minus INACTIVE file cache.
+# The container writes a 200 MB file (page cache, not anonymous memory) and then idles.
+apiVersion: v1
+kind: Pod
+metadata: {name: ws-demo}
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "dd if=/dev/zero of=/tmp/big bs=1M count=200 2>/dev/null; sync; echo written; sleep 3600"]
