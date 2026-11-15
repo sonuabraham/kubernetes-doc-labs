@@ -124,7 +124,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Translate a Docker Compose File to Kubernetes Resources](configure-pod-container/translate-compose-kubernetes/)
 - ✅ [Enforce Pod Security Standards by Configuring the Built-in Admission Controller](configure-pod-container/enforce-standards-admission-controller/)
 - ✅ [Enforce Pod Security Standards with Namespace Labels](configure-pod-container/enforce-standards-namespace-labels/)
-- ⬜ [Migrate from PodSecurityPolicy to the Built-In PodSecurity Admission Controller](configure-pod-container/migrate-from-psp/)
+- ✅ [Migrate from PodSecurityPolicy to the Built-In PodSecurity Admission Controller](configure-pod-container/migrate-from-psp/)
 
 ## Monitoring, Logging, and Debugging — `debug/`
 - **Logging in Kubernetes** (`debug/logging/`)

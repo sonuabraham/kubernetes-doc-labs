@@ -1,0 +1,45 @@
+# NOT from the docs: the docs' step 1 says anyone who can update a Namespace can lower its Pod Security level and
+# suggests an admission webhook to stop that. A ValidatingAdmissionPolicy does it in-cluster: only members of
+# system:masters may add, change or remove pod-security.kubernetes.io/* labels.
+# Plus a test user "ns-editor" who may get/patch namespaces (RBAC) - but no longer touch those labels.
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata: {name: protect-pod-security-labels}
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - {apiGroups: [""], apiVersions: ["v1"], operations: ["CREATE", "UPDATE"], resources: ["namespaces"]}
+  matchConditions:
+  - name: not-cluster-admin
+    expression: "!('system:masters' in request.userInfo.groups)"
+  variables:
+  - name: newPSA
+    expression: >-
+      has(object.metadata.labels) ? object.metadata.labels.filter(k, k.startsWith('pod-security.kubernetes.io/')).map(k, k + '=' + object.metadata.labels[k]) : []
+  - name: oldPSA
+    expression: >-
+      oldObject == null || !has(oldObject.metadata.labels) ? [] :
+      oldObject.metadata.labels.filter(k, k.startsWith('pod-security.kubernetes.io/')).map(k, k + '=' + oldObject.metadata.labels[k])
+  validations:
+  - expression: "variables.newPSA.all(l, l in variables.oldPSA) && variables.oldPSA.all(l, l in variables.newPSA)"
+    messageExpression: "'only cluster admins may change pod-security.kubernetes.io labels (user ' + request.userInfo.username + ')'"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata: {name: protect-pod-security-labels}
+spec:
+  policyName: protect-pod-security-labels
+  validationActions: [Deny]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: ns-editor}
+rules:
+- {apiGroups: [""], resources: ["namespaces"], verbs: ["get", "list", "patch", "update"]}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: ns-editor}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: ns-editor}
+subjects: [{apiGroup: rbac.authorization.k8s.io, kind: User, name: ns-editor}]
