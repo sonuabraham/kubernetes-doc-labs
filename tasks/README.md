@@ -117,7 +117,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Configure a Pod to Use a ConfigMap](configure-pod-container/configure-pod-configmap/)
 - ✅ [Share Process Namespace between Containers in a Pod](configure-pod-container/share-process-namespace/)
 - ✅ [Use a User Namespace With a Pod](configure-pod-container/user-namespaces/)
-- ⬜ [Use an Image Volume With a Pod](configure-pod-container/image-volumes/)
+- ✅ [Use an Image Volume With a Pod](configure-pod-container/image-volumes/)
 - ⬜ [Set Permissions on an emptyDir Volume](configure-pod-container/configure-emptydir-volume-mode/)
 - ⬜ [Set Bind Mount Options on Volume Mounts](configure-pod-container/configure-bind-mount-options/)
 - ⬜ [Create static Pods](configure-pod-container/static-pod/)
