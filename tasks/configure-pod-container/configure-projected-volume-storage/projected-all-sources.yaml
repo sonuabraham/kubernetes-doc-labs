@@ -1,0 +1,51 @@
+# NOT from the docs: all four projectable sources in one directory, plus items/path remapping
+# (secret, configMap, downwardAPI, serviceAccountToken). Reuses the docs' Secrets "user" and "pass".
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  mode: debug
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: projected-all-sources
+  labels:
+    app: demo
+spec:
+  containers:
+  - name: shell
+    image: busybox:1.28
+    args: ["sleep", "86400"]
+    volumeMounts:
+    - name: all-in-one
+      mountPath: /projected-volume
+      readOnly: true
+  volumes:
+  - name: all-in-one
+    projected:
+      defaultMode: 0440
+      sources:
+      - secret:
+          name: user
+          items:
+          - key: username.txt
+            path: creds/username
+      - secret:
+          name: pass
+          items:
+          - key: password.txt
+            path: creds/password
+            mode: 0400
+      - configMap:
+          name: app-config
+      - downwardAPI:
+          items:
+          - path: labels
+            fieldRef:
+              fieldPath: metadata.labels
+      - serviceAccountToken:
+          audience: vault
+          expirationSeconds: 3600
+          path: token
