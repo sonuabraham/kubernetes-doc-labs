@@ -148,8 +148,8 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Troubleshooting Topology Management](debug/debug-cluster/topology/)
   - ✅ [Auditing](debug/debug-cluster/audit/)
   - ✅ [Debugging Kubernetes Nodes With Kubectl](debug/debug-cluster/kubectl-node-debug/)
-  - ⬜ [Developing and debugging services locally using telepresence](debug/debug-cluster/local-debugging/)
-  - ⬜ [Windows debugging tips](debug/debug-cluster/windows/)
+  - ✅ [Developing and debugging services locally using telepresence](debug/debug-cluster/local-debugging/)
+  - ✅ [Windows debugging tips](debug/debug-cluster/windows/)
 
 ## Manage Kubernetes Objects — `manage-kubernetes-objects/`
 - ⬜ [Declarative Management of Kubernetes Objects Using Configuration Files](manage-kubernetes-objects/declarative-config/)

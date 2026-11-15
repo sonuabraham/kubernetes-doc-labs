@@ -1,0 +1,16 @@
+# NOT from the docs: the page's "ErrImgPull / ImagePullBackOff -> make sure the Pod lands on a compatible Windows node".
+#   no-selector   : a Windows image with no OS selection -> scheduled on the Linux node -> pull fails
+#   with-selector : the same Pod with nodeSelector kubernetes.io/os: windows -> only Windows nodes qualify
+apiVersion: v1
+kind: Pod
+metadata: {name: no-selector}
+spec:
+  containers: [{name: iis, image: mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2022}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: with-selector}
+spec:
+  nodeSelector: {kubernetes.io/os: windows}
+  os: {name: windows}
+  containers: [{name: iis, image: mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2022}]
