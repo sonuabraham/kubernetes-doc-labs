@@ -1,0 +1,9 @@
+# Fragment from the docs' Troubleshooting section (verbatim; it is part of a container spec, not a
+# complete object - it cannot be applied on its own). Windows only: restarts netlogon until
+# `nltest.exe /query` reports NERR_Success.
+        image: registry.domain.example/iis-auth:1809v1
+        lifecycle:
+          postStart:
+            exec:
+              command: ["powershell.exe","-command","do { Restart-Service -Name netlogon } while ( $($Result = (nltest.exe /query); if ($Result -like '*0x0 NERR_Success*') {return $true} else {return $false}) -eq $false)"]
+        imagePullPolicy: IfNotPresent

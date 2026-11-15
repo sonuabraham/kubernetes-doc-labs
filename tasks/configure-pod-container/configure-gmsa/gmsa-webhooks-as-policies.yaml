@@ -1,0 +1,124 @@
+# NOT from the docs. A stand-in for the two windows-gmsa admission webhooks
+# (https://github.com/kubernetes-sigs/windows-gmsa), written as in-cluster CEL policies so the
+# lab needs no webhook image, certificates or Deployment:
+#
+#  1. MutatingAdmissionPolicy "gmsa-expand": for every GMSACredentialSpec (paramRef selector {}),
+#     if a Pod (or one of its containers) names it in windowsOptions.gmsaCredentialSpecName,
+#     write the credspec as a JSON string into windowsOptions.gmsaCredentialSpec.
+#     (That is the field the container runtime on the Windows node actually reads.)
+#  2. ValidatingAdmissionPolicy "gmsa-authorize": every gmsaCredentialSpecName in the Pod must be
+#     `use`-able by the Pod's ServiceAccount (RBAC check via the CEL `authorizer`).
+#     Like the webhook's SubjectAccessReview, the check carries the Pod's namespace, which is why the
+#     docs' namespaced RoleBinding (to a ClusterRole) is enough for this cluster-scoped resource.
+#
+# Simplifications vs the real webhook: only the credspec fields in the docs example are serialised
+# (no HostAccountConfig), and the webhook's extra checks (name <-> content consistency on update,
+# unknown-name rejection) are reduced to "unknown name => no expansion, then denied by #2".
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: gmsa-expand
+spec:
+  paramKind:
+    apiVersion: windows.k8s.io/v1
+    kind: GMSACredentialSpec
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE"]
+      resources: ["pods"]
+  failurePolicy: Fail
+  reinvocationPolicy: Never
+  variables:
+  - name: cs
+    expression: params.credspec
+  - name: json
+    # Build the credspec JSON by hand (CEL has no JSON encoder).
+    expression: >-
+      '{"ActiveDirectoryConfig":{"GroupManagedServiceAccounts":[' +
+      variables.cs.ActiveDirectoryConfig.GroupManagedServiceAccounts.map(a,
+        '{"Name":"' + a.Name + '","Scope":"' + a.Scope + '"}').join(',') +
+      ']},"CmsPlugins":[' +
+      variables.cs.CmsPlugins.map(p, '"' + p + '"').join(',') +
+      '],"DomainJoinConfig":{' +
+      '"DnsName":"' + variables.cs.DomainJoinConfig.DnsName + '",' +
+      '"DnsTreeName":"' + variables.cs.DomainJoinConfig.DnsTreeName + '",' +
+      '"Guid":"' + variables.cs.DomainJoinConfig.Guid + '",' +
+      '"MachineAccountName":"' + variables.cs.DomainJoinConfig.MachineAccountName + '",' +
+      '"NetBiosName":"' + variables.cs.DomainJoinConfig.NetBiosName + '",' +
+      '"Sid":"' + variables.cs.DomainJoinConfig.Sid + '"}}'
+  - name: podWants
+    expression: >-
+      has(object.spec.securityContext) && has(object.spec.securityContext.windowsOptions) &&
+      has(object.spec.securityContext.windowsOptions.gmsaCredentialSpecName) &&
+      object.spec.securityContext.windowsOptions.gmsaCredentialSpecName == params.metadata.name
+  - name: ctrs
+    expression: >-
+      object.spec.containers.filter(c, has(c.securityContext) && has(c.securityContext.windowsOptions) &&
+      has(c.securityContext.windowsOptions.gmsaCredentialSpecName) &&
+      c.securityContext.windowsOptions.gmsaCredentialSpecName == params.metadata.name).map(c, c.name)
+  mutations:
+  - patchType: ApplyConfiguration
+    applyConfiguration:
+      expression: >-
+        variables.podWants ?
+        Object{spec: Object.spec{securityContext: Object.spec.securityContext{
+          windowsOptions: Object.spec.securityContext.windowsOptions{gmsaCredentialSpec: variables.json}}}}
+        : Object{}
+  - patchType: ApplyConfiguration
+    applyConfiguration:
+      expression: >-
+        size(variables.ctrs) == 0 ? Object{} :
+        Object{spec: Object.spec{containers: variables.ctrs.map(n, Object.spec.containers{name: n,
+          securityContext: Object.spec.containers.securityContext{
+            windowsOptions: Object.spec.containers.securityContext.windowsOptions{gmsaCredentialSpec: variables.json}}})}}
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: gmsa-expand
+spec:
+  policyName: gmsa-expand
+  paramRef:
+    selector: {}                      # evaluate once per GMSACredentialSpec
+    parameterNotFoundAction: Allow    # no credspecs yet -> nothing to expand
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: gmsa-authorize
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE"]
+      resources: ["pods"]
+  failurePolicy: Fail
+  variables:
+  - name: names
+    expression: >-
+      ((has(object.spec.securityContext) && has(object.spec.securityContext.windowsOptions) &&
+        has(object.spec.securityContext.windowsOptions.gmsaCredentialSpecName))
+        ? [object.spec.securityContext.windowsOptions.gmsaCredentialSpecName] : []) +
+      object.spec.containers.filter(c, has(c.securityContext) && has(c.securityContext.windowsOptions) &&
+        has(c.securityContext.windowsOptions.gmsaCredentialSpecName))
+        .map(c, c.securityContext.windowsOptions.gmsaCredentialSpecName)
+  - name: sa
+    expression: "has(object.spec.serviceAccountName) ? object.spec.serviceAccountName : 'default'"
+  validations:
+  - expression: >-
+      variables.names.all(n, authorizer.serviceAccount(request.namespace, variables.sa)
+        .group('windows.k8s.io').resource('gmsacredentialspecs').namespace(request.namespace).name(n).check('use').allowed())
+    messageExpression: >-
+      'service account ' + variables.sa + ' is not authorized to `use` gmsa credspec(s) ' +
+      variables.names.join(', ')
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: gmsa-authorize
+spec:
+  policyName: gmsa-authorize
+  validationActions: [Deny]

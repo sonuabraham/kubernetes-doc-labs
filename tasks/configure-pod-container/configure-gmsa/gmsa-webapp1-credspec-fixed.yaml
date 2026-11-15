@@ -1,0 +1,22 @@
+# NOT from the docs: gmsa-Webapp1-credspec.yaml with the name lower-cased (object names must be
+# lowercase RFC 1123 subdomains, so the docs' "gmsa-WebApp1" is rejected). Content unchanged.
+apiVersion: windows.k8s.io/v1
+kind: GMSACredentialSpec
+metadata:
+  name: gmsa-webapp1  # This is an arbitrary name but it will be used as a reference
+credspec:
+  ActiveDirectoryConfig:
+    GroupManagedServiceAccounts:
+    - Name: WebApp1   # Username of the GMSA account
+      Scope: CONTOSO  # NETBIOS Domain Name
+    - Name: WebApp1   # Username of the GMSA account
+      Scope: contoso.com # DNS Domain Name
+  CmsPlugins:
+  - ActiveDirectory
+  DomainJoinConfig:
+    DnsName: contoso.com  # DNS Domain Name
+    DnsTreeName: contoso.com # DNS Domain Name Root
+    Guid: 244818ae-87ac-4fcd-92ec-e79e5252348a  # GUID of the Domain
+    MachineAccountName: WebApp1 # Username of the GMSA account
+    NetBiosName: CONTOSO  # NETBIOS Domain Name
+    Sid: S-1-5-21-2126449477-2524075714-3094792973 # SID of the Domain

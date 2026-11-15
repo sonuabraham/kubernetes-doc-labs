@@ -1,0 +1,11 @@
+# NOT from the docs: gmsa-webapp1-role.yaml with resourceNames lower-cased to match the fixed credspec.
+# Create the Role to read the credspec
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: webapp1-role
+rules:
+- apiGroups: ["windows.k8s.io"]
+  resources: ["gmsacredentialspecs"]
+  verbs: ["use"]
+  resourceNames: ["gmsa-webapp1"]
