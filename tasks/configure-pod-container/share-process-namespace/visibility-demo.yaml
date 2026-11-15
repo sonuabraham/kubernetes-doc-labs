@@ -1,0 +1,31 @@
+# NOT from the docs: what another container in a shared process namespace can see.
+#  app          : uid 1000, has a secret in its environment
+#  shell        : root, default capabilities (no SYS_PTRACE)
+#  shell-ptrace : root + SYS_PTRACE (like the docs' "shell" container)
+# plus nginx-private: the docs' Pod WITHOUT shareProcessNamespace, for comparison.
+apiVersion: v1
+kind: Pod
+metadata: {name: visibility-demo}
+spec:
+  shareProcessNamespace: true
+  containers:
+  - name: app
+    image: busybox:1.28
+    command: ["sleep", "3600"]
+    env: [{name: DB_PASSWORD, value: s3cr3t}]
+    securityContext: {runAsUser: 1000}
+  - name: shell
+    image: busybox:1.28
+    command: ["sleep", "3600"]
+  - name: shell-ptrace
+    image: busybox:1.28
+    command: ["sleep", "3600"]
+    securityContext: {capabilities: {add: [SYS_PTRACE]}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: nginx-private}
+spec:
+  containers:
+  - {name: nginx, image: nginx}
+  - {name: shell, image: busybox:1.28, command: ["sleep", "3600"]}
