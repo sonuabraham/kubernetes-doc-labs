@@ -1,0 +1,39 @@
+# NOT from the docs: provoke a Deferred resize and let the scheduler preempt a lower-priority Pod
+# (gate InPlacePodVerticalScalingSchedulerPreemption, alpha -> profile resize-lab with 2 CPUs).
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: resize-high
+value: 1000
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: resize-low
+value: 10
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: low-prio
+  namespace: qos-example
+spec:
+  priorityClassName: resize-low
+  containers:
+  - name: pause
+    image: registry.k8s.io/pause:3.8
+    resources:
+      requests: {cpu: 800m}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: high-prio
+  namespace: qos-example
+spec:
+  priorityClassName: resize-high
+  containers:
+  - name: pause
+    image: registry.k8s.io/pause:3.8
+    resources:
+      requests: {cpu: 200m}

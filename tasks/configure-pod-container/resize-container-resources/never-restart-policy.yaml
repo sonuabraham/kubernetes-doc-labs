@@ -1,0 +1,16 @@
+# NOT from the docs: a Pod with restartPolicy: Never may not ask for RestartContainer on resize.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: never-demo
+  namespace: qos-example
+spec:
+  restartPolicy: Never
+  containers:
+  - name: pause
+    image: registry.k8s.io/pause:3.8
+    resizePolicy:
+    - resourceName: memory
+      restartPolicy: RestartContainer
+    resources:
+      requests: {cpu: 100m, memory: 50Mi}
