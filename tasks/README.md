@@ -139,7 +139,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Debug Running Pods](debug/debug-application/debug-running-pod/)
   - ✅ [Get a Shell to a Running Container](debug/debug-application/get-shell-running-container/)
 - **Troubleshooting Clusters** (`debug/debug-cluster/`)
-  - ⬜ [Troubleshooting Clusters (section page)](debug/debug-cluster/)
+  - ✅ [Troubleshooting Clusters (section page)](debug/debug-cluster/)
   - ⬜ [Troubleshooting kubectl](debug/debug-cluster/troubleshoot-kubectl/)
   - ⬜ [Resource metrics pipeline](debug/debug-cluster/resource-metrics-pipeline/)
   - ⬜ [Tools for Monitoring Resources](debug/debug-cluster/resource-usage-monitoring/)
