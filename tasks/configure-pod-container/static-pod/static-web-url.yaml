@@ -1,0 +1,16 @@
+# The docs' web-hosted manifest, with the name changed to static-web-url (NOT from the docs) so it can
+# run next to the file-hosted static-web Pod.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: static-web-url
+  labels:
+    role: myrole
+spec:
+  containers:
+    - name: web
+      image: nginx
+      ports:
+        - name: web
+          containerPort: 80
+          protocol: TCP

@@ -120,7 +120,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Use an Image Volume With a Pod](configure-pod-container/image-volumes/)
 - ✅ [Set Permissions on an emptyDir Volume](configure-pod-container/configure-emptydir-volume-mode/)
 - ✅ [Set Bind Mount Options on Volume Mounts](configure-pod-container/configure-bind-mount-options/)
-- ⬜ [Create static Pods](configure-pod-container/static-pod/)
+- ✅ [Create static Pods](configure-pod-container/static-pod/)
 - ⬜ [Translate a Docker Compose File to Kubernetes Resources](configure-pod-container/translate-compose-kubernetes/)
 - ⬜ [Enforce Pod Security Standards by Configuring the Built-in Admission Controller](configure-pod-container/enforce-standards-admission-controller/)
 - ⬜ [Enforce Pod Security Standards with Namespace Labels](configure-pod-container/enforce-standards-namespace-labels/)
