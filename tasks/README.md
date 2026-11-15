@@ -161,7 +161,7 @@ Status: ✅ lab written · ⬜ not yet
 
 ## Managing Secrets — `configmap-secret/`
 - ✅ [Managing Secrets using kubectl](configmap-secret/managing-secret-using-kubectl/)
-- ⬜ [Managing Secrets using Configuration File](configmap-secret/managing-secret-using-config-file/)
+- ✅ [Managing Secrets using Configuration File](configmap-secret/managing-secret-using-config-file/)
 - ⬜ [Managing Secrets using Kustomize](configmap-secret/managing-secret-using-kustomize/)
 
 ## Inject Data Into Applications — `inject-data-application/`
