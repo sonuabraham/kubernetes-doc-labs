@@ -160,7 +160,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Migrate Kubernetes Objects Using Storage Version Migration](manage-kubernetes-objects/storage-version-migration/)
 
 ## Managing Secrets — `configmap-secret/`
-- ⬜ [Managing Secrets using kubectl](configmap-secret/managing-secret-using-kubectl/)
+- ✅ [Managing Secrets using kubectl](configmap-secret/managing-secret-using-kubectl/)
 - ⬜ [Managing Secrets using Configuration File](configmap-secret/managing-secret-using-config-file/)
 - ⬜ [Managing Secrets using Kustomize](configmap-secret/managing-secret-using-kustomize/)
 
