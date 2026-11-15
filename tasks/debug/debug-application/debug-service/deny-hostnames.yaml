@@ -1,0 +1,8 @@
+# NOT from the docs: the page's "Any Network Policy Ingress rules affecting the target Pods?" step, made visible.
+# (kindnet enforces NetworkPolicy.) Selects the hostnames Pods and allows no ingress.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: deny-hostnames}
+spec:
+  podSelector: {matchLabels: {app: hostnames}}
+  policyTypes: [Ingress]

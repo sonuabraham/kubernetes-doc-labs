@@ -1,0 +1,17 @@
+# NOT from the docs: the "Pod fails to reach itself via the Service IP" edge case - a single Pod behind a Service
+# that calls its own Service. TRAP (kept on purpose): the Pod and the Service are both called "selfcall", and
+# /etc/hosts in the Pod maps its own hostname "selfcall" to its Pod IP - so `wget selfcall` from inside the Pod
+# skips the Service, goes to <podIP>:80 and is refused. Use the Service IP or selfcall.default.svc.cluster.local.
+apiVersion: v1
+kind: Pod
+metadata: {name: selfcall, labels: {app: selfcall}}
+spec:
+  containers:
+  - {name: web, image: busybox:1.36, command: ["sh", "-c", "mkdir /w; hostname > /w/index.html; httpd -f -p 8080 -h /w"]}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: selfcall}
+spec:
+  selector: {app: selfcall}
+  ports: [{port: 80, targetPort: 8080}]
