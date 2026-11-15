@@ -1,0 +1,41 @@
+# NOT from the docs: how nodeSelectorTerms combine.
+#   terms-or  : two nodeSelectorTerms -> a node may match EITHER  (zone-a OR disktype=ssd)
+#   exprs-and : one term, two matchExpressions -> a node must match BOTH (zone-b AND type=fake)
+#   not-in    : NotIn + Exists operators
+apiVersion: v1
+kind: Pod
+metadata: {name: terms-or}
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions: [{key: topology.kubernetes.io/zone, operator: In, values: [zone-a]}]
+        - matchExpressions: [{key: disktype, operator: In, values: [ssd]}]
+  containers: [{name: nginx, image: nginx, imagePullPolicy: IfNotPresent}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exprs-and}
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - {key: topology.kubernetes.io/zone, operator: In, values: [zone-b]}
+          - {key: type, operator: In, values: [fake]}
+  containers: [{name: nginx, image: nginx, imagePullPolicy: IfNotPresent}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: not-in}
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - {key: topology.kubernetes.io/zone, operator: Exists}
+          - {key: topology.kubernetes.io/zone, operator: NotIn, values: [zone-a, zone-b]}
+  containers: [{name: nginx, image: nginx, imagePullPolicy: IfNotPresent}]

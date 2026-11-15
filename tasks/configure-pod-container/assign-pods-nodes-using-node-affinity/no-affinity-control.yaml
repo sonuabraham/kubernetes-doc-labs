@@ -1,0 +1,10 @@
+# NOT from the docs: the same nginx Pod with NO affinity - the control group for the preferred-affinity test.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-noaff
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
