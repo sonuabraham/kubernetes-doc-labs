@@ -171,7 +171,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Define Environment Variable Values Using An Init Container](inject-data-application/define-environment-variable-via-file/)
 - ✅ [Expose Pod Information to Containers Through Environment Variables](inject-data-application/environment-variable-expose-pod-information/)
 - ✅ [Expose Pod Information to Containers Through Files](inject-data-application/downward-api-volume-expose-pod-information/)
-- ⬜ [Distribute Credentials Securely Using Secrets](inject-data-application/distribute-credentials-secure/)
+- ✅ [Distribute Credentials Securely Using Secrets](inject-data-application/distribute-credentials-secure/)
 
 ## Run Applications — `run-application/`
 - ⬜ [Run a Stateless Application Using a Deployment](run-application/run-stateless-application-deployment/)

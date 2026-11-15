@@ -1,0 +1,43 @@
+# NOT from the docs: the docs' pod.yaml with "myClientImage" (an invalid, uppercase image name) replaced by busybox
+# and a command that prints the mounted credentials. Pod names get a -fixed suffix.
+apiVersion: v1
+kind: List
+items:
+- kind: Pod
+  apiVersion: v1
+  metadata:
+    name: prod-db-client-pod-fixed
+    labels:
+      name: prod-db-client
+  spec:
+    volumes:
+    - name: secret-volume
+      secret:
+        secretName: prod-db-secret
+    containers:
+    - name: db-client-container
+      image: busybox:1.36
+      command: ["sh", "-c", "echo $(cat /etc/secret-volume/username):$(cat /etc/secret-volume/password); sleep 3600"]
+      volumeMounts:
+      - name: secret-volume
+        readOnly: true
+        mountPath: "/etc/secret-volume"
+- kind: Pod
+  apiVersion: v1
+  metadata:
+    name: test-db-client-pod-fixed
+    labels:
+      name: test-db-client
+  spec:
+    volumes:
+    - name: secret-volume
+      secret:
+        secretName: test-db-secret
+    containers:
+    - name: db-client-container
+      image: busybox:1.36
+      command: ["sh", "-c", "echo $(cat /etc/secret-volume/username):$(cat /etc/secret-volume/password); sleep 3600"]
+      volumeMounts:
+      - name: secret-volume
+        readOnly: true
+        mountPath: "/etc/secret-volume"
