@@ -1,0 +1,12 @@
+# NOT from the docs: the webhook backend's kubeconfig-format config (--audit-webhook-config-file).
+apiVersion: v1
+kind: Config
+clusters:
+- name: audit-sink
+  cluster:
+    server: http://127.0.0.1:9880/audit
+contexts:
+- name: default
+  context: {cluster: audit-sink, user: ""}
+current-context: default
+users: []

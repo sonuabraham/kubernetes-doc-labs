@@ -146,7 +146,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Monitor Node Health](debug/debug-cluster/monitor-node-health/)
   - ✅ [Debugging Kubernetes nodes with crictl](debug/debug-cluster/crictl/)
   - ✅ [Troubleshooting Topology Management](debug/debug-cluster/topology/)
-  - ⬜ [Auditing](debug/debug-cluster/audit/)
+  - ✅ [Auditing](debug/debug-cluster/audit/)
   - ⬜ [Debugging Kubernetes Nodes With Kubectl](debug/debug-cluster/kubectl-node-debug/)
   - ⬜ [Developing and debugging services locally using telepresence](debug/debug-cluster/local-debugging/)
   - ⬜ [Windows debugging tips](debug/debug-cluster/windows/)
