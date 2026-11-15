@@ -100,7 +100,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Configure GMSA for Windows Pods and containers](configure-pod-container/configure-gmsa/)
 - ✅ [Resize CPU and Memory Resources assigned to Containers](configure-pod-container/resize-container-resources/)
 - ✅ [Resize CPU and Memory Resources assigned to Pods](configure-pod-container/resize-pod-resources/)
-- ⬜ [Configure RunAsUserName for Windows pods and containers](configure-pod-container/configure-runasusername/)
+- ✅ [Configure RunAsUserName for Windows pods and containers](configure-pod-container/configure-runasusername/)
 - ⬜ [Create a Windows HostProcess Pod](configure-pod-container/create-hostprocess-pod/)
 - ⬜ [Configure Quality of Service for Pods](configure-pod-container/quality-service-pod/)
 - ⬜ [Assign Extended Resources to a Container](configure-pod-container/extended-resource/)
