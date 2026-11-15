@@ -1,0 +1,21 @@
+# NOT from the docs: the docs' file with cluster-wide defaults raised and one exemption of each kind.
+#   every namespace WITHOUT labels: enforce baseline, warn + audit restricted (pinned to v1.37)
+#   exempt: namespace kube-system, user lab-admin, RuntimeClass trusted
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+- name: PodSecurity
+  configuration:
+    apiVersion: pod-security.admission.config.k8s.io/v1
+    kind: PodSecurityConfiguration
+    defaults:
+      enforce: "baseline"
+      enforce-version: "v1.37"
+      audit: "restricted"
+      audit-version: "v1.37"
+      warn: "restricted"
+      warn-version: "v1.37"
+    exemptions:
+      usernames: ["lab-admin"]
+      runtimeClasses: ["trusted"]
+      namespaces: ["kube-system"]
