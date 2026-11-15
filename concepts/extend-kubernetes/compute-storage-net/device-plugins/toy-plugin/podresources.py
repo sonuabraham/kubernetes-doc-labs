@@ -19,7 +19,8 @@ def devs(devices):
 
 def show_pod(p):
     for c in p.containers:
-        for line in devs(c.devices) + ([f"exclusive cpus {list(c.cpu_ids)}"] if c.cpu_ids else []) + \
+        mem = [f"memory {m.memory_type} {m.size} bytes numa={[n.ID for n in m.topology.nodes]}" for m in c.memory]
+        for line in devs(c.devices) + ([f"exclusive cpus {list(c.cpu_ids)}"] if c.cpu_ids else []) + mem + \
                 [f"DRA claim {r.claim_namespace}/{r.claim_name}" for r in c.dynamic_resources]:
             print(f"  {p.namespace}/{p.name}/{c.name}: {line}")
 
@@ -33,5 +34,7 @@ elif cmd == "allocatable":
     for line in devs(r.devices):
         print("  " + line)
     print(f"  cpus {list(r.cpu_ids)}")
+    for m in r.memory:
+        print(f"  memory {m.memory_type} {m.size} bytes numa={[n.ID for n in m.topology.nodes]}")
 elif cmd == "get":
     show_pod(stub.Get(pb.GetPodResourcesRequest(pod_name=sys.argv[2], pod_namespace=sys.argv[3])).pod_resources)

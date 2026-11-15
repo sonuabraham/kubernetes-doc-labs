@@ -1,0 +1,40 @@
+# NOT from the docs: the toy device plugin from concepts/extend-kubernetes/compute-storage-net/device-plugins,
+# reporting its 2 devices on NUMA node 1 (NUMA_NODE=1) - a node that doesn't exist on this machine.
+# Plus a PodResources API client Pod ("monitor") with the kubelet's pod-resources directory mounted.
+apiVersion: v1
+kind: Namespace
+metadata: {name: topo-demo}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: {name: toy-foo-plugin, namespace: topo-demo}
+spec:
+  selector: {matchLabels: {app: toy-foo-plugin}}
+  template:
+    metadata: {labels: {app: toy-foo-plugin}}
+    spec:
+      containers:
+      - name: plugin
+        image: toy-foo-plugin:1
+        imagePullPolicy: Never
+        env: [{name: DEVICES, value: "2"}, {name: NUMA_NODE, value: "1"}]
+        securityContext: {privileged: true}
+        volumeMounts:
+        - {name: device-plugins, mountPath: /var/lib/kubelet/device-plugins}
+        - {name: toy-foo, mountPath: /var/lib/toy-foo}
+      volumes:
+      - {name: device-plugins, hostPath: {path: /var/lib/kubelet/device-plugins, type: Directory}}
+      - {name: toy-foo, hostPath: {path: /var/lib/toy-foo, type: DirectoryOrCreate}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: monitor, namespace: topo-demo}
+spec:
+  containers:
+  - name: monitor
+    image: toy-foo-plugin:1
+    imagePullPolicy: Never
+    command: ["sleep", "infinity"]
+    volumeMounts: [{name: pod-resources, mountPath: /var/lib/kubelet/pod-resources}]
+  volumes:
+  - {name: pod-resources, hostPath: {path: /var/lib/kubelet/pod-resources}}

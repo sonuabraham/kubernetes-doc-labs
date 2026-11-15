@@ -19,6 +19,7 @@ import deviceplugin_pb2_grpc as pbg
 
 RESOURCE = os.environ.get("RESOURCE", "hardware-vendor.example/foo")
 N = int(os.environ.get("DEVICES", "4"))
+NUMA = int(os.environ.get("NUMA_NODE", "0"))   # NUMA node reported for every device (tasks/debug/debug-cluster/topology uses 1)
 DP_DIR = "/var/lib/kubelet/device-plugins"
 SOCK = "toy-foo.sock"
 HOST_DIR = "/var/lib/toy-foo"          # hostPath, so the kubelet can mount it into workload containers
@@ -38,7 +39,7 @@ def unhealthy():
 def device_list():
     bad = unhealthy()
     return [pb.Device(ID=d, health="Unhealthy" if d in bad else "Healthy",
-                      topology=pb.TopologyInfo(nodes=[pb.NUMANode(ID=0)])) for d in IDS]
+                      topology=pb.TopologyInfo(nodes=[pb.NUMANode(ID=NUMA)])) for d in IDS]
 
 
 class Toy(pbg.DevicePluginServicer):
