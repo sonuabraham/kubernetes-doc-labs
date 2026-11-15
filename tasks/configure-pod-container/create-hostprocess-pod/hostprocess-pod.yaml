@@ -1,0 +1,22 @@
+# The docs' "Example manifest (excerpt)" made applyable: apiVersion/kind/metadata added (NOT from the docs),
+# the spec below is verbatim. image1:latest is the docs' placeholder - on a real Windows node use e.g.
+# mcr.microsoft.com/oss/kubernetes/windows-host-process-containers-base-image:v1.0.0
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostprocess-demo
+spec:
+  securityContext:
+    windowsOptions:
+      hostProcess: true
+      runAsUserName: "NT AUTHORITY\\Local service"
+  hostNetwork: true
+  containers:
+  - name: test
+    image: image1:latest
+    command:
+      - ping
+      - -t
+      - 127.0.0.1
+  nodeSelector:
+    "kubernetes.io/os": windows

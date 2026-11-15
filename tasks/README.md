@@ -101,7 +101,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Resize CPU and Memory Resources assigned to Containers](configure-pod-container/resize-container-resources/)
 - ✅ [Resize CPU and Memory Resources assigned to Pods](configure-pod-container/resize-pod-resources/)
 - ✅ [Configure RunAsUserName for Windows pods and containers](configure-pod-container/configure-runasusername/)
-- ⬜ [Create a Windows HostProcess Pod](configure-pod-container/create-hostprocess-pod/)
+- ✅ [Create a Windows HostProcess Pod](configure-pod-container/create-hostprocess-pod/)
 - ⬜ [Configure Quality of Service for Pods](configure-pod-container/quality-service-pod/)
 - ⬜ [Assign Extended Resources to a Container](configure-pod-container/extended-resource/)
 - ⬜ [Configure a Pod to Use a Volume for Storage](configure-pod-container/configure-volume-storage/)
