@@ -153,7 +153,7 @@ Status: ✅ lab written · ⬜ not yet
 
 ## Manage Kubernetes Objects — `manage-kubernetes-objects/`
 - ✅ [Declarative Management of Kubernetes Objects Using Configuration Files](manage-kubernetes-objects/declarative-config/)
-- ⬜ [Declarative Management of Kubernetes Objects Using Kustomize](manage-kubernetes-objects/kustomization/)
+- ✅ [Declarative Management of Kubernetes Objects Using Kustomize](manage-kubernetes-objects/kustomization/)
 - ⬜ [Managing Kubernetes Objects Using Imperative Commands](manage-kubernetes-objects/imperative-command/)
 - ⬜ [Imperative Management of Kubernetes Objects Using Configuration Files](manage-kubernetes-objects/imperative-config/)
 - ⬜ [Update API Objects in Place Using kubectl patch](manage-kubernetes-objects/update-api-object-kubectl-patch/)

@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  password: c2VjcmV0
+  username: YWRtaW4=
+kind: Secret
+metadata:
+  name: example-secret-2-8c5228dkb9
+type: Opaque

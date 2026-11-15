@@ -1,0 +1,7 @@
+# NOT from the docs: fields from the page's feature table that kustomize v5 deprecates.
+bases:
+- ../examples/15-bases-and-overlays/base
+commonLabels:
+  team: web
+patchesStrategicMerge:
+- replicas.yaml
