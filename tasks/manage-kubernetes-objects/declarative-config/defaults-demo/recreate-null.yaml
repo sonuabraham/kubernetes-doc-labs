@@ -1,0 +1,22 @@
+# NOT from the docs: the fix - set the server-defaulted rollingUpdate to null so apply clears it
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:
+    type: Recreate
+    rollingUpdate: null    # clear the server-defaulted field explicitly
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80

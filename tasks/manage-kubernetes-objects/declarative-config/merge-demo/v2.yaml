@@ -1,0 +1,14 @@
+# NOT from the docs: the "configuration file value": helper-a removed, helper-c added, helper-b unchanged.
+# Also changes nginx's args list (a list of primitives -> replaced as a whole).
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: merge-demo}
+spec:
+  selector: {matchLabels: {app: merge-demo}}
+  template:
+    metadata: {labels: {app: merge-demo}}
+    spec:
+      containers:
+      - {name: nginx, image: "nginx:1.16.1"}
+      - {name: nginx-helper-b, image: "busybox:1.36", args: ["sleep", "3600"]}
+      - {name: nginx-helper-c, image: "busybox:1.36", args: ["sleep", "3600"]}

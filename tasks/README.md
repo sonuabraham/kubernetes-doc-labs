@@ -152,7 +152,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Windows debugging tips](debug/debug-cluster/windows/)
 
 ## Manage Kubernetes Objects — `manage-kubernetes-objects/`
-- ⬜ [Declarative Management of Kubernetes Objects Using Configuration Files](manage-kubernetes-objects/declarative-config/)
+- ✅ [Declarative Management of Kubernetes Objects Using Configuration Files](manage-kubernetes-objects/declarative-config/)
 - ⬜ [Declarative Management of Kubernetes Objects Using Kustomize](manage-kubernetes-objects/kustomization/)
 - ⬜ [Managing Kubernetes Objects Using Imperative Commands](manage-kubernetes-objects/imperative-command/)
 - ⬜ [Imperative Management of Kubernetes Objects Using Configuration Files](manage-kubernetes-objects/imperative-config/)
