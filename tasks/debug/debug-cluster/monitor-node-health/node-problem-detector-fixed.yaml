@@ -1,0 +1,79 @@
+# NOT from the docs: node-problem-detector-configmap.yaml made to work on 1.37 / containerd 2.x:
+#  - image registry.k8s.io/node-problem-detector:v0.1 is a schema-1 image containerd >= 2.1 can't pull
+#    -> registry.k8s.io/node-problem-detector/node-problem-detector:v0.8.21
+#  - current NPD needs: NODE_NAME, a ServiceAccount allowed to patch nodes/status and create events,
+#    and an explicit monitor config (--config.system-log-monitor=...)
+#  - the monitor reads /log/lab-kern.log (= node's /var/log/lab-kern.log) instead of the real kernel log,
+#    so the lab never writes into the host kernel's ring buffer
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: node-problem-detector, namespace: kube-system}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: node-problem-detector}
+rules:
+- {apiGroups: [""], resources: ["nodes"], verbs: ["get"]}
+- {apiGroups: [""], resources: ["nodes/status"], verbs: ["patch"]}
+- {apiGroups: ["", "events.k8s.io"], resources: ["events"], verbs: ["create", "patch", "update"]}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: node-problem-detector}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: node-problem-detector}
+subjects: [{kind: ServiceAccount, name: node-problem-detector, namespace: kube-system}]
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-problem-detector-v0.1
+  namespace: kube-system
+  labels:
+    k8s-app: node-problem-detector
+    version: v0.1
+    kubernetes.io/cluster-service: "true"
+spec:
+  selector:
+    matchLabels:
+      k8s-app: node-problem-detector
+      version: v0.1
+      kubernetes.io/cluster-service: "true"
+  template:
+    metadata:
+      labels:
+        k8s-app: node-problem-detector
+        version: v0.1
+        kubernetes.io/cluster-service: "true"
+    spec:
+      serviceAccountName: node-problem-detector
+      hostNetwork: true
+      containers:
+      - name: node-problem-detector
+        image: registry.k8s.io/node-problem-detector/node-problem-detector:v0.8.21
+        command: ["/node-problem-detector", "--logtostderr", "--config.system-log-monitor=/config/lab-kernel-monitor.json"]
+        env:
+        - name: NODE_NAME
+          valueFrom: {fieldRef: {fieldPath: spec.nodeName}}
+        securityContext:
+          privileged: true
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "100Mi"
+          requests:
+            cpu: "20m"
+            memory: "20Mi"
+        volumeMounts:
+        - name: log
+          mountPath: /log
+          readOnly: true
+        - name: config # Overwrite the config/ directory with ConfigMap volume
+          mountPath: /config
+          readOnly: true
+      volumes:
+      - name: log
+        hostPath:
+          path: /var/log/
+      - name: config # Define ConfigMap volume
+        configMap:
+          name: node-problem-detector-config
