@@ -142,7 +142,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Troubleshooting Clusters (section page)](debug/debug-cluster/)
   - ✅ [Troubleshooting kubectl](debug/debug-cluster/troubleshoot-kubectl/)
   - ✅ [Resource metrics pipeline](debug/debug-cluster/resource-metrics-pipeline/)
-  - ⬜ [Tools for Monitoring Resources](debug/debug-cluster/resource-usage-monitoring/)
+  - ✅ [Tools for Monitoring Resources](debug/debug-cluster/resource-usage-monitoring/)
   - ✅ [Monitor Node Health](debug/debug-cluster/monitor-node-health/)
   - ⬜ [Debugging Kubernetes nodes with crictl](debug/debug-cluster/crictl/)
   - ⬜ [Troubleshooting Topology Management](debug/debug-cluster/topology/)

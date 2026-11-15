@@ -1,0 +1,56 @@
+# NOT from the docs (the page deliberately recommends no product): the smallest possible "full metrics pipeline" -
+# one Prometheus that discovers the nodes and scrapes each kubelet's cAdvisor and resource endpoints through the
+# API server proxy (so it needs only RBAC on nodes/proxy, no node network access).
+apiVersion: v1
+kind: Namespace
+metadata: {name: monitoring-demo}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: prometheus, namespace: monitoring-demo}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: {name: monitoring-demo-prometheus}
+rules:
+- {apiGroups: [""], resources: ["nodes"], verbs: ["get", "list", "watch"]}
+- {apiGroups: [""], resources: ["nodes/proxy", "nodes/metrics"], verbs: ["get"]}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: {name: monitoring-demo-prometheus}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: monitoring-demo-prometheus}
+subjects: [{kind: ServiceAccount, name: prometheus, namespace: monitoring-demo}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: prometheus-config, namespace: monitoring-demo}
+data:
+  prometheus.yml: |
+    global: {scrape_interval: 15s}
+    scrape_configs:
+    - job_name: kubelet-cadvisor
+      scheme: https
+      authorization: {credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token}
+      tls_config: {ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt}
+      kubernetes_sd_configs: [{role: node}]
+      relabel_configs:
+      - {target_label: __address__, replacement: kubernetes.default.svc:443}
+      - {source_labels: [__meta_kubernetes_node_name], target_label: __metrics_path__, replacement: /api/v1/nodes/$1/proxy/metrics/cadvisor}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: prometheus, namespace: monitoring-demo}
+spec:
+  selector: {matchLabels: {app: prometheus}}
+  template:
+    metadata: {labels: {app: prometheus}}
+    spec:
+      serviceAccountName: prometheus
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v3.5.0
+        args: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.retention.time=2h"]
+        ports: [{containerPort: 9090}]
+        volumeMounts: [{name: config, mountPath: /etc/prometheus}]
+      volumes: [{name: config, configMap: {name: prometheus-config}}]
