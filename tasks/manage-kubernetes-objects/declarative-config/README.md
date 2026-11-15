@@ -131,6 +131,8 @@ too. Better: strip `metadata.resourceVersion/uid/creationTimestamp/generation` a
 sed 's/app: nginx/app: nginx-v2/g' update_deployment.yaml | kubectl apply -f -
 #   … spec.selector: Invalid value: {"matchLabels":{"app":"nginx-v2"}}: field is immutable      <- docs: don't change selectors
 ```
+The page's recommended selector label `controller-selector: "apps/v1/deployment/nginx"` is itself invalid: label values can't
+contain `/`. See [../imperative-config/docs-selector.yaml](../imperative-config/docs-selector.yaml) and use e.g. `apps.v1.deployment.nginx`.
 
 ## Useful commands
 ```bash

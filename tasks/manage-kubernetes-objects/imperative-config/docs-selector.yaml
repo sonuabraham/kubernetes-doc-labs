@@ -1,0 +1,15 @@
+# The docs' recommended selector/label block, verbatim, in a minimal Deployment (the wrapper is NOT from the docs).
+# It is rejected: label VALUES may not contain "/".
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: nginx, namespace: imp-cfg}
+spec:
+  selector:
+    matchLabels:
+        controller-selector: "apps/v1/deployment/nginx"
+  template:
+    metadata:
+      labels:
+        controller-selector: "apps/v1/deployment/nginx"
+    spec:
+      containers: [{name: nginx, image: "nginx:1.27"}]

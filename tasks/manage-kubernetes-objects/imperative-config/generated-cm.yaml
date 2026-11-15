@@ -1,0 +1,5 @@
+# NOT from the docs: an object with generateName instead of name (the docs' delete -f caveat).
+apiVersion: v1
+kind: ConfigMap
+metadata: {generateName: job-config-, namespace: imp-cfg, labels: {purpose: generate-demo}}
+data: {k: v}
