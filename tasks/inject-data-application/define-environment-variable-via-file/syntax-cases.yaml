@@ -1,0 +1,81 @@
+# NOT from the docs: the page's "Env file syntax" rules, one Pod per case. Each init container writes /data/config.env
+# with printf (so the exact bytes are clear); the main container reads key VAL (or MISSING) via fileKeyRef and prints it.
+#   ok-multiline   : VAL='line1<newline>line2 # …' + a comment line   -> supported (NOTE: "VAL = '…'" with spaces is NOT, see README)
+#   unquoted       : VAL=value                   -> prohibited
+#   double-quoted  : VAL="value"                 -> prohibited
+#   missing-key    : key MISSING not in the file, optional: false
+#   missing-opt    : key MISSING not in the file, optional: true
+apiVersion: v1
+kind: Pod
+metadata: {name: envfile-ok-multiline}
+spec:
+  restartPolicy: Never
+  volumes: [{name: config, emptyDir: {}}]
+  initContainers:
+  - {name: w, image: busybox:1.36, volumeMounts: [{name: config, mountPath: /data}],
+     command: ["sh", "-c", "printf \"# a comment\\nVAL='line1\\nline2 # not a comment'\\n\" > /data/config.env"]}
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "echo \"[$VAL]\""]
+    env: [{name: VAL, valueFrom: {fileKeyRef: {path: config.env, volumeName: config, key: VAL, optional: false}}}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: envfile-unquoted}
+spec:
+  restartPolicy: Never
+  volumes: [{name: config, emptyDir: {}}]
+  initContainers:
+  - {name: w, image: busybox:1.36, volumeMounts: [{name: config, mountPath: /data}],
+     command: ["sh", "-c", "printf 'VAL=value\\n' > /data/config.env"]}
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "echo \"[$VAL]\""]
+    env: [{name: VAL, valueFrom: {fileKeyRef: {path: config.env, volumeName: config, key: VAL, optional: false}}}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: envfile-double-quoted}
+spec:
+  restartPolicy: Never
+  volumes: [{name: config, emptyDir: {}}]
+  initContainers:
+  - {name: w, image: busybox:1.36, volumeMounts: [{name: config, mountPath: /data}],
+     command: ["sh", "-c", "printf 'VAL=\"value\"\\n' > /data/config.env"]}
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "echo \"[$VAL]\""]
+    env: [{name: VAL, valueFrom: {fileKeyRef: {path: config.env, volumeName: config, key: VAL, optional: false}}}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: envfile-missing-key}
+spec:
+  restartPolicy: Never
+  volumes: [{name: config, emptyDir: {}}]
+  initContainers:
+  - {name: w, image: busybox:1.36, volumeMounts: [{name: config, mountPath: /data}],
+     command: ["sh", "-c", "printf \"VAL='x'\\n\" > /data/config.env"]}
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "echo \"[$MISSING]\""]
+    env: [{name: MISSING, valueFrom: {fileKeyRef: {path: config.env, volumeName: config, key: MISSING, optional: false}}}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: envfile-missing-opt}
+spec:
+  restartPolicy: Never
+  volumes: [{name: config, emptyDir: {}}]
+  initContainers:
+  - {name: w, image: busybox:1.36, volumeMounts: [{name: config, mountPath: /data}],
+     command: ["sh", "-c", "printf \"VAL='x'\\n\" > /data/config.env"]}
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sh", "-c", "echo \"[${MISSING-unset}]\""]
+    env: [{name: MISSING, valueFrom: {fileKeyRef: {path: config.env, volumeName: config, key: MISSING, optional: true}}}]

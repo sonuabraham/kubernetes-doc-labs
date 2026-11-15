@@ -168,7 +168,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Define a Command and Arguments for a Container](inject-data-application/define-command-argument-container/)
 - ✅ [Define Dependent Environment Variables](inject-data-application/define-interdependent-environment-variables/)
 - ✅ [Define Environment Variables for a Container](inject-data-application/define-environment-variable-container/)
-- ⬜ [Define Environment Variable Values Using An Init Container](inject-data-application/define-environment-variable-via-file/)
+- ✅ [Define Environment Variable Values Using An Init Container](inject-data-application/define-environment-variable-via-file/)
 - ⬜ [Expose Pod Information to Containers Through Environment Variables](inject-data-application/environment-variable-expose-pod-information/)
 - ⬜ [Expose Pod Information to Containers Through Files](inject-data-application/downward-api-volume-expose-pod-information/)
 - ⬜ [Distribute Credentials Securely Using Secrets](inject-data-application/distribute-credentials-secure/)
