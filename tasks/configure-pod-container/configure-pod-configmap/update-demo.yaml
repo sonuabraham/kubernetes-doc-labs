@@ -1,0 +1,24 @@
+# NOT from the docs: "Mounted ConfigMaps are updated automatically" - three consumers of one ConfigMap:
+# a normal volume mount (updated), a subPath mount (never updated) and an env var (never updated).
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: live-config}
+data: {mode: v1}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: update-demo}
+spec:
+  containers:
+  - name: c
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    env:
+    - name: MODE
+      valueFrom: {configMapKeyRef: {name: live-config, key: mode}}
+    volumeMounts:
+    - {name: cfg, mountPath: /etc/config}
+    - {name: cfg, mountPath: /etc/subpath-mode, subPath: mode}
+  volumes:
+  - name: cfg
+    configMap: {name: live-config}

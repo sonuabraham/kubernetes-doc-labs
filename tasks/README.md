@@ -114,7 +114,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Assign Pods to Nodes using Node Affinity](configure-pod-container/assign-pods-nodes-using-node-affinity/)
 - ✅ [Configure Pod Initialization](configure-pod-container/configure-pod-initialization/)
 - ✅ [Attach Handlers to Container Lifecycle Events](configure-pod-container/attach-handler-lifecycle-event/)
-- ⬜ [Configure a Pod to Use a ConfigMap](configure-pod-container/configure-pod-configmap/)
+- ✅ [Configure a Pod to Use a ConfigMap](configure-pod-container/configure-pod-configmap/)
 - ⬜ [Share Process Namespace between Containers in a Pod](configure-pod-container/share-process-namespace/)
 - ⬜ [Use a User Namespace With a Pod](configure-pod-container/user-namespaces/)
 - ⬜ [Use an Image Volume With a Pod](configure-pod-container/image-volumes/)
