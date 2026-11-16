@@ -179,7 +179,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Update a Deployment Without Downtime](run-application/update-deployment-rolling/)
 - ✅ [Run a Single-Instance Stateful Application](run-application/run-single-instance-stateful-application/)
 - ✅ [Run a Replicated Stateful Application](run-application/run-replicated-stateful-application/)
-- ⬜ [Scale a StatefulSet](run-application/scale-stateful-set/)
+- ✅ [Scale a StatefulSet](run-application/scale-stateful-set/)
 - ⬜ [Delete a StatefulSet](run-application/delete-stateful-set/)
 - ⬜ [Force Delete StatefulSet Pods](run-application/force-delete-stateful-set-pod/)
 - ⬜ [HorizontalPodAutoscaler Walkthrough](run-application/horizontal-pod-autoscale-walkthrough/)
