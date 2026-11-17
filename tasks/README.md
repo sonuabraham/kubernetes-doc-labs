@@ -191,7 +191,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Coarse Parallel Processing Using a Work Queue](job/coarse-parallel-processing-work-queue/)
 - ✅ [Fine Parallel Processing Using a Work Queue](job/fine-parallel-processing-work-queue/)
 - ✅ [Indexed Job for Parallel Processing with Static Work Assignment](job/indexed-parallel-processing-static/)
-- ⬜ [Job with Pod-to-Pod Communication](job/job-with-pod-to-pod-communication/)
+- ✅ [Job with Pod-to-Pod Communication](job/job-with-pod-to-pod-communication/)
 - ⬜ [Parallel Processing using Expansions](job/parallel-processing-expansion/)
 - ⬜ [Handling retriable and non-retriable pod failures with Pod failure policy](job/pod-failure-policy/)
 
