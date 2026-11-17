@@ -1,0 +1,17 @@
+# The docs' job.yaml with the edit the page asks for, for minikube: image = the locally built job-wq-2
+# (minikube image build), and imagePullPolicy: Never because an untagged image means :latest = always pull.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-wq-2
+spec:
+  parallelism: 2
+  template:
+    metadata:
+      name: job-wq-2
+    spec:
+      containers:
+      - name: c
+        image: job-wq-2
+        imagePullPolicy: Never
+      restartPolicy: OnFailure
