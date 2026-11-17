@@ -196,7 +196,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Handling retriable and non-retriable pod failures with Pod failure policy](job/pod-failure-policy/)
 
 ## Access Applications in a Cluster — `access-application-cluster/`
-- ⬜ [Deploy and Access the Kubernetes Dashboard](access-application-cluster/web-ui-dashboard/)
+- ✅ [Deploy and Access the Kubernetes Dashboard](access-application-cluster/web-ui-dashboard/)
 - ⬜ [Accessing Clusters](access-application-cluster/access-cluster/)
 - ⬜ [Configure Access to Multiple Clusters](access-application-cluster/configure-access-multiple-clusters/)
 - ⬜ [Use Port Forwarding to Access Applications in a Cluster](access-application-cluster/port-forward-access-application-cluster/)
