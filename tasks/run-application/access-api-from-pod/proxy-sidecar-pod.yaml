@@ -1,0 +1,24 @@
+# NOT from the docs (the page only describes it): kubectl proxy as a sidecar. The proxy authenticates with the Pod's
+# ServiceAccount token; the app container talks plain HTTP to localhost:8001 with no token and no CA.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-proxy
+spec:
+  initContainers:
+  - name: kubectl-proxy
+    image: registry.k8s.io/kubectl:v1.37.0
+    restartPolicy: Always            # native sidecar
+    args: ["proxy", "--port=8001", "--address=127.0.0.1"]
+  containers:
+  - name: app
+    image: curlimages/curl:8.11.1
+    command:
+    - sh
+    - -c
+    - |
+      sleep 2
+      while true; do
+        curl -s localhost:8001/api/v1/namespaces/default/pods | grep -o '"name": "api-[a-z]*"' | sort -u
+        sleep 30
+      done

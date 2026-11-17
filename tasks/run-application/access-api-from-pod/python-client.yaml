@@ -1,0 +1,31 @@
+# NOT from the docs: the official Python client with config.load_incluster_config() (installs the client with pip at start).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: incluster-script
+data:
+  list_pods.py: |
+    from kubernetes import client, config
+    config.load_incluster_config()          # reads KUBERNETES_SERVICE_HOST/PORT and the token + CA files
+    c = client.Configuration.get_default_copy()
+    print("host:", c.host)
+    for p in client.CoreV1Api().list_namespaced_pod("default").items:
+        print("pod:", p.metadata.name, p.status.phase)
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-python
+spec:
+  restartPolicy: Never
+  containers:
+  - name: python
+    image: python:3.13-slim
+    command: ["sh", "-c", "pip install -q --root-user-action=ignore kubernetes==34.1.0 && python /scripts/list_pods.py"]
+    volumeMounts:
+    - name: scripts
+      mountPath: /scripts
+  volumes:
+  - name: scripts
+    configMap:
+      name: incluster-script

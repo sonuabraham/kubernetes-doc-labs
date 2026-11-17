@@ -1,0 +1,10 @@
+# NOT from the docs: a Pod with curl to run the docs' direct-access commands in (default ServiceAccount).
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-curl
+spec:
+  containers:
+  - name: curl
+    image: curlimages/curl:8.11.1
+    command: ["sleep", "3600"]

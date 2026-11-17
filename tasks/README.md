@@ -184,7 +184,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Force Delete StatefulSet Pods](run-application/force-delete-stateful-set-pod/)
 - ✅ [HorizontalPodAutoscaler Walkthrough](run-application/horizontal-pod-autoscale-walkthrough/)
 - ✅ [Specifying a Disruption Budget for your Application](run-application/configure-pdb/)
-- ⬜ [Accessing the Kubernetes API from a Pod](run-application/access-api-from-pod/)
+- ✅ [Accessing the Kubernetes API from a Pod](run-application/access-api-from-pod/)
 
 ## Run Jobs — `job/`
 - ⬜ [Running Automated Tasks with a CronJob](job/automated-tasks-with-cron-jobs/)
