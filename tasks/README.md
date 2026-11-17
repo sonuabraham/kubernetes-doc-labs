@@ -201,7 +201,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Configure Access to Multiple Clusters](access-application-cluster/configure-access-multiple-clusters/)
 - ✅ [Use Port Forwarding to Access Applications in a Cluster](access-application-cluster/port-forward-access-application-cluster/)
 - ✅ [Use a Service to Access an Application in a Cluster](access-application-cluster/service-access-application-cluster/)
-- ⬜ [Connect a Frontend to a Backend Using Services](access-application-cluster/connecting-frontend-backend/)
+- ✅ [Connect a Frontend to a Backend Using Services](access-application-cluster/connecting-frontend-backend/)
 - ⬜ [Create an External Load Balancer](access-application-cluster/create-external-load-balancer/)
 - ⬜ [List All Container Images Running in a Cluster](access-application-cluster/list-all-running-container-images/)
 - ⬜ [Communicate Between Containers in the Same Pod Using a Shared Volume](access-application-cluster/communicate-containers-same-pod-shared-volume/)
