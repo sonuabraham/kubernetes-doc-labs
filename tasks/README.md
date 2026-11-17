@@ -182,7 +182,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Scale a StatefulSet](run-application/scale-stateful-set/)
 - ✅ [Delete a StatefulSet](run-application/delete-stateful-set/)
 - ✅ [Force Delete StatefulSet Pods](run-application/force-delete-stateful-set-pod/)
-- ⬜ [HorizontalPodAutoscaler Walkthrough](run-application/horizontal-pod-autoscale-walkthrough/)
+- ✅ [HorizontalPodAutoscaler Walkthrough](run-application/horizontal-pod-autoscale-walkthrough/)
 - ⬜ [Specifying a Disruption Budget for your Application](run-application/configure-pdb/)
 - ⬜ [Accessing the Kubernetes API from a Pod](run-application/access-api-from-pod/)
 
