@@ -1,0 +1,18 @@
+# NOT from the docs: the docs' Indexed Job idea, but index 2 always fails. With backoffLimitPerIndex each index has its
+# own retry budget, so the other indexes still finish; the Job ends Failed with failedIndexes: "2".
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: indexed-job-fail
+spec:
+  completions: 5
+  parallelism: 3
+  completionMode: Indexed
+  backoffLimitPerIndex: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: worker
+        image: busybox:1.36
+        command: ["sh", "-c", "items='foo bar baz qux xyz'; set -- $items; shift $JOB_COMPLETION_INDEX; [ $JOB_COMPLETION_INDEX = 2 ] && { echo index 2 fails; exit 1; }; echo $1 | rev"]
