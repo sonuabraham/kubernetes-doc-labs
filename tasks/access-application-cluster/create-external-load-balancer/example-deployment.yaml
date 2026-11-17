@@ -1,0 +1,24 @@
+# NOT from the docs: the "example" Deployment the page's Service and `kubectl expose` refer to.
+# agnhost netexec listens on 9376 (the Service's targetPort) and answers /clientip with the caller's address.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example
+  labels:
+    app: example
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+      - name: netexec
+        image: registry.k8s.io/e2e-test-images/agnhost:2.53
+        args: ["netexec", "--http-port=9376"]
+        ports:
+        - containerPort: 9376
