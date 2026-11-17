@@ -199,7 +199,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Deploy and Access the Kubernetes Dashboard](access-application-cluster/web-ui-dashboard/)
 - ✅ [Accessing Clusters](access-application-cluster/access-cluster/)
 - ✅ [Configure Access to Multiple Clusters](access-application-cluster/configure-access-multiple-clusters/)
-- ⬜ [Use Port Forwarding to Access Applications in a Cluster](access-application-cluster/port-forward-access-application-cluster/)
+- ✅ [Use Port Forwarding to Access Applications in a Cluster](access-application-cluster/port-forward-access-application-cluster/)
 - ⬜ [Use a Service to Access an Application in a Cluster](access-application-cluster/service-access-application-cluster/)
 - ⬜ [Connect a Frontend to a Backend Using Services](access-application-cluster/connecting-frontend-backend/)
 - ⬜ [Create an External Load Balancer](access-application-cluster/create-external-load-balancer/)

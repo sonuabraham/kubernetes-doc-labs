@@ -1,0 +1,36 @@
+# NOT from the docs: a ServiceAccount that may get Pods; the second Role adds create on pods/portforward.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pf-user
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-getter
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pf-user-pod-getter
+subjects:
+- kind: ServiceAccount
+  name: pf-user
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pod-getter
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-port-forwarder
+rules:
+- apiGroups: [""]
+  resources: ["pods/portforward"]
+  verbs: ["create"]
