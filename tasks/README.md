@@ -244,5 +244,5 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Schedule GPUs](manage-gpus/scheduling-gpus/)
 
 ## manage-hugepages — `manage-hugepages/`
-- ⬜ [Manage HugePages](manage-hugepages/scheduling-hugepages/)
+- ✅ [Manage HugePages](manage-hugepages/scheduling-hugepages/)
 
