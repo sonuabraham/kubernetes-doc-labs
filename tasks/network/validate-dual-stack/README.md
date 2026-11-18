@@ -2,7 +2,7 @@
 
 Based on: https://kubernetes.io/docs/tasks/network/validate-dual-stack/
 
-> Needs a dual-stack cluster. **minikube 1.37 can't create one here.** Its certificate code rejects a dual `--service-cluster-ip-range`
+> Needs a dual-stack cluster. **minikube v1.39 can't create one here.** Its certificate code rejects a dual `--service-cluster-ip-range`
 > (`GUEST_CERT: … parsing default service cidr: invalid CIDR address: 10.96.0.0/12,fd00:10:96::/112`), and with Docker 29 a custom IPv6-enabled
 > `--network` fails (`map has no entry for key "Gateway"`). So the lab uses a **throwaway profile `ds-lab`** ([ds-lab.sh](ds-lab.sh)): a normal
 > IPv4 cluster whose kube-apiserver / kube-controller-manager then get a second, IPv6 Service range. That makes the **Service** half of the

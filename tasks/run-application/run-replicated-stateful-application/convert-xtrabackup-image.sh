@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # NOT from the docs. gcr.io/google-samples/xtrabackup:1.0 is an old Docker "schema 1" image. containerd >= 2.1
-# (minikube 1.37) and Docker >= 29 refuse to pull it ("media type … manifest.v1+prettyjws is no longer supported").
+# (minikube v1.39, Kubernetes 1.37) and Docker >= 29 refuse to pull it ("media type … manifest.v1+prettyjws is no longer supported").
 # skopeo can still read schema 1. This script converts the image to a docker-archive with a v2 manifest and loads
 # it into minikube under the SAME name, so the docs' StatefulSet works unchanged (imagePullPolicy IfNotPresent).
 set -euo pipefail

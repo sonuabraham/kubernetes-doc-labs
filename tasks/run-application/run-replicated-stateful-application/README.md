@@ -7,7 +7,7 @@ Based on: https://kubernetes.io/docs/tasks/run-application/run-replicated-statef
 > Not from the docs: [convert-xtrabackup-image.sh](convert-xtrabackup-image.sh).
 >
 > **Found:**
-> 1. `gcr.io/google-samples/xtrabackup:1.0` is a Docker **schema 1** image. containerd ≥ 2.1 (minikube 1.37) and Docker ≥ 29 can't pull it
+> 1. `gcr.io/google-samples/xtrabackup:1.0` is a Docker **schema 1** image. containerd ≥ 2.1 (minikube v1.39 ships 2.3) and Docker ≥ 29 can't pull it
 >    (`media type "application/vnd.docker.distribution.manifest.v1+prettyjws" is no longer supported`), so every Pod would sit in `Init:ErrImagePull`.
 >    [convert-xtrabackup-image.sh](convert-xtrabackup-image.sh) converts it with skopeo and loads it into minikube under the same name, so the YAML stays unchanged.
 > 2. "Break the readiness probe" with `mv /usr/bin/mysql /usr/bin/mysql.off` **does nothing** now. A missing binary is a probe *error*
