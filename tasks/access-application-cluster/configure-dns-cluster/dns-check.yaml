@@ -1,0 +1,21 @@
+# NOT from the docs: a one-shot Pod that shows the DNS settings the kubelet gives Pods and resolves a few names.
+# getent uses the libc resolver (search list applied); busybox nslookup does not apply the search list.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dns-check
+spec:
+  restartPolicy: Never
+  containers:
+  - name: check
+    image: debian:12-slim
+    command:
+    - sh
+    - -c
+    - |
+      cat /etc/resolv.conf
+      echo "--- getent (search list applied)"
+      getent hosts kubernetes.default
+      getent hosts kube-dns.kube-system
+      getent hosts host.minikube.internal
+      getent hosts kubernetes.io
