@@ -223,7 +223,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Issue a Certificate for a Kubernetes API Client Using a CertificateSigningRequest](tls/certificate-issue-client-csr/)
 - ✅ [Configure Certificate Rotation for the Kubelet](tls/certificate-rotation/)
 - ✅ [Manage TLS Certificates in a Cluster](tls/managing-tls-in-a-cluster/)
-- ⬜ [Manual Rotation of CA Certificates](tls/manual-rotation-of-ca-certificates/)
+- ✅ [Manual Rotation of CA Certificates](tls/manual-rotation-of-ca-certificates/)
 
 ## Manage Cluster Daemons — `manage-daemon/`
 - ⬜ [Building a Basic DaemonSet](manage-daemon/create-daemon-set/)
