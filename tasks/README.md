@@ -238,7 +238,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Validate IPv4/IPv6 dual-stack](network/validate-dual-stack/)
 
 ## extend-kubectl — `extend-kubectl/`
-- ⬜ [Extend kubectl with plugins](extend-kubectl/kubectl-plugins/)
+- ✅ [Extend kubectl with plugins](extend-kubectl/kubectl-plugins/)
 
 ## manage-gpus — `manage-gpus/`
 - ⬜ [Schedule GPUs](manage-gpus/scheduling-gpus/)
