@@ -209,7 +209,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Access Services Running on Clusters](access-application-cluster/access-cluster-services/)
 
 ## Extend Kubernetes — `extend-kubernetes/`
-- ⬜ [Configure the Aggregation Layer](extend-kubernetes/configure-aggregation-layer/)
+- ✅ [Configure the Aggregation Layer](extend-kubernetes/configure-aggregation-layer/)
 - **Use Custom Resources** (`extend-kubernetes/custom-resources/`)
   - ⬜ [Extend the Kubernetes API with CustomResourceDefinitions](extend-kubernetes/custom-resources/custom-resource-definitions/)
   - ⬜ [Versions in CustomResourceDefinitions](extend-kubernetes/custom-resources/custom-resource-definition-versioning/)

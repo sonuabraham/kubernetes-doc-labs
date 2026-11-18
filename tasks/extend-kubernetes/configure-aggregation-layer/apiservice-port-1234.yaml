@@ -1,0 +1,17 @@
+# The docs' "Contacting the extension apiserver" example filled in for the toy extension API server from
+# concepts/extend-kubernetes/api-extension/apiserver-aggregation: Service port 1234 instead of the default 443.
+# CA_BUNDLE is replaced by setup-toy-1234.sh with the CA that signed the toy server's certificate.
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1.toys.example.com
+spec:
+  group: toys.example.com
+  version: v1
+  groupPriorityMinimum: 1000
+  versionPriority: 15
+  service:
+    namespace: agg-demo
+    name: toy-apiserver
+    port: 1234
+  caBundle: CA_BUNDLE
