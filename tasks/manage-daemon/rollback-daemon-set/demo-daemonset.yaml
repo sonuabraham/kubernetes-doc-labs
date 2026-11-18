@@ -1,0 +1,18 @@
+# NOT from the docs (the page uses placeholders): a small DaemonSet to update and roll back.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: demo-ds
+spec:
+  selector:
+    matchLabels:
+      app: demo-ds
+  template:
+    metadata:
+      labels:
+        app: demo-ds
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: app
+        image: nginx:1.26
