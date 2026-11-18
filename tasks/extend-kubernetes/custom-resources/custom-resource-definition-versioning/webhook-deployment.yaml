@@ -1,0 +1,43 @@
+# NOT from the docs: runs conversion_webhook.py as the Service the page assumes:
+# example-conversion-webhook-server in namespace default, port 443 -> 8443, path /crdconvert.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-conversion-webhook-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: conversion-webhook}
+  template:
+    metadata:
+      labels: {app: conversion-webhook}
+    spec:
+      containers:
+      - name: webhook
+        image: python:3.13-slim
+        command: ["python", "-u", "/code/conversion_webhook.py"]
+        env:
+        - {name: ADD_LABEL, value: "0"}
+        - {name: MUTATE_NAME, value: "0"}
+        ports: [{containerPort: 8443}]
+        readinessProbe:
+          httpGet: {path: /healthz, port: 8443, scheme: HTTPS}
+          periodSeconds: 2
+        volumeMounts:
+        - {name: code, mountPath: /code}
+        - {name: tls, mountPath: /tls}
+      volumes:
+      - name: code
+        configMap: {name: conversion-webhook-code}
+      - name: tls
+        secret: {secretName: conversion-webhook-tls}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-conversion-webhook-server
+spec:
+  selector: {app: conversion-webhook}
+  ports:
+  - port: 443
+    targetPort: 8443

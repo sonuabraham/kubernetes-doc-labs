@@ -1,0 +1,10 @@
+# The StorageVersionMigration document of 11-crd-plus-storageversionmigration.yaml, verbatim (the CRD part of that
+# file has a '...' placeholder and isn't valid YAML on its own).
+apiVersion: storagemigration.k8s.io/v1
+kind: StorageVersionMigration
+metadata:
+  name: crontabs-migration
+spec:
+  resource:
+    group: example.com
+    resource: crontabs

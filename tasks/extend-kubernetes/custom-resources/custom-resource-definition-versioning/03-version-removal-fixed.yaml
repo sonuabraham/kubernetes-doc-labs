@@ -1,0 +1,25 @@
+# NOT from the docs: 03-version-removal.yaml with real schemas instead of "schema: ...".
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: crontabs.example.com
+spec:
+  group: example.com
+  names:
+    plural: crontabs
+    singular: crontab
+    kind: CronTab
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    served: false
+    schema: &s
+      openAPIV3Schema:
+        type: object
+        properties:
+          host: {type: string}
+          port: {type: string}
+  - name: v1
+    served: true
+    storage: true
+    schema: *s

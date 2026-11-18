@@ -1,0 +1,39 @@
+{
+  "apiVersion": "apiextensions.k8s.io/v1",
+  "kind": "ConversionReview",
+  "request": {
+    # Random uid uniquely identifying this conversion call
+    "uid": "705ab4f5-6393-11e8-b7cc-42010a800002",
+    
+    # The API group and version the objects should be converted to
+    "desiredAPIVersion": "example.com/v1",
+    
+    # The list of objects to convert.
+    # May contain one or more objects, in one or more versions.
+    "objects": [
+      {
+        "kind": "CronTab",
+        "apiVersion": "example.com/v1beta1",
+        "metadata": {
+          "creationTimestamp": "2019-09-04T14:03:02Z",
+          "name": "local-crontab",
+          "namespace": "default",
+          "resourceVersion": "143",
+          "uid": "3415a7fc-162b-4300-b5da-fd6083580d66"
+        },
+        "hostPort": "localhost:1234"
+      },
+      {
+        "kind": "CronTab",
+        "apiVersion": "example.com/v1beta1",
+        "metadata": {
+          "creationTimestamp": "2019-09-03T13:02:01Z",
+          "name": "remote-crontab",
+          "resourceVersion": "12893",
+          "uid": "359a83ec-b575-460d-b553-d859cedde8a0"
+        },
+        "hostPort": "example.com:2345"
+      }
+    ]
+  }
+}

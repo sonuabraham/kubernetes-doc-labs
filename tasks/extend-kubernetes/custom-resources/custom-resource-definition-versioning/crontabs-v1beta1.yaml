@@ -1,0 +1,12 @@
+# NOT from the docs as a file: the two objects shown in the docs' ConversionReview request, as v1beta1 CronTabs.
+apiVersion: example.com/v1beta1
+kind: CronTab
+metadata:
+  name: local-crontab
+hostPort: "localhost:1234"
+---
+apiVersion: example.com/v1beta1
+kind: CronTab
+metadata:
+  name: remote-crontab
+hostPort: "example.com:2345"

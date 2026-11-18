@@ -1,0 +1,22 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: crontabs.example.com
+spec:
+  group: example.com
+  names:
+    plural: crontabs
+    singular: crontab
+    kind: CronTab
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    # This indicates the v1beta1 version of the custom resource is no longer served.
+    # API requests to this version receive a not found error in the server response.
+    served: false
+    schema: ...
+  - name: v1
+    served: true
+    # The new served version should be set as the storage version
+    storage: true
+    schema: ...
