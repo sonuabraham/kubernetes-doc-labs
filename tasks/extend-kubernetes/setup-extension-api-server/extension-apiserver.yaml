@@ -1,0 +1,122 @@
+# NOT from the docs (the page has no manifests): the objects its step list asks for, for the Kubernetes
+# sample-apiserver (group wardle.example.com, built on k8s.io/apiserver, used by the aggregator e2e tests).
+# Step numbers refer to the docs list. The serving cert Secret (step 6) and the APIService caBundle (step 14)
+# are created by setup.sh.
+---
+# step 3: namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: wardle
+---
+# step 9: service account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: wardle-apiserver
+  namespace: wardle
+---
+# step 10: cluster role for what the server itself needs (its admission plugins and API Priority & Fairness watch these)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: wardle-apiserver
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources: ["mutatingwebhookconfigurations", "validatingwebhookconfigurations", "validatingadmissionpolicies", "validatingadmissionpolicybindings"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["flowcontrol.apiserver.k8s.io"]
+  resources: ["prioritylevelconfigurations", "flowschemas"]
+  verbs: ["get", "list", "watch"]
+---
+# step 11: bind it
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: wardle-apiserver
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: wardle-apiserver}
+subjects: [{kind: ServiceAccount, name: wardle-apiserver, namespace: wardle}]
+---
+# step 12: delegate authentication/authorization decisions (TokenReview, SubjectAccessReview)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: wardle-apiserver:system:auth-delegator
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: system:auth-delegator}
+subjects: [{kind: ServiceAccount, name: wardle-apiserver, namespace: wardle}]
+---
+# step 13: read kube-system/extension-apiserver-authentication (front-proxy CA, allowed names, header names)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: wardle-apiserver-auth-reader
+  namespace: kube-system
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: extension-apiserver-authentication-reader}
+subjects: [{kind: ServiceAccount, name: wardle-apiserver, namespace: wardle}]
+---
+# steps 7-8: deployment loading the cert Secret as a volume; etcd sidecar as the server's own storage
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wardle-apiserver
+  namespace: wardle
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: wardle-apiserver}
+  template:
+    metadata:
+      labels: {app: wardle-apiserver}
+    spec:
+      serviceAccountName: wardle-apiserver
+      containers:
+      - name: apiserver
+        image: registry.k8s.io/e2e-test-images/sample-apiserver:1.29.2
+        args:
+        - --etcd-servers=http://127.0.0.1:2379
+        - --tls-cert-file=/apiserver.local.config/certificates/tls.crt
+        - --tls-private-key-file=/apiserver.local.config/certificates/tls.key
+        - --audit-log-path=-
+        - --audit-log-maxage=0
+        - --audit-log-maxbackup=0
+        volumeMounts:
+        - {name: apiserver-certs, mountPath: /apiserver.local.config/certificates, readOnly: true}
+        readinessProbe:
+          httpGet: {path: /readyz, port: 443, scheme: HTTPS}
+          periodSeconds: 2
+      - name: etcd
+        image: registry.k8s.io/etcd:3.5.1-0
+        command: ["/usr/local/bin/etcd", "--listen-client-urls", "http://127.0.0.1:2379", "--advertise-client-urls", "http://127.0.0.1:2379"]
+      volumes:
+      - name: apiserver-certs
+        secret: {secretName: wardle-serving-cert}
+---
+# the Service the APIService points at (step 5 CN = its DNS name)
+apiVersion: v1
+kind: Service
+metadata:
+  name: wardle-apiserver
+  namespace: wardle
+spec:
+  selector: {app: wardle-apiserver}
+  ports:
+  - port: 443
+    targetPort: 443
+---
+# step 14: the APIService (caBundle filled in by setup.sh)
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  name: v1alpha1.wardle.example.com
+spec:
+  group: wardle.example.com
+  version: v1alpha1
+  groupPriorityMinimum: 1000
+  versionPriority: 15
+  service:
+    namespace: wardle
+    name: wardle-apiserver
+  caBundle: CA_BUNDLE

@@ -1,0 +1,16 @@
+# NOT from the docs: lets the default ServiceAccount of namespace default read flunders (a normal, non-admin user).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: flunder-reader
+rules:
+- apiGroups: ["wardle.example.com"]
+  resources: ["flunders"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: flunder-reader
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: flunder-reader}
+subjects: [{kind: ServiceAccount, name: default, namespace: default}]

@@ -1,0 +1,7 @@
+# NOT from the docs: an object of the extension API (sample-apiserver's Flunder).
+apiVersion: wardle.example.com/v1alpha1
+kind: Flunder
+metadata:
+  name: my-flunder
+spec:
+  reference: kubernetes
