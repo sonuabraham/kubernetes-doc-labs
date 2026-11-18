@@ -217,7 +217,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Configure Multiple Schedulers](extend-kubernetes/configure-multiple-schedulers/)
 - ✅ [Use an HTTP Proxy to Access the Kubernetes API](extend-kubernetes/http-proxy-access-api/)
 - ✅ [Use a SOCKS5 Proxy to Access the Kubernetes API](extend-kubernetes/socks5-proxy-access-api/)
-- ⬜ [Set up Konnectivity service](extend-kubernetes/setup-konnectivity/)
+- ✅ [Set up Konnectivity service](extend-kubernetes/setup-konnectivity/)
 
 ## TLS — `tls/`
 - ⬜ [Issue a Certificate for a Kubernetes API Client Using a CertificateSigningRequest](tls/certificate-issue-client-csr/)
