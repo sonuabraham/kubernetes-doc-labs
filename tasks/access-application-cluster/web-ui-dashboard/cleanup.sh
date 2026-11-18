@@ -6,3 +6,5 @@ kubectl delete deployment,service dash-nginx --ignore-not-found
 kubectl delete -f dashboard-adminuser.yaml --ignore-not-found
 ./helm.sh uninstall kubernetes-dashboard --namespace kubernetes-dashboard
 kubectl delete namespace kubernetes-dashboard --ignore-not-found
+# helm uninstall keeps CRDs: remove the Kong CRDs the chart installed
+kubectl get crd -o name | grep konghq.com | xargs -r kubectl delete
