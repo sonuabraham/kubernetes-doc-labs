@@ -1,0 +1,4 @@
+myuser.key
+myuser.csr
+myuser.crt
+kubeconfig-lab

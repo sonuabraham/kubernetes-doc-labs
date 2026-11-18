@@ -220,7 +220,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Set up Konnectivity service](extend-kubernetes/setup-konnectivity/)
 
 ## TLS — `tls/`
-- ⬜ [Issue a Certificate for a Kubernetes API Client Using a CertificateSigningRequest](tls/certificate-issue-client-csr/)
+- ✅ [Issue a Certificate for a Kubernetes API Client Using a CertificateSigningRequest](tls/certificate-issue-client-csr/)
 - ⬜ [Configure Certificate Rotation for the Kubelet](tls/certificate-rotation/)
 - ⬜ [Manage TLS Certificates in a Cluster](tls/managing-tls-in-a-cluster/)
 - ⬜ [Manual Rotation of CA Certificates](tls/manual-rotation-of-ca-certificates/)
