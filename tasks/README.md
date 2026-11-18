@@ -241,7 +241,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Extend kubectl with plugins](extend-kubectl/kubectl-plugins/)
 
 ## manage-gpus — `manage-gpus/`
-- ⬜ [Schedule GPUs](manage-gpus/scheduling-gpus/)
+- ✅ [Schedule GPUs](manage-gpus/scheduling-gpus/)
 
 ## manage-hugepages — `manage-hugepages/`
 - ⬜ [Manage HugePages](manage-hugepages/scheduling-hugepages/)

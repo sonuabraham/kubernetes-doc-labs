@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-vector-add
+spec:
+  restartPolicy: OnFailure
+  # You can use Kubernetes node affinity to schedule this Pod onto a node
+  # that provides the kind of GPU that its container needs in order to work
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "gpu.gpu-vendor.example/installed-memory"
+            operator: Gt # (greater than)
+            values: ["40535"]
+          - key: "feature.node.kubernetes.io/pci-10.present" # NFD Feature label
+            values: ["true"] # (optional) only schedule on nodes with PCI device 10
+  containers:
+    - name: example-vector-add
+      image: "registry.example/example-vector-add:v42"
+      resources:
+        limits:
+          gpu-vendor.example/example-gpu: 1 # requesting 1 GPU
