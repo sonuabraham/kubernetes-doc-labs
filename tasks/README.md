@@ -233,7 +233,7 @@ Status: ✅ lab written · ⬜ not yet
 
 ## Networking — `network/`
 - ✅ [Adding entries to Pod /etc/hosts with HostAliases](network/customize-hosts-file-for-pods/)
-- ⬜ [Extend Service IP Ranges](network/extend-service-ip-ranges/)
+- ✅ [Extend Service IP Ranges](network/extend-service-ip-ranges/)
 - ⬜ [Kubernetes Default ServiceCIDR Reconfiguration](network/reconfigure-default-service-ip-ranges/)
 - ⬜ [Validate IPv4/IPv6 dual-stack](network/validate-dual-stack/)
 
