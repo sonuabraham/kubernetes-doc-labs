@@ -1,0 +1,9 @@
+# The docs' finalizer snippet (B22) made complete: a name (and a spec) added. NOT verbatim.
+apiVersion: "stable.example.com/v1"
+kind: CronTab
+metadata:
+  name: with-finalizer
+  finalizers:
+  - stable.example.com/finalizer
+spec:
+  cronSpec: "* * * * */5"

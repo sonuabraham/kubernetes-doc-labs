@@ -1,0 +1,11 @@
+openAPIV3Schema:
+  type: object
+  properties:
+    foo:
+      type: array
+      items:
+        type: array
+        items:
+          type: integer
+        x-kubernetes-validations:
+          - rule: "self.all(x, x == 5)"

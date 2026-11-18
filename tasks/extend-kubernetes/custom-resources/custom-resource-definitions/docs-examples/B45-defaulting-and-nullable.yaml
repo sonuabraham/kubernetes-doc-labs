@@ -1,0 +1,14 @@
+type: object
+properties:
+  spec:
+    type: object
+    properties:
+      foo:
+        type: string
+        nullable: false
+        default: "default"
+      bar:
+        type: string
+        nullable: true
+      baz:
+        type: string

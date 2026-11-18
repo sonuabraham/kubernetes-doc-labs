@@ -1,0 +1,11 @@
+# NOT from the docs: B40 with x-kubernetes-validations moved under foo (in the docs it sits next to foo, inside
+# "properties", where it is read as a property named "x-kubernetes-validations").
+openAPIV3Schema:
+  type: object
+  properties:
+    foo:
+      type: array
+      items:
+        type: integer
+      x-kubernetes-validations:
+        - rule: "self.all(x, x == 5)"

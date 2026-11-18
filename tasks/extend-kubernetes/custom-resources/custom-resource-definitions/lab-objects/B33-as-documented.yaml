@@ -1,0 +1,9 @@
+# NOT from the docs: the docs' B33 messageExpression on a minimal schema, to show the cost-estimator rejection.
+type: object
+properties:
+  spec:
+    type: object
+    properties: {x: {type: integer}, maxLimit: {type: integer}}
+    x-kubernetes-validations:
+    - rule: "self.x <= self.maxLimit"
+      messageExpression: '"x exceeded max limit of " + string(self.maxLimit)'

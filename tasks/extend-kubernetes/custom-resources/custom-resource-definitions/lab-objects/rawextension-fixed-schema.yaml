@@ -1,0 +1,7 @@
+# NOT from the docs: B20 plus the `type: object` the API server requires next to x-kubernetes-embedded-resource.
+type: object
+properties:
+  foo:
+    type: object
+    x-kubernetes-embedded-resource: true
+    x-kubernetes-preserve-unknown-fields: true

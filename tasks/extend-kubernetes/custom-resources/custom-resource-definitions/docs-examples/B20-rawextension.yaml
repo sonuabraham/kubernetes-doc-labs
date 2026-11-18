@@ -1,0 +1,5 @@
+type: object
+properties:
+  foo:
+    x-kubernetes-embedded-resource: true
+    x-kubernetes-preserve-unknown-fields: true

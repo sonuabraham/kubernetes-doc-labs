@@ -1,0 +1,11 @@
+openAPIV3Schema:
+  type: object
+  properties:
+    foo:
+      type: array
+      maxItems: 25
+      items:
+        type: string
+        maxLength: 10
+      x-kubernetes-validations:
+        - rule: "self.all(x, x.contains('a string'))"

@@ -1,0 +1,6 @@
+json:
+  spec:
+    foo: abc
+    bar: def
+  status:
+    something: x

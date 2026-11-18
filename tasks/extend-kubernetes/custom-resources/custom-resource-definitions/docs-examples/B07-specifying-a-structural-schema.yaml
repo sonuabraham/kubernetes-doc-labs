@@ -1,0 +1,9 @@
+items:
+  properties:
+    foo:
+      # ...
+allOf:
+- items:
+    properties:
+      foo:
+        # ...

@@ -1,0 +1,17 @@
+  # ...
+  openAPIV3Schema:
+    type: object
+    x-kubernetes-validations:
+      - rule: "self.status.availableReplicas >= self.spec.minReplicas"
+    properties:
+        spec:
+          type: object
+          properties:
+            minReplicas:
+              type: integer
+            # ...
+        status:
+          type: object
+          properties:
+            availableReplicas:
+              type: integer

@@ -1,0 +1,12 @@
+# NOT from the docs: B39 without the stray ')' in the rule.
+openAPIV3Schema:
+  type: object
+  properties:
+    foo:
+      type: array
+      maxItems: 25
+      items:
+        type: string
+        x-kubernetes-validations:
+          - rule: "self.contains('a string')"
+        maxLength: 10

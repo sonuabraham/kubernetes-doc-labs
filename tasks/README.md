@@ -211,7 +211,7 @@ Status: ✅ lab written · ⬜ not yet
 ## Extend Kubernetes — `extend-kubernetes/`
 - ✅ [Configure the Aggregation Layer](extend-kubernetes/configure-aggregation-layer/)
 - **Use Custom Resources** (`extend-kubernetes/custom-resources/`)
-  - ⬜ [Extend the Kubernetes API with CustomResourceDefinitions](extend-kubernetes/custom-resources/custom-resource-definitions/)
+  - ✅ [Extend the Kubernetes API with CustomResourceDefinitions](extend-kubernetes/custom-resources/custom-resource-definitions/)
   - ⬜ [Versions in CustomResourceDefinitions](extend-kubernetes/custom-resources/custom-resource-definition-versioning/)
 - ⬜ [Set up an Extension API Server](extend-kubernetes/setup-extension-api-server/)
 - ⬜ [Configure Multiple Schedulers](extend-kubernetes/configure-multiple-schedulers/)

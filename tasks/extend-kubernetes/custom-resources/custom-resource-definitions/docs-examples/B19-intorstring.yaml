@@ -1,0 +1,7 @@
+x-kubernetes-int-or-string: true
+allOf:
+  - anyOf:
+      - type: integer
+      - type: string
+  - # ... zero or more
+...

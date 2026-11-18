@@ -1,0 +1,4 @@
+type: object
+properties:
+  json:
+    x-kubernetes-preserve-unknown-fields: true

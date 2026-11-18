@@ -1,0 +1,5 @@
+foo:
+  apiVersion: v1
+  kind: Pod
+  spec:
+    # ...

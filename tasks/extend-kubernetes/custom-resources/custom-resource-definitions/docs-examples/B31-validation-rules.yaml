@@ -1,0 +1,11 @@
+  # ...
+  openAPIV3Schema:
+    type: object
+    properties:
+      # ...
+      foo:
+        type: array
+        x-kubernetes-validations:
+          - rule: "size(self) == 1"
+        items:
+          type: string

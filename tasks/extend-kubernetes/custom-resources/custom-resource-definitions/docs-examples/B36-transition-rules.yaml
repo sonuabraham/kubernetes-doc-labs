@@ -1,0 +1,5 @@
+type: string
+enum: ["low", "medium", "high"]
+x-kubernetes-validations:
+- rule: "!(self == 'high' && oldSelf == 'low') && !(self == 'low' && oldSelf == 'high')"
+  message: cannot transition directly between 'low' and 'high'

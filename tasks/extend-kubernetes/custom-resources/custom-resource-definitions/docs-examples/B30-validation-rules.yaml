@@ -1,0 +1,14 @@
+  # ...
+  openAPIV3Schema:
+    type: object
+    properties:
+      spec:
+        type: object
+        x-kubernetes-validations:
+          - rule: "self['xyz'].foo > 0"
+        additionalProperties:
+          # ...
+          type: object
+          properties:
+            foo:
+              type: integer

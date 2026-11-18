@@ -1,0 +1,4 @@
+type: object
+properties:
+  foo:
+    x-kubernetes-int-or-string: true
