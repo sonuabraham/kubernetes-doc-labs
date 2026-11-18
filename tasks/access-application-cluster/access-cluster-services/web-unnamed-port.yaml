@@ -1,0 +1,11 @@
+# NOT from the docs: the same Pods behind a Service with ONE UNNAMED port, the case the short URL forms are for.
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-unnamed
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 80
+    targetPort: 80

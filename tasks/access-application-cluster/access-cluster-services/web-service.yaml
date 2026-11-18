@@ -1,0 +1,37 @@
+# NOT from the docs: something to reach through the API server proxy. nginx with a NAMED port "http",
+# plus a Service exposing two ports (http named, 8080 unnamed-style second port) to try the URL formats.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.27
+        ports:
+        - name: http
+          containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  selector:
+    app: web
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  - name: alt
+    port: 8080
+    targetPort: http

@@ -206,7 +206,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [List All Container Images Running in a Cluster](access-application-cluster/list-all-running-container-images/)
 - ✅ [Communicate Between Containers in the Same Pod Using a Shared Volume](access-application-cluster/communicate-containers-same-pod-shared-volume/)
 - ✅ [Configure DNS for a Cluster](access-application-cluster/configure-dns-cluster/)
-- ⬜ [Access Services Running on Clusters](access-application-cluster/access-cluster-services/)
+- ✅ [Access Services Running on Clusters](access-application-cluster/access-cluster-services/)
 
 ## Extend Kubernetes — `extend-kubernetes/`
 - ⬜ [Configure the Aggregation Layer](extend-kubernetes/configure-aggregation-layer/)
