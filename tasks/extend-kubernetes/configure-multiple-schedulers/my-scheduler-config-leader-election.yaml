@@ -1,0 +1,12 @@
+# NOT from the docs as a file: the docs' my-scheduler-config ConfigMap with the three leaderElection fields the
+# 'Enable leader election' section asks for (leaderElect true, resourceNamespace kube-system, resourceName my-scheduler).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-scheduler-config
+  namespace: kube-system
+data:
+  my-scheduler-config.yaml: "apiVersion: kubescheduler.config.k8s.io/v1\nkind: KubeSchedulerConfiguration\n\
+    profiles:\n- schedulerName: my-scheduler\nleaderElection:\n  leaderElect: true\n\
+    \  resourceNamespace: kube-system\n  resourceName: my-scheduler\n"
+

@@ -214,7 +214,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Extend the Kubernetes API with CustomResourceDefinitions](extend-kubernetes/custom-resources/custom-resource-definitions/)
   - ✅ [Versions in CustomResourceDefinitions](extend-kubernetes/custom-resources/custom-resource-definition-versioning/)
 - ✅ [Set up an Extension API Server](extend-kubernetes/setup-extension-api-server/)
-- ⬜ [Configure Multiple Schedulers](extend-kubernetes/configure-multiple-schedulers/)
+- ✅ [Configure Multiple Schedulers](extend-kubernetes/configure-multiple-schedulers/)
 - ⬜ [Use an HTTP Proxy to Access the Kubernetes API](extend-kubernetes/http-proxy-access-api/)
 - ⬜ [Use a SOCKS5 Proxy to Access the Kubernetes API](extend-kubernetes/socks5-proxy-access-api/)
 - ⬜ [Set up Konnectivity service](extend-kubernetes/setup-konnectivity/)

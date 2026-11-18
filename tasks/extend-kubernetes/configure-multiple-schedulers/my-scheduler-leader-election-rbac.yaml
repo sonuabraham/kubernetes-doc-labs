@@ -1,0 +1,18 @@
+# NOT from the docs: the effect of the docs' "add my-scheduler to resourceNames" edit, as a SEPARATE ClusterRole bound
+# to the my-scheduler ServiceAccount, so system:kube-scheduler stays untouched.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: my-scheduler-leader-election
+rules:
+- apiGroups: ["coordination.k8s.io"]
+  resources: ["leases"]
+  resourceNames: ["my-scheduler"]
+  verbs: ["get", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: my-scheduler-leader-election
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: my-scheduler-leader-election}
+subjects: [{kind: ServiceAccount, name: my-scheduler, namespace: kube-system}]
