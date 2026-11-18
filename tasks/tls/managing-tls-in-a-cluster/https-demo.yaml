@@ -1,0 +1,61 @@
+# NOT from the docs: something that USES the issued certificate. Namespace my-namespace + Service my-svc (the docs' names),
+# nginx serving HTTPS with Secret "server" (docs: kubectl create secret tls server …), and a client Pod that trusts only
+# ConfigMap "example-serving-ca" (docs: kubectl create configmap example-serving-ca --from-file ca.crt=ca.pem).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-tls-conf
+  namespace: my-namespace
+data:
+  default.conf: |
+    server {
+      listen 443 ssl;
+      ssl_certificate     /tls/tls.crt;
+      ssl_certificate_key /tls/tls.key;
+      location / { return 200 "hello over TLS from $hostname\n"; }
+    }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  namespace: my-namespace
+  labels: {app: my-pod}
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27
+    volumeMounts:
+    - {name: conf, mountPath: /etc/nginx/conf.d}
+    - {name: tls, mountPath: /tls}
+  volumes:
+  - name: conf
+    configMap: {name: nginx-tls-conf}
+  - name: tls
+    secret: {secretName: server}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-svc
+  namespace: my-namespace
+spec:
+  selector: {app: my-pod}
+  ports:
+  - port: 443
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  namespace: my-namespace
+spec:
+  containers:
+  - name: curl
+    image: curlimages/curl:8.11.1
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - {name: ca, mountPath: /ca}
+  volumes:
+  - name: ca
+    configMap: {name: example-serving-ca}
