@@ -226,7 +226,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Manual Rotation of CA Certificates](tls/manual-rotation-of-ca-certificates/)
 
 ## Manage Cluster Daemons — `manage-daemon/`
-- ⬜ [Building a Basic DaemonSet](manage-daemon/create-daemon-set/)
+- ✅ [Building a Basic DaemonSet](manage-daemon/create-daemon-set/)
 - ⬜ [Perform a Rolling Update on a DaemonSet](manage-daemon/update-daemon-set/)
 - ⬜ [Perform a Rollback on a DaemonSet](manage-daemon/rollback-daemon-set/)
 - ⬜ [Running Pods on Only Some Nodes](manage-daemon/pods-some-nodes/)
