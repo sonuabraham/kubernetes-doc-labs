@@ -204,7 +204,7 @@ Status: ✅ lab written · ⬜ not yet
 - ✅ [Connect a Frontend to a Backend Using Services](access-application-cluster/connecting-frontend-backend/)
 - ✅ [Create an External Load Balancer](access-application-cluster/create-external-load-balancer/)
 - ✅ [List All Container Images Running in a Cluster](access-application-cluster/list-all-running-container-images/)
-- ⬜ [Communicate Between Containers in the Same Pod Using a Shared Volume](access-application-cluster/communicate-containers-same-pod-shared-volume/)
+- ✅ [Communicate Between Containers in the Same Pod Using a Shared Volume](access-application-cluster/communicate-containers-same-pod-shared-volume/)
 - ⬜ [Configure DNS for a Cluster](access-application-cluster/configure-dns-cluster/)
 - ⬜ [Access Services Running on Clusters](access-application-cluster/access-cluster-services/)
 

@@ -1,0 +1,31 @@
+# NOT from the docs: the same idea, but the debian writer is an init container (runs once, before nginx), plus a
+# native sidecar that keeps updating a second file. The Pod becomes Ready (1/1 + sidecar), unlike the docs' Pod
+# which stays NotReady 1/2 because one regular container has exited.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: two-containers-init
+spec:
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+  initContainers:
+  - name: debian-writer
+    image: debian
+    command: ["/bin/sh", "-c", "echo Hello from the debian init container > /pod-data/index.html"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /pod-data
+  - name: clock
+    image: debian
+    restartPolicy: Always
+    command: ["/bin/sh", "-c", "while true; do date +%T > /pod-data/time.txt; sleep 1; done"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /pod-data
+  containers:
+  - name: nginx-container
+    image: nginx
+    volumeMounts:
+    - name: shared-data
+      mountPath: /usr/share/nginx/html
