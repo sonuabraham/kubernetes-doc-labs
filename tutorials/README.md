@@ -20,7 +20,7 @@ Status: ✅ lab written · ⬜ not yet
   - **Update Your App** (`kubernetes-basics/update/`) – [section page](kubernetes-basics/update/)  ✅
     - ✅ [Performing a Rolling Update](kubernetes-basics/update/update-intro/)
 - **Configuration** (`configuration/`) – [section page](configuration/)  ⬜
-  - ⬜ [Updating Configuration via a ConfigMap](configuration/updating-configuration-via-a-configmap/)
+  - ✅ [Updating Configuration via a ConfigMap](configuration/updating-configuration-via-a-configmap/)
   - ⬜ [Configuring Redis using a ConfigMap](configuration/configure-redis-using-configmap/)
   - ⬜ [Adopting Sidecar Containers](configuration/pod-sidecar-containers/)
   - ⬜ [Configure a Pod to Use a PersistentVolume for Storage](configuration/configure-persistent-volume-storage/)
