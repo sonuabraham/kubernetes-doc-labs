@@ -31,7 +31,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Restrict a Container's Syscalls with seccomp](security/seccomp/)
 - **Stateless Applications** (`stateless-application/`) – [section page](stateless-application/)  ⬜
   - ✅ [Deploy a Release Using a Canary Deployment](stateless-application/canary-deployment/)
-  - ⬜ [Exposing an External IP Address to Access an Application in a Cluster](stateless-application/expose-external-ip-address/)
+  - ✅ [Exposing an External IP Address to Access an Application in a Cluster](stateless-application/expose-external-ip-address/)
   - ⬜ [Example: Deploying PHP Guestbook application with Redis](stateless-application/guestbook/)
 - **Stateful Applications** (`stateful-application/`) – [section page](stateful-application/)  ⬜
   - ⬜ [StatefulSet Basics](stateful-application/basic-stateful-set/)
