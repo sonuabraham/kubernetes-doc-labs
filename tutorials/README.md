@@ -6,19 +6,19 @@ Docs source synced at website commit be58364903 (2026-11-19). YAML from the docs
 Status: ✅ lab written · ⬜ not yet
 
 - ✅ [Hello Minikube](hello-minikube/)
-- **Learn Kubernetes Basics** (`kubernetes-basics/`) – [section page](kubernetes-basics/)  ⬜
-  - **Create a Cluster** (`kubernetes-basics/create-cluster/`) – [section page](kubernetes-basics/create-cluster/)  ⬜
-    - ⬜ [Using Minikube to Create a Cluster](kubernetes-basics/create-cluster/cluster-intro/)
-  - **Deploy an App** (`kubernetes-basics/deploy-app/`) – [section page](kubernetes-basics/deploy-app/)  ⬜
-    - ⬜ [Using kubectl to Create a Deployment](kubernetes-basics/deploy-app/deploy-intro/)
-  - **Explore Your App** (`kubernetes-basics/explore/`) – [section page](kubernetes-basics/explore/)  ⬜
-    - ⬜ [Viewing Pods and Nodes](kubernetes-basics/explore/explore-intro/)
-  - **Expose Your App Publicly** (`kubernetes-basics/expose/`) – [section page](kubernetes-basics/expose/)  ⬜
-    - ⬜ [Using a Service to Expose Your App](kubernetes-basics/expose/expose-intro/)
-  - **Scale Your App** (`kubernetes-basics/scale/`) – [section page](kubernetes-basics/scale/)  ⬜
-    - ⬜ [Running Multiple Instances of Your App](kubernetes-basics/scale/scale-intro/)
-  - **Update Your App** (`kubernetes-basics/update/`) – [section page](kubernetes-basics/update/)  ⬜
-    - ⬜ [Performing a Rolling Update](kubernetes-basics/update/update-intro/)
+- **Learn Kubernetes Basics** (`kubernetes-basics/`) – [section page](kubernetes-basics/)  ✅
+  - **Create a Cluster** (`kubernetes-basics/create-cluster/`) – [section page](kubernetes-basics/create-cluster/)  ✅
+    - ✅ [Using Minikube to Create a Cluster](kubernetes-basics/create-cluster/cluster-intro/)
+  - **Deploy an App** (`kubernetes-basics/deploy-app/`) – [section page](kubernetes-basics/deploy-app/)  ✅
+    - ✅ [Using kubectl to Create a Deployment](kubernetes-basics/deploy-app/deploy-intro/)
+  - **Explore Your App** (`kubernetes-basics/explore/`) – [section page](kubernetes-basics/explore/)  ✅
+    - ✅ [Viewing Pods and Nodes](kubernetes-basics/explore/explore-intro/)
+  - **Expose Your App Publicly** (`kubernetes-basics/expose/`) – [section page](kubernetes-basics/expose/)  ✅
+    - ✅ [Using a Service to Expose Your App](kubernetes-basics/expose/expose-intro/)
+  - **Scale Your App** (`kubernetes-basics/scale/`) – [section page](kubernetes-basics/scale/)  ✅
+    - ✅ [Running Multiple Instances of Your App](kubernetes-basics/scale/scale-intro/)
+  - **Update Your App** (`kubernetes-basics/update/`) – [section page](kubernetes-basics/update/)  ✅
+    - ✅ [Performing a Rolling Update](kubernetes-basics/update/update-intro/)
 - **Configuration** (`configuration/`) – [section page](configuration/)  ⬜
   - ⬜ [Updating Configuration via a ConfigMap](configuration/updating-configuration-via-a-configmap/)
   - ⬜ [Configuring Redis using a ConfigMap](configuration/configure-redis-using-configmap/)
