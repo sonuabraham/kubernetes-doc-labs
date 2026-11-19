@@ -23,6 +23,8 @@ Based on: https://kubernetes.io/docs/tutorials/security/cluster-level-pss/
 >   yet, so they're missing from the list. Wait until `kube-system` is Ready. On v1.37 minikube the static Pods add `hostPort` and
 >   `probe or lifecycle host`, and coredns only fails `runAsNonRoot != true, seccompProfile` for restricted (no `unrestricted capabilities`).
 >   minikube has no `local-path-storage` namespace (that's kind's provisioner); its `storage-provisioner` Pod lives in `kube-system`.
+> - "Set the kubectl context to the new cluster: `kubectl cluster-info --context …`" doesn't set anything. `--context` only applies to
+>   that one command; `kind create cluster` (and `minikube start -p`) already switched the context.
 > - `audit: restricted` adds audit annotations, but minikube has no audit log configured by default, so only `warn` and `enforce` are
 >   visible here.
 
