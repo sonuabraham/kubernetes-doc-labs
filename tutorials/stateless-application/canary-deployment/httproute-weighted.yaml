@@ -1,0 +1,17 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: rollout-demo-route
+spec:
+  parentRefs:
+  - name: example-gateway
+  hostnames:
+  - "rollout-demo.example.com"
+  rules:
+  - backendRefs:
+    - name: rollout-demo-stable-service
+      port: 80
+      weight: 90
+    - name: rollout-demo-canary-service
+      port: 80
+      weight: 10

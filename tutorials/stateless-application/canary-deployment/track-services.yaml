@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-demo-stable-service
+spec:
+  selector:
+    app.kubernetes.io/name: rollout-demo
+    track: stable
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollout-demo-canary-service
+spec:
+  selector:
+    app.kubernetes.io/name: rollout-demo
+    track: canary
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
