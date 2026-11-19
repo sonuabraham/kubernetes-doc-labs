@@ -25,7 +25,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Adopting Sidecar Containers](configuration/pod-sidecar-containers/)
   - ✅ [Configure a Pod to Use a PersistentVolume for Storage](configuration/configure-persistent-volume-storage/)
 - **Security** (`security/`) – [section page](security/)  ⬜
-  - ⬜ [Apply Pod Security Standards at the Cluster Level](security/cluster-level-pss/)
+  - ✅ [Apply Pod Security Standards at the Cluster Level](security/cluster-level-pss/)
   - ⬜ [Apply Pod Security Standards at the Namespace Level](security/ns-level-pss/)
   - ⬜ [Restrict a Container's Access to Resources with AppArmor](security/apparmor/)
   - ⬜ [Restrict a Container's Syscalls with seccomp](security/seccomp/)
