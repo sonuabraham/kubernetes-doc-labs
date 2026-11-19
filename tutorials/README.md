@@ -5,7 +5,7 @@ Docs source synced at website commit be58364903 (2026-11-19). YAML from the docs
 
 Status: ✅ lab written · ⬜ not yet
 
-- ⬜ [Hello Minikube](hello-minikube/)
+- ✅ [Hello Minikube](hello-minikube/)
 - **Learn Kubernetes Basics** (`kubernetes-basics/`) – [section page](kubernetes-basics/)  ⬜
   - **Create a Cluster** (`kubernetes-basics/create-cluster/`) – [section page](kubernetes-basics/create-cluster/)  ⬜
     - ⬜ [Using Minikube to Create a Cluster](kubernetes-basics/create-cluster/cluster-intro/)
