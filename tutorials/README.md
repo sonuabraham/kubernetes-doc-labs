@@ -19,11 +19,11 @@ Status: ✅ lab written · ⬜ not yet
     - ✅ [Running Multiple Instances of Your App](kubernetes-basics/scale/scale-intro/)
   - **Update Your App** (`kubernetes-basics/update/`) – [section page](kubernetes-basics/update/)  ✅
     - ✅ [Performing a Rolling Update](kubernetes-basics/update/update-intro/)
-- **Configuration** (`configuration/`) – [section page](configuration/)  ⬜
+- **Configuration** (`configuration/`) – [section page](configuration/)  ✅
   - ✅ [Updating Configuration via a ConfigMap](configuration/updating-configuration-via-a-configmap/)
   - ✅ [Configuring Redis using a ConfigMap](configuration/configure-redis-using-configmap/)
   - ✅ [Adopting Sidecar Containers](configuration/pod-sidecar-containers/)
-  - ⬜ [Configure a Pod to Use a PersistentVolume for Storage](configuration/configure-persistent-volume-storage/)
+  - ✅ [Configure a Pod to Use a PersistentVolume for Storage](configuration/configure-persistent-volume-storage/)
 - **Security** (`security/`) – [section page](security/)  ⬜
   - ⬜ [Apply Pod Security Standards at the Cluster Level](security/cluster-level-pss/)
   - ⬜ [Apply Pod Security Standards at the Namespace Level](security/ns-level-pss/)
