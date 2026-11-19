@@ -24,11 +24,11 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Configuring Redis using a ConfigMap](configuration/configure-redis-using-configmap/)
   - ✅ [Adopting Sidecar Containers](configuration/pod-sidecar-containers/)
   - ✅ [Configure a Pod to Use a PersistentVolume for Storage](configuration/configure-persistent-volume-storage/)
-- **Security** (`security/`) – [section page](security/)  ⬜
+- **Security** (`security/`) – [section page](security/)  ✅
   - ✅ [Apply Pod Security Standards at the Cluster Level](security/cluster-level-pss/)
   - ✅ [Apply Pod Security Standards at the Namespace Level](security/ns-level-pss/)
   - ✅ [Restrict a Container's Access to Resources with AppArmor](security/apparmor/)
-  - ⬜ [Restrict a Container's Syscalls with seccomp](security/seccomp/)
+  - ✅ [Restrict a Container's Syscalls with seccomp](security/seccomp/)
 - **Stateless Applications** (`stateless-application/`) – [section page](stateless-application/)  ⬜
   - ⬜ [Deploy a Release Using a Canary Deployment](stateless-application/canary-deployment/)
   - ⬜ [Exposing an External IP Address to Access an Application in a Cluster](stateless-application/expose-external-ip-address/)
