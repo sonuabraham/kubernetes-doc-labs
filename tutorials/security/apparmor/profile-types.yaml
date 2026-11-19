@@ -1,0 +1,26 @@
+# NOT from the docs – the three profile types, and container-level overriding pod-level.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apparmor-types
+spec:
+  securityContext:
+    appArmorProfile:
+      type: Localhost
+      localhostProfile: k8s-apparmor-example-deny-write   # pod-level default
+  containers:
+  - name: inherits-pod
+    image: busybox:1.28
+    command: ["sleep", "1h"]
+  - name: runtime-default
+    image: busybox:1.28
+    command: ["sleep", "1h"]
+    securityContext:
+      appArmorProfile:
+        type: RuntimeDefault
+  - name: unconfined
+    image: busybox:1.28
+    command: ["sleep", "1h"]
+    securityContext:
+      appArmorProfile:
+        type: Unconfined

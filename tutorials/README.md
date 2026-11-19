@@ -27,7 +27,7 @@ Status: ✅ lab written · ⬜ not yet
 - **Security** (`security/`) – [section page](security/)  ⬜
   - ✅ [Apply Pod Security Standards at the Cluster Level](security/cluster-level-pss/)
   - ✅ [Apply Pod Security Standards at the Namespace Level](security/ns-level-pss/)
-  - ⬜ [Restrict a Container's Access to Resources with AppArmor](security/apparmor/)
+  - ✅ [Restrict a Container's Access to Resources with AppArmor](security/apparmor/)
   - ⬜ [Restrict a Container's Syscalls with seccomp](security/seccomp/)
 - **Stateless Applications** (`stateless-application/`) – [section page](stateless-application/)  ⬜
   - ⬜ [Deploy a Release Using a Canary Deployment](stateless-application/canary-deployment/)
