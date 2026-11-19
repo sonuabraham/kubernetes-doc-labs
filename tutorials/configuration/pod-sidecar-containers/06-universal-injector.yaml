@@ -1,0 +1,25 @@
+# NOT from the docs – the page's "runtime feature detection design" for a universal sidecar injector.
+# NativeSidecar: first run writes "first-run" and exits 0; on restart (only happens if native sidecars work) writes "native" and runs.
+# OldWaySidecar: regular container; if the file says "native" it just sleeps, otherwise it acts as the sidecar itself.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: universal-sidecar
+spec:
+  volumes:
+  - name: flag
+    emptyDir: {}
+  initContainers:
+  - name: native-sidecar
+    image: alpine:3
+    restartPolicy: Always
+    command: ["sh", "-c", "if [ ! -f /flag/state ]; then echo first-run > /flag/state; echo 'first run, exiting 0'; exit 0; fi; echo native > /flag/state; echo 'restarted: native sidecars supported, doing sidecar work'; while true; do sleep 5; done"]
+    volumeMounts: [{name: flag, mountPath: /flag}]
+  containers:
+  - name: app
+    image: alpine:3
+    command: ["sh", "-c", "sleep 3600"]
+  - name: old-way-sidecar
+    image: alpine:3
+    command: ["sh", "-c", "s=$(cat /flag/state 2>/dev/null); echo \"state=$s\"; if [ \"$s\" = native ]; then echo 'native sidecar is running, staying idle'; else echo 'no native sidecar, acting as the sidecar'; fi; while true; do sleep 5; done"]
+    volumeMounts: [{name: flag, mountPath: /flag}]

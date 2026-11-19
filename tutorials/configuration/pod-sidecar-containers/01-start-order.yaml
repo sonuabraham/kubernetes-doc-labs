@@ -1,0 +1,23 @@
+# NOT from the docs – benefit 1: a native sidecar starts before (and keeps running during) later init containers.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-start-order
+spec:
+  volumes:
+  - name: shared
+    emptyDir: {}
+  initContainers:
+  - name: log-shipper              # native sidecar: init container + restartPolicy: Always
+    image: alpine:3
+    restartPolicy: Always
+    command: ["sh", "-c", "echo up > /shared/sidecar-ready; while true; do echo \"$(date +%T) shipping\"; sleep 5; done"]
+    volumeMounts: [{name: shared, mountPath: /shared}]
+  - name: migrate-db               # ordinary init container, runs AFTER the sidecar has started
+    image: alpine:3
+    command: ["sh", "-c", "cat /shared/sidecar-ready && echo 'init: sidecar is already running, migrating…'"]
+    volumeMounts: [{name: shared, mountPath: /shared}]
+  containers:
+  - name: app
+    image: alpine:3
+    command: ["sh", "-c", "sleep 3600"]

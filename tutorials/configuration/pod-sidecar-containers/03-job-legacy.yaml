@@ -1,0 +1,16 @@
+# NOT from the docs – the same Job with the sidecar as a regular container: the Pod never completes.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-legacy-sidecar
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: main
+        image: alpine:3
+        command: ["sh", "-c", "echo working; sleep 5; echo done"]
+      - name: sidecar
+        image: alpine:3
+        command: ["sh", "-c", "while true; do sleep 1; done"]

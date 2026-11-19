@@ -1,0 +1,16 @@
+# NOT from the docs – benefit 2: the sidecar gets SIGTERM only after the regular container has exited.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-termination
+spec:
+  terminationGracePeriodSeconds: 30
+  initContainers:
+  - name: sidecar
+    image: alpine:3
+    restartPolicy: Always
+    command: ["sh", "-c", "trap 'echo sidecar: got SIGTERM; exit 0' TERM; echo sidecar up; while true; do sleep 0.2; done"]
+  containers:
+  - name: app
+    image: alpine:3
+    command: ["sh", "-c", "trap 'echo app: got SIGTERM, draining 3 s; sleep 3; echo app: exit; exit 0' TERM; echo app up; while true; do sleep 0.2; done"]
