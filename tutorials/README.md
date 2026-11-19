@@ -35,7 +35,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Example: Deploying PHP Guestbook application with Redis](stateless-application/guestbook/)
 - **Stateful Applications** (`stateful-application/`) – [section page](stateful-application/)  ⬜
   - ✅ [StatefulSet Basics](stateful-application/basic-stateful-set/)
-  - ⬜ [Example: Deploying WordPress and MySQL with Persistent Volumes](stateful-application/mysql-wordpress-persistent-volume/)
+  - ✅ [Example: Deploying WordPress and MySQL with Persistent Volumes](stateful-application/mysql-wordpress-persistent-volume/)
   - ⬜ [Example: Deploying Cassandra with a StatefulSet](stateful-application/cassandra/)
   - ⬜ [Running ZooKeeper, A Distributed System Coordinator](stateful-application/zookeeper/)
 - **Cluster Management** (`cluster-management/`) – [section page](cluster-management/)  ⬜
