@@ -1,0 +1,9 @@
+metadata:
+  annotations:
+    lab.example.com/patched-by: kubeadm-patches
+spec:
+  containers:
+  - name: kube-apiserver
+    resources:
+      requests:
+        cpu: 300m

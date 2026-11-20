@@ -1,0 +1,55 @@
+# NOT a docs file – the page's examples combined into one kubeadm init config that works with kubeadm v1.37:
+#  - no "kubernetesVersion: v1.16.0" (kubeadm 1.37 refuses < 1.36), extraArgs values quoted (etcd's 1000 must be a string)
+#  - paths under /root and /var/log instead of /home/johndoe; the scheduler config file is ./schedconfig.yaml
+#  - controllerManager: the docs' cluster-signing-key-file is left out (it needs your own CA key);
+#    --deployment-controller-sync-period was removed from kube-controller-manager → concurrent-deployment-syncs instead
+# plus the lab basics from ../create-cluster-kubeadm (endpoint, Pod CIDR, swap).
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+nodeRegistration:
+  ignorePreflightErrors:
+  - Swap
+  kubeletExtraArgs:
+  - name: "node-labels"
+    value: "lab.example.com/via=kubeletExtraArgs"
+patches:
+  directory: /root/patches
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+controlPlaneEndpoint: "cluster-endpoint:6443"
+networking:
+  podSubnet: "10.244.0.0/16"
+apiServer:
+  extraArgs:
+  - name: "enable-admission-plugins"
+    value: "AlwaysPullImages,DefaultStorageClass"
+  - name: "audit-log-path"
+    value: "/var/log/kubernetes/audit.log"
+controllerManager:
+  extraArgs:
+  - name: "concurrent-deployment-syncs"     # the docs' deployment-controller-sync-period no longer exists ("unknown flag")
+    value: "10"
+scheduler:
+  extraArgs:
+  - name: "config"
+    value: "/etc/kubernetes/scheduler-config.yaml"
+  extraVolumes:
+    - name: schedulerconfig
+      hostPath: /root/schedconfig.yaml
+      mountPath: /etc/kubernetes/scheduler-config.yaml
+      readOnly: true
+      pathType: "File"
+etcd:
+  local:
+    extraArgs:
+    - name: "election-timeout"
+      value: "1000"
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+failSwapOn: false
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+metricsBindAddress: "0.0.0.0:10249"

@@ -1,0 +1,7 @@
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+etcd:
+  local:
+    extraArgs:
+    - name: "election-timeout"
+      value: 1000

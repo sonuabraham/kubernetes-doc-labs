@@ -1,0 +1,9 @@
+# NOT from the docs – the file the docs' scheduler example mounts (hostPath /home/johndoe/schedconfig.yaml → here /root/schedconfig.yaml).
+# With --config, kube-scheduler takes its API connection from this file, so the kubeconfig kubeadm wrote must be named here.
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+clientConnection:
+  kubeconfig: /etc/kubernetes/scheduler.conf
+profiles:
+- schedulerName: default-scheduler
+- schedulerName: lab-scheduler
