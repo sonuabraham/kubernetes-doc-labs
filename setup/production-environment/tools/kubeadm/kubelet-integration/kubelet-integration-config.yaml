@@ -1,0 +1,19 @@
+# NOT a docs file – the page's "kubeadm init --service-cidr 10.96.0.0/12" + its KubeletConfiguration (clusterDNS) as one config,
+# plus the lab basics (endpoint, Pod CIDR for kindnet, swap tolerated).
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+nodeRegistration:
+  ignorePreflightErrors: [Swap]
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+controlPlaneEndpoint: "cluster-endpoint:6443"
+networking:
+  serviceSubnet: "10.96.0.0/12"
+  podSubnet: "10.244.0.0/16"
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+clusterDNS:
+- 10.96.0.10
+failSwapOn: false
