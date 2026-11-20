@@ -1,0 +1,18 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: default-pod-security-configurable
+spec:
+  # the name of the MutatingAdmissionPolicy to apply
+  policyName: default-pod-security-configurable
+
+  # parameters to use
+  paramRef:
+    # if the ConfigMap is missing or empty, don't set a default
+    # (but do allow namespace creation)
+    parameterNotFoundAction: Allow
+
+    # where to find the parameter
+    namespace: kube-system
+    name: default-pod-security-standard

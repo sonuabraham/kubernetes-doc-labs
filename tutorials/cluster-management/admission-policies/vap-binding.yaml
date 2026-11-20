@@ -1,0 +1,11 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: enforce-multiple-replicas-deployments-binding
+spec:
+  policyName: "enforce-multiple-replicas-deployments"
+  validationActions: [Deny]
+  matchResources:
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: default # change this to match the namespace you're using

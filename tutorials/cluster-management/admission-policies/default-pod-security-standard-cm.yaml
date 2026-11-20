@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kube-system
+  name: default-pod-security-standard
+data:
+  default: baseline # could also be "restricted"
