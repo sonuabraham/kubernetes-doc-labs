@@ -45,7 +45,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Install Drivers and Allocate Devices with DRA](cluster-management/install-use-dra/)
   - ✅ [Explore Validating and Mutating Admission Policies](cluster-management/admission-policies/)
   - ✅ [Namespaces Walkthrough](cluster-management/namespaces-walkthrough/)
-- **Services** (`services/`) – [section page](services/)  ⬜
+- **Services** (`services/`) – [section page](services/)  ✅
   - ✅ [Connecting Applications with Services](services/connect-applications-service/)
   - ✅ [Using Source IP](services/source-ip/)
-  - ⬜ [Explore Termination Behavior for Pods And Their Endpoints](services/pods-and-endpoint-termination-flow/)
+  - ✅ [Explore Termination Behavior for Pods And Their Endpoints](services/pods-and-endpoint-termination-flow/)
