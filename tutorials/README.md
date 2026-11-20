@@ -46,6 +46,6 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Explore Validating and Mutating Admission Policies](cluster-management/admission-policies/)
   - ✅ [Namespaces Walkthrough](cluster-management/namespaces-walkthrough/)
 - **Services** (`services/`) – [section page](services/)  ⬜
-  - ⬜ [Connecting Applications with Services](services/connect-applications-service/)
+  - ✅ [Connecting Applications with Services](services/connect-applications-service/)
   - ⬜ [Using Source IP](services/source-ip/)
   - ⬜ [Explore Termination Behavior for Pods And Their Endpoints](services/pods-and-endpoint-termination-flow/)
