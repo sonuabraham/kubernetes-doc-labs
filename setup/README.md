@@ -23,7 +23,7 @@ Status: ✅ lab written · ⬜ not yet
 - **Best practices** (`best-practices/`) – [section page](best-practices/)  ⬜
   - ✅ [Considerations for large clusters](best-practices/cluster-large/)
   - ✅ [Running in multiple zones](best-practices/multiple-zones/)
-  - ⬜ [Validate node setup](best-practices/node-conformance/)
+  - ✅ [Validate node setup](best-practices/node-conformance/)
   - ⬜ [Enforcing Pod Security Standards](best-practices/enforcing-pod-security-standards/)
   - ⬜ [PKI certificates and requirements](best-practices/certificates/)
 
