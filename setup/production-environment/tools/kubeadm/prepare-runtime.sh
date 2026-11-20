@@ -8,5 +8,6 @@ f=/etc/containerd/config.toml
 sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' $f                                        # systemd cgroup driver
 sed -i 's#sandbox_image = ".*"#sandbox_image = "registry.k8s.io/pause:3.10.2"#' $f              # = kubeadm config images list
 rm -f /etc/cni/net.d/87-podman-bridge.conflist                                                    # leave CNI to the add-on
+systemctl enable containerd >/dev/null 2>&1   # kicbase ships it disabled – survive machine restarts
 systemctl restart containerd
 grep -nE "SystemdCgroup|sandbox_image" $f; ls /etc/cni/net.d/; systemctl is-active containerd

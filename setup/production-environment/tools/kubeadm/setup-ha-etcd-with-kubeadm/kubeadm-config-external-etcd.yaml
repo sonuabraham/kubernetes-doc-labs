@@ -1,0 +1,28 @@
+---
+# The HA page's external-etcd kubeadm-config.yaml, verbatim apart from the placeholders: LOAD_BALANCER_DNS:PORT = kadm-w1:6443
+# (one control plane here, no LB), ETCD_n_IP = the three etcd machines. "kubernetesVersion: stable" is kept as in the docs.
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+kubernetesVersion: stable
+controlPlaneEndpoint: "kadm-w1:6443" # change this (see below)
+etcd:
+  external:
+    endpoints:
+      - https://172.30.0.2:2379 # change ETCD_0_IP appropriately
+      - https://172.30.0.4:2379 # change ETCD_1_IP appropriately
+      - https://172.30.0.5:2379 # change ETCD_2_IP appropriately
+    caFile: /etc/kubernetes/pki/etcd/ca.crt
+    certFile: /etc/kubernetes/pki/apiserver-etcd-client.crt
+    keyFile: /etc/kubernetes/pki/apiserver-etcd-client.key
+# ---- LAB additions below (NOT in the docs' file): swap tolerated, Pod CIDR for kindnet ----
+networking:
+  podSubnet: "10.244.0.0/16"
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+nodeRegistration:
+  ignorePreflightErrors: [Swap]
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+failSwapOn: false
