@@ -1,0 +1,23 @@
+# NOT from the docs – the page's example: "3 replicas of a StatefulSet are all running in different zones … whenever that is feasible".
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zonal
+spec:
+  serviceName: zonal
+  replicas: 3
+  selector:
+    matchLabels: {app: zonal}
+  template:
+    metadata:
+      labels: {app: zonal}
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels: {app: zonal}
+      containers:
+      - name: c
+        image: registry.k8s.io/pause:3.10.2

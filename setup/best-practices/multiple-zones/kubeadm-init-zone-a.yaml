@@ -1,0 +1,19 @@
+# NOT from the docs – a 3-"zone" kubeadm cluster on the lab machines. Without a cloud provider nobody sets zone labels, so each kubelet
+# sets its own via --node-labels (topology.kubernetes.io/zone is one of the labels NodeRestriction lets a kubelet set on itself).
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+nodeRegistration:
+  ignorePreflightErrors: [Swap]
+  taints: []                         # control plane also runs workloads (it is zone-a's only node)
+  kubeletExtraArgs:
+  - name: node-labels
+    value: "topology.kubernetes.io/region=lab,topology.kubernetes.io/zone=zone-a"
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+networking:
+  podSubnet: "10.244.0.0/16"
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+failSwapOn: false

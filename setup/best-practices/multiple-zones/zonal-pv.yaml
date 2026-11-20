@@ -1,0 +1,39 @@
+# NOT from the docs – a PersistentVolume that exists only in zone-b (labelled like a cloud disk + nodeAffinity), and a claim + Pod.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: disk-zone-b
+  labels:
+    topology.kubernetes.io/zone: zone-b
+spec:
+  capacity: {storage: 1Gi}
+  accessModes: [ReadWriteOnce]
+  storageClassName: zonal
+  hostPath: {path: /var/lib/disk-zone-b, type: DirectoryOrCreate}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - {key: topology.kubernetes.io/zone, operator: In, values: [zone-b]}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data
+spec:
+  storageClassName: zonal
+  accessModes: [ReadWriteOnce]
+  resources: {requests: {storage: 1Gi}}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: uses-zonal-disk
+spec:
+  containers:
+  - name: c
+    image: registry.k8s.io/pause:3.10.2
+    volumeMounts: [{name: d, mountPath: /data}]
+  volumes:
+  - name: d
+    persistentVolumeClaim: {claimName: data}
