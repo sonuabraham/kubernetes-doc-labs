@@ -42,7 +42,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Running Kubelet in Standalone Mode](cluster-management/kubelet-standalone/)
   - ✅ [Configuring swap memory on Kubernetes nodes](cluster-management/provision-swap-memory/)
   - ✅ [Use Pod-Level Resources with kubelet Resource Managers](cluster-management/use-pod-level-resource-managers/)
-  - ⬜ [Install Drivers and Allocate Devices with DRA](cluster-management/install-use-dra/)
+  - ✅ [Install Drivers and Allocate Devices with DRA](cluster-management/install-use-dra/)
   - ⬜ [Explore Validating and Mutating Admission Policies](cluster-management/admission-policies/)
   - ⬜ [Namespaces Walkthrough](cluster-management/namespaces-walkthrough/)
 - **Services** (`services/`) – [section page](services/)  ⬜
