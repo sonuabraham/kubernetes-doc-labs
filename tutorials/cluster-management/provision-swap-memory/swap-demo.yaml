@@ -1,0 +1,31 @@
+# NOT from the docs – two Burstable Pods (request 512Mi, limit 600Mi) that allocate MORE than their memory limit.
+# With LimitedSwap each gets memory.swap.max = 512Mi / node RAM × node swap (~141 MB here).
+#   swap-fits:    allocates 680 MiB → ~80 MiB must go to swap → keeps running
+#   swap-too-big: allocates 800 MiB → ~200 MiB would be needed → OOMKilled
+apiVersion: v1
+kind: Pod
+metadata:
+  name: swap-fits
+spec:
+  restartPolicy: Never
+  containers:
+  - name: hog
+    image: python:3.13-alpine
+    command: ["python3", "-c", "import time; b=bytearray(680*1024*1024); b[::4096]=b'x'*len(b[::4096]); print('allocated 680 MiB', flush=True); time.sleep(3600)"]
+    resources:
+      requests: {memory: 512Mi}
+      limits: {memory: 600Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: swap-too-big
+spec:
+  restartPolicy: Never
+  containers:
+  - name: hog
+    image: python:3.13-alpine
+    command: ["python3", "-c", "import time; b=bytearray(800*1024*1024); b[::4096]=b'x'*len(b[::4096]); print('allocated 800 MiB', flush=True); time.sleep(3600)"]
+    resources:
+      requests: {memory: 512Mi}
+      limits: {memory: 600Mi}

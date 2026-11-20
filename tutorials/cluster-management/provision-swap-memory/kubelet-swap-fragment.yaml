@@ -1,0 +1,4 @@
+ # this fragment goes into the kubelet's configuration file
+ failSwapOn: false
+ memorySwap:
+     swapBehavior: LimitedSwap
