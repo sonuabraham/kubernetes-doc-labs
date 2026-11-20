@@ -1,0 +1,27 @@
+# NOT from the docs – the page's two recommendations as namespaces.
+# pss-multimode: enforce the level you can live with today, warn + audit at the level you want ("adopt a multi-mode strategy").
+# pss-pinned:    enforce pinned to an older version, warn + audit at the same level but "latest" ("gives visibility into settings that
+#                were allowed by previous versions but are not allowed per current best practices").
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pss-multimode
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: latest
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: latest
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pss-pinned
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce-version: v1.33
+    pod-security.kubernetes.io/warn: baseline
+    pod-security.kubernetes.io/warn-version: latest
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/audit-version: latest

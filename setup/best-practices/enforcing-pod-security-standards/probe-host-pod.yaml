@@ -1,0 +1,10 @@
+# NOT from the docs – a readiness probe with an explicit host: allowed by baseline up to v1.33, forbidden from baseline v1.34 ("probe or lifecycle host").
+apiVersion: v1
+kind: Pod
+metadata: {name: probe-host}
+spec:
+  containers:
+  - name: c
+    image: registry.k8s.io/pause:3.10.2
+    readinessProbe:
+      httpGet: {host: 10.0.0.1, path: /, port: 80}
