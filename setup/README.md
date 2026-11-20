@@ -12,7 +12,7 @@ Status: ✅ lab written · ⬜ not yet
     - **Bootstrapping clusters with kubeadm** (`production-environment/tools/kubeadm/`) – [section page](production-environment/tools/kubeadm/)  ⬜
       - ✅ [Installing kubeadm](production-environment/tools/kubeadm/install-kubeadm/)
       - ⬜ [Troubleshooting kubeadm](production-environment/tools/kubeadm/troubleshooting-kubeadm/)
-      - ⬜ [Creating a cluster with kubeadm](production-environment/tools/kubeadm/create-cluster-kubeadm/)
+      - ✅ [Creating a cluster with kubeadm](production-environment/tools/kubeadm/create-cluster-kubeadm/)
       - ⬜ [Customizing components with the kubeadm API](production-environment/tools/kubeadm/control-plane-flags/)
       - ⬜ [Options for Highly Available Topology](production-environment/tools/kubeadm/ha-topology/)
       - ⬜ [Creating Highly Available Clusters with kubeadm](production-environment/tools/kubeadm/high-availability/)

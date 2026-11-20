@@ -1,0 +1,19 @@
+# NOT a docs file – the page's `kubeadm init <args>` written as a config file (kubeadm API v1beta4):
+#   --control-plane-endpoint=cluster-endpoint  (the page's recommendation; "cluster-endpoint" → this node's IP in /etc/hosts)
+#   --pod-network-cidr=10.244.0.0/16           (what the kindnet add-on expects)
+# plus the install page's swap option for the kubelet (the lab machines see the host's swap; swapoff there would hit the host).
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+nodeRegistration:
+  ignorePreflightErrors:
+  - Swap
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+controlPlaneEndpoint: "cluster-endpoint:6443"
+networking:
+  podSubnet: "10.244.0.0/16"
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+failSwapOn: false
