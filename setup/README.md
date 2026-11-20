@@ -8,10 +8,10 @@ Status: ✅ lab written · ⬜ not yet
 - **Learning environment** (`learning-environment/`) – [section page](learning-environment/)  ✅
 - **Production environment** (`production-environment/`) – [section page](production-environment/)  ✅
   - ✅ [Container Runtimes](production-environment/container-runtimes/)
-  - **Installing Kubernetes with deployment tools** (`production-environment/tools/`) – [section page](production-environment/tools/)  ⬜
-    - **Bootstrapping clusters with kubeadm** (`production-environment/tools/kubeadm/`) – [section page](production-environment/tools/kubeadm/)  ⬜
+  - **Installing Kubernetes with deployment tools** (`production-environment/tools/`) – [section page](production-environment/tools/)  ✅
+    - **Bootstrapping clusters with kubeadm** (`production-environment/tools/kubeadm/`) – [section page](production-environment/tools/kubeadm/)  ✅
       - ✅ [Installing kubeadm](production-environment/tools/kubeadm/install-kubeadm/)
-      - ⬜ [Troubleshooting kubeadm](production-environment/tools/kubeadm/troubleshooting-kubeadm/)
+      - ✅ [Troubleshooting kubeadm](production-environment/tools/kubeadm/troubleshooting-kubeadm/)
       - ✅ [Creating a cluster with kubeadm](production-environment/tools/kubeadm/create-cluster-kubeadm/)
       - ✅ [Customizing components with the kubeadm API](production-environment/tools/kubeadm/control-plane-flags/)
       - ✅ [Options for Highly Available Topology](production-environment/tools/kubeadm/ha-topology/)
