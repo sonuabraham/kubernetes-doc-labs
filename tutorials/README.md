@@ -33,11 +33,11 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Deploy a Release Using a Canary Deployment](stateless-application/canary-deployment/)
   - ✅ [Exposing an External IP Address to Access an Application in a Cluster](stateless-application/expose-external-ip-address/)
   - ✅ [Example: Deploying PHP Guestbook application with Redis](stateless-application/guestbook/)
-- **Stateful Applications** (`stateful-application/`) – [section page](stateful-application/)  ⬜
+- **Stateful Applications** (`stateful-application/`) – [section page](stateful-application/)  ✅
   - ✅ [StatefulSet Basics](stateful-application/basic-stateful-set/)
   - ✅ [Example: Deploying WordPress and MySQL with Persistent Volumes](stateful-application/mysql-wordpress-persistent-volume/)
   - ✅ [Example: Deploying Cassandra with a StatefulSet](stateful-application/cassandra/)
-  - ⬜ [Running ZooKeeper, A Distributed System Coordinator](stateful-application/zookeeper/)
+  - ✅ [Running ZooKeeper, A Distributed System Coordinator](stateful-application/zookeeper/)
 - **Cluster Management** (`cluster-management/`) – [section page](cluster-management/)  ⬜
   - ⬜ [Running Kubelet in Standalone Mode](cluster-management/kubelet-standalone/)
   - ⬜ [Configuring swap memory on Kubernetes nodes](cluster-management/provision-swap-memory/)
