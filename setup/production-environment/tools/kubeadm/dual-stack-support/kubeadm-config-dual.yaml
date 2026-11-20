@@ -1,0 +1,23 @@
+# The page's dual-stack init config (docs-2.yaml) with this lab's addresses: advertiseAddress / node-ip = machine ds1
+# (the page's 10.100.0.1 vs 10.100.0.2 don't even agree with each other). The address ranges are the page's, unchanged.
+# LAB additions (NOT in the docs): swap tolerated.
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+networking:
+  podSubnet: 10.244.0.0/16,2001:db8:42:0::/56
+  serviceSubnet: 10.96.0.0/16,2001:db8:42:1::/112
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: "172.31.0.2"
+  bindPort: 6443
+nodeRegistration:
+  kubeletExtraArgs:
+  - name: "node-ip"
+    value: "172.31.0.2,fd00:1:2:3::2"
+  ignorePreflightErrors: [Swap]
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+failSwapOn: false

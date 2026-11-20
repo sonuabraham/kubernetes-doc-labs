@@ -11,15 +11,19 @@
 #   ./machines.sh down           delete ALL lab machines, their volumes and the network
 # Stop the default minikube while machines run (host inotify limit: 128 instances).
 set -euo pipefail
-NET=kubeadm-lab-net
+NET=${NET:-kubeadm-lab-net}             # dual-stack lab: NET=kubeadm-lab-net6 V4SUBNET=172.31.0.0/24 V6SUBNET=fd00:1:2:3::/64
+V4SUBNET=${V4SUBNET:-172.30.0.0/24}
+V6SUBNET=${V6SUBNET:-}
 IMG=gcr.io/k8s-minikube/kicbase:v0.0.51
 PFX=kadm-
 cmd=${1:?up|sh|x|ip|down}; shift || true
 case $cmd in
   up)
-    docker network inspect $NET >/dev/null 2>&1 || docker network create --subnet 172.30.0.0/24 $NET >/dev/null
+    v6net=(); v6run=()
+    [ -n "$V6SUBNET" ] && v6net=(--ipv6 --subnet "$V6SUBNET") && v6run=(--sysctl net.ipv6.conf.all.disable_ipv6=0 --sysctl net.ipv6.conf.all.forwarding=1)
+    docker network inspect $NET >/dev/null 2>&1 || docker network create --subnet $V4SUBNET "${v6net[@]}" --label kubeadm-lab=1 $NET >/dev/null
     for n in "$@"; do
-      docker run -d --name $PFX$n --hostname $n --network $NET --privileged \
+      docker run -d --name $PFX$n --hostname $n --network $NET --privileged "${v6run[@]}" \
         --security-opt seccomp=unconfined --security-opt apparmor=unconfined \
         --tmpfs /tmp --tmpfs /run -v /lib/modules:/lib/modules:ro -v /boot:/boot:ro -v $PFX$n-var:/var \
         --label kubeadm-lab=1 $IMG >/dev/null
@@ -36,6 +40,7 @@ case $cmd in
   down)
     ids=$(docker ps -aq --filter label=kubeadm-lab=1); [ -n "$ids" ] && docker rm -f $ids >/dev/null
     vols=$(docker volume ls -q | grep "^$PFX" || true); [ -n "$vols" ] && docker volume rm $vols >/dev/null
-    docker network rm $NET >/dev/null 2>&1 || true
+    nets=$(docker network ls -q --filter label=kubeadm-lab=1); [ -n "$nets" ] && docker network rm $nets >/dev/null 2>&1
+    docker network rm kubeadm-lab-net >/dev/null 2>&1 || true
     echo "all kubeadm lab machines removed" ;;
 esac

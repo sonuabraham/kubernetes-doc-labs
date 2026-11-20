@@ -18,7 +18,7 @@ Status: ✅ lab written · ⬜ not yet
       - ✅ [Creating Highly Available Clusters with kubeadm](production-environment/tools/kubeadm/high-availability/)
       - ✅ [Set up a High Availability etcd Cluster with kubeadm](production-environment/tools/kubeadm/setup-ha-etcd-with-kubeadm/)
       - ✅ [Configuring each kubelet in your cluster using kubeadm](production-environment/tools/kubeadm/kubelet-integration/)
-      - ⬜ [Dual-stack support with kubeadm](production-environment/tools/kubeadm/dual-stack-support/)
+      - ✅ [Dual-stack support with kubeadm](production-environment/tools/kubeadm/dual-stack-support/)
   - ⬜ [Turnkey Cloud Solutions](production-environment/turnkey-solutions/)
 - **Best practices** (`best-practices/`) – [section page](best-practices/)  ⬜
   - ⬜ [Considerations for large clusters](best-practices/cluster-large/)
