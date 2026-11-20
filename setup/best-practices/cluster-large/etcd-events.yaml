@@ -1,0 +1,40 @@
+# NOT from the docs – "store Event objects in a separate dedicated etcd instance … (using custom tooling)":
+# a second single-member etcd as a static Pod next to kubeadm's, on 127.0.0.1:12379, reusing kubeadm's etcd certificates
+# (etcd/server.crt has 127.0.0.1 in its SANs). The API server sends /events there via --etcd-servers-overrides.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: etcd-events
+  namespace: kube-system
+  labels:
+    component: etcd-events
+spec:
+  hostNetwork: true
+  priorityClassName: system-node-critical
+  containers:
+  - name: etcd
+    image: registry.k8s.io/etcd:3.7.0-0
+    command:
+    - etcd
+    - --name=events
+    - --data-dir=/var/lib/etcd-events
+    - --listen-client-urls=https://127.0.0.1:12379
+    - --advertise-client-urls=https://127.0.0.1:12379
+    - --listen-peer-urls=https://127.0.0.1:12380
+    - --initial-advertise-peer-urls=https://127.0.0.1:12380
+    - --initial-cluster=events=https://127.0.0.1:12380
+    - --listen-metrics-urls=http://127.0.0.1:12381
+    - --client-cert-auth=true
+    - --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+    - --cert-file=/etc/kubernetes/pki/etcd/server.crt
+    - --key-file=/etc/kubernetes/pki/etcd/server.key
+    - --peer-client-cert-auth=true
+    - --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
+    - --peer-cert-file=/etc/kubernetes/pki/etcd/peer.crt
+    - --peer-key-file=/etc/kubernetes/pki/etcd/peer.key
+    volumeMounts:
+    - {name: data, mountPath: /var/lib/etcd-events}
+    - {name: certs, mountPath: /etc/kubernetes/pki/etcd, readOnly: true}
+  volumes:
+  - {name: data, hostPath: {path: /var/lib/etcd-events, type: DirectoryOrCreate}}
+  - {name: certs, hostPath: {path: /etc/kubernetes/pki/etcd, type: Directory}}

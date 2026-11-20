@@ -1,0 +1,19 @@
+# NOT from the docs – kubeadm config for the events-etcd demo (machine cp1 of setup/production-environment/tools/kubeadm):
+# the API server keeps everything in the stacked etcd except Events, which go to etcd-events (etcd-events.yaml).
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+nodeRegistration:
+  ignorePreflightErrors: [Swap]
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+networking:
+  podSubnet: "10.244.0.0/16"
+apiServer:
+  extraArgs:
+  - name: "etcd-servers-overrides"
+    value: "/events#https://127.0.0.1:12379"
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+failSwapOn: false
