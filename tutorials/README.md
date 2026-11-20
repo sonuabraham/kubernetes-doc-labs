@@ -47,5 +47,5 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Namespaces Walkthrough](cluster-management/namespaces-walkthrough/)
 - **Services** (`services/`) – [section page](services/)  ⬜
   - ✅ [Connecting Applications with Services](services/connect-applications-service/)
-  - ⬜ [Using Source IP](services/source-ip/)
+  - ✅ [Using Source IP](services/source-ip/)
   - ⬜ [Explore Termination Behavior for Pods And Their Endpoints](services/pods-and-endpoint-termination-flow/)
