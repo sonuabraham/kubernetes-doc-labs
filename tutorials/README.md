@@ -39,7 +39,7 @@ Status: ✅ lab written · ⬜ not yet
   - ✅ [Example: Deploying Cassandra with a StatefulSet](stateful-application/cassandra/)
   - ✅ [Running ZooKeeper, A Distributed System Coordinator](stateful-application/zookeeper/)
 - **Cluster Management** (`cluster-management/`) – [section page](cluster-management/)  ⬜
-  - ⬜ [Running Kubelet in Standalone Mode](cluster-management/kubelet-standalone/)
+  - ✅ [Running Kubelet in Standalone Mode](cluster-management/kubelet-standalone/)
   - ⬜ [Configuring swap memory on Kubernetes nodes](cluster-management/provision-swap-memory/)
   - ⬜ [Use Pod-Level Resources with kubelet Resource Managers](cluster-management/use-pod-level-resource-managers/)
   - ⬜ [Install Drivers and Allocate Devices with DRA](cluster-management/install-use-dra/)
