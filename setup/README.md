@@ -6,8 +6,8 @@ Docs source synced at website commit be58364903 (2026-11-19). YAML from the docs
 Status: ✅ lab written · ⬜ not yet
 
 - **Learning environment** (`learning-environment/`) – [section page](learning-environment/)  ✅
-- **Production environment** (`production-environment/`) – [section page](production-environment/)  ⬜
-  - ⬜ [Container Runtimes](production-environment/container-runtimes/)
+- **Production environment** (`production-environment/`) – [section page](production-environment/)  ✅
+  - ✅ [Container Runtimes](production-environment/container-runtimes/)
   - **Installing Kubernetes with deployment tools** (`production-environment/tools/`) – [section page](production-environment/tools/)  ⬜
     - **Bootstrapping clusters with kubeadm** (`production-environment/tools/kubeadm/`) – [section page](production-environment/tools/kubeadm/)  ⬜
       - ⬜ [Installing kubeadm](production-environment/tools/kubeadm/install-kubeadm/)
