@@ -20,12 +20,12 @@ Status: ✅ lab written · ⬜ not yet
       - ✅ [Configuring each kubelet in your cluster using kubeadm](production-environment/tools/kubeadm/kubelet-integration/)
       - ✅ [Dual-stack support with kubeadm](production-environment/tools/kubeadm/dual-stack-support/)
   - ✅ [Turnkey Cloud Solutions](production-environment/turnkey-solutions/)
-- **Best practices** (`best-practices/`) – [section page](best-practices/)  ⬜
+- **Best practices** (`best-practices/`) – [section page](best-practices/)  ✅
   - ✅ [Considerations for large clusters](best-practices/cluster-large/)
   - ✅ [Running in multiple zones](best-practices/multiple-zones/)
   - ✅ [Validate node setup](best-practices/node-conformance/)
   - ✅ [Enforcing Pod Security Standards](best-practices/enforcing-pod-security-standards/)
-  - ⬜ [PKI certificates and requirements](best-practices/certificates/)
+  - ✅ [PKI certificates and requirements](best-practices/certificates/)
 
 ---
 

@@ -1,0 +1,20 @@
+# NOT from the docs – kubeadm init on top of a PKI made by gen-all-certs.sh (no CA private keys on the node = "external CA" mode).
+# The kubeconfigs from the page's kubectl commands point at https://<host ip>:6443, so the API endpoint must be exactly that.
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 172.30.0.3
+  bindPort: 6443
+nodeRegistration:
+  name: cp2                          # must equal the CN system:node:cp2 in kubelet.conf
+  ignorePreflightErrors: [Swap]
+  taints: []
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+networking:
+  podSubnet: "10.244.0.0/16"
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+failSwapOn: false
